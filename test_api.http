@@ -1,0 +1,109 @@
+### 测试接口 - Hello
+GET http://localhost:8080/api/user/hello
+
+###
+
+### 用户注册
+POST http://localhost:8080/api/user/register
+Content-Type: application/json
+
+{
+  "username": "zhangsan",
+  "password": "123456"
+}
+
+###
+
+### 用户登录
+POST http://localhost:8080/api/user/login
+Content-Type: application/json
+
+{
+  "username": "zhangsan",
+  "password": "123456"
+}
+
+###
+
+### 测试注册 - 用户名已存在
+POST http://localhost:8080/api/user/register
+Content-Type: application/json
+
+{
+  "username": "zhangsan",
+  "password": "123456"
+}
+
+###
+
+### 测试登录 - 密码错误
+POST http://localhost:8080/api/user/login
+Content-Type: application/json
+
+{
+  "username": "zhangsan",
+  "password": "wrongpassword"
+}
+
+###
+
+### 测试注册 - 参数验证（用户名太短）
+POST http://localhost:8080/api/user/register
+Content-Type: application/json
+
+{
+  "username": "ab",
+  "password": "123456"
+}
+
+###
+
+### 测试注册 - 参数验证（密码太短）
+POST http://localhost:8080/api/user/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "123"
+}
+
+###
+
+### ========== CRUD操作测试 ==========
+
+### 获取所有用户
+GET http://localhost:8080/api/user/all
+
+###
+
+### 根据ID查询用户
+GET http://localhost:8080/api/user/1
+
+###
+
+### 更新用户
+PUT http://localhost:8080/api/user/1
+Content-Type: application/json
+
+{
+  "username": "zhangsan_updated",
+  "password": "newpassword123"
+}
+
+###
+
+### 删除用户
+DELETE http://localhost:8080/api/user/2
+
+###
+
+### 测试错误 - 查询不存在的用户
+GET http://localhost:8080/api/user/999
+
+###
+
+### 测试错误 - 删除不存在的用户
+DELETE http://localhost:8080/api/user/999
+
+###
+
