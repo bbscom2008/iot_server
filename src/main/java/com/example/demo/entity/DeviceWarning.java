@@ -9,14 +9,15 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class DeviceWarning {
 
     private Long id;
-    private String phone;
-    private String password;
-    private String nikeName;
-    private String address;
-    private String icon;
+    private Long deviceId;
+    private String deviceNum;
+    private Long userId;
+    private String warningType;
+    private String warningMsg;
+    private Integer isRead;         // 0-未读 1-已读
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
+

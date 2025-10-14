@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.DeviceMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.Device">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
+        <result column="breed_type" property="breedType" jdbcType="INTEGER"/>
+        <result column="device_line_state" property="deviceLineState" jdbcType="INTEGER"/>
+        <result column="signal" property="signal" jdbcType="INTEGER"/>
+        <result column="ta" property="ta" jdbcType="DECIMAL"/>
+        <result column="tb" property="tb" jdbcType="DECIMAL"/>
+        <result column="humidity" property="humidity" jdbcType="DECIMAL"/>
+        <result column="gas_con" property="gasCon" jdbcType="DECIMAL"/>
+        <result column="warning_status" property="warningStatus" jdbcType="INTEGER"/>
+        <result column="outage_state" property="outageState" jdbcType="INTEGER"/>
+        <result column="gas_con_status" property="gasConStatus" jdbcType="INTEGER"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询设备列表 -->
+    <select id="findList" resultMap="BaseResultMap">
+        SELECT * FROM devices
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="search != null and search != ''">
+                AND (device_name LIKE CONCAT('%', #{search}, '%') 
+                OR device_num LIKE CONCAT('%', #{search}, '%'))
+            </if>
+            <if test="deviceType != null">
+                AND device_type = #{deviceType}
+            </if>
+            <if test="breedType != null">
+                AND breed_type = #{breedType}
+            </if>
+        </where>
+        ORDER BY created_at DESC
+        <if test="offset != null and pageSize != null">
+            LIMIT #{offset}, #{pageSize}
+        </if>
+    </select>
+
+    <!-- 查询设备总数 -->
+    <select id="countDevice" resultType="long">
+        SELECT COUNT(*) FROM devices
+        <where>
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+            <if test="search != null and search != ''">
+                AND (device_name LIKE CONCAT('%', #{search}, '%') 
+                OR device_num LIKE CONCAT('%', #{search}, '%'))
+            </if>
+            <if test="deviceType != null">
+                AND device_type = #{deviceType}
+            </if>
+            <if test="breedType != null">
+                AND breed_type = #{breedType}
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据ID查询设备 -->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT * FROM devices WHERE id = #{id}
+    </select>
+
+    <!-- 根据设备编号查询 -->
+    <select id="findByDeviceNum" resultMap="BaseResultMap">
+        SELECT * FROM devices WHERE device_num = #{deviceNum}
+    </select>
+
+    <!-- 绑定设备 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO devices (user_id, device_num, device_name, device_type, breed_type, created_at)
+        VALUES (#{userId}, #{deviceNum}, #{deviceName}, #{deviceType}, #{breedType}, NOW())
+    </insert>
+
+    <!-- 解绑设备 -->
+    <delete id="deleteById">
+        DELETE FROM devices WHERE id = #{id}
+    </delete>
+
+    <!-- 统计用户所有设备数 -->
+    <select id="countAllByUserId" resultType="long">
+        SELECT COUNT(*) FROM devices WHERE user_id = #{userId}
+    </select>
+
+    <!-- 统计用户在线设备数 -->
+    <select id="countOnlineByUserId" resultType="long">
+        SELECT COUNT(*) FROM devices WHERE user_id = #{userId} AND device_line_state = 1
+    </select>
+
+    <!-- 统计用户报警设备数 -->
+    <select id="countWarningByUserId" resultType="long">
+        SELECT COUNT(*) FROM devices 
+        WHERE user_id = #{userId} 
+        AND (warning_status = 1 OR outage_state = 1 OR gas_con_status = 1)
+    </select>
+
+</mapper>
+

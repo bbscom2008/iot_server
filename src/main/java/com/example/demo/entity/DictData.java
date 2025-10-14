@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class DictData {
 
     private Long id;
-    private String phone;
-    private String password;
-    private String nikeName;
-    private String address;
-    private String icon;
+    private String dictType;
+    private String dictLabel;
+    private String dictValue;
+    private Integer dictSort;
+    private String remark;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
+

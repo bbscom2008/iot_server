@@ -4,15 +4,13 @@ import com.example.demo.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 @Mapper
 public interface UserMapper {
 
     /**
-     * 根据用户名查询用户
+     * 根据手机号查询用户
      */
-    User findByUsername(@Param("username") String username);
+    User findByPhone(@Param("phone") String phone);
 
     /**
      * 根据ID查询用户
@@ -20,28 +18,7 @@ public interface UserMapper {
     User findById(@Param("id") Long id);
 
     /**
-     * 查询所有用户
+     * 更新用户信息
      */
-    List<User> findAll();
-
-    /**
-     * 检查用户名是否存在
-     */
-    int countByUsername(@Param("username") String username);
-
-    /**
-     * 插入新用户
-     */
-    int insert(User user);
-
-    /**
-     * 更新用户
-     */
-    int update(User user);
-
-    /**
-     * 删除用户
-     */
-    int deleteById(@Param("id") Long id);
+    int updateUser(User user);
 }
-

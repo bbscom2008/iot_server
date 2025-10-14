@@ -9,20 +9,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApiResponse<T> {
 
-    private boolean success;
-    private String message;
+    private Integer code;
+    private String msg;
     private T data;
 
-    public static <T> ApiResponse<T> success(String message, T data) {
-        return new ApiResponse<>(true, message, data);
+    public static <T> ApiResponse<T> success(T data) {
+        return new ApiResponse<>(200, "success", data);
     }
 
-    public static <T> ApiResponse<T> success(String message) {
-        return new ApiResponse<>(true, message, null);
+    public static <T> ApiResponse<T> success(String msg, T data) {
+        return new ApiResponse<>(200, msg, data);
     }
 
-    public static <T> ApiResponse<T> error(String message) {
-        return new ApiResponse<>(false, message, null);
+    public static <T> ApiResponse<T> success(String msg) {
+        return new ApiResponse<>(200, msg, null);
+    }
+
+    public static <T> ApiResponse<T> error(String msg) {
+        return new ApiResponse<>(500, msg, null);
+    }
+
+    public static <T> ApiResponse<T> error(Integer code, String msg) {
+        return new ApiResponse<>(code, msg, null);
     }
 }
-
