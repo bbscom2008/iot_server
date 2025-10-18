@@ -33,14 +33,10 @@ public class DeviceController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Integer type,
             @RequestParam(required = false) Integer breedType) {
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            PageResult<Device> result = deviceService.getDeviceList(
-                    userId, pageNum, pageSize, search, type, breedType);
-            return ApiResponse.success(result);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        PageResult<Device> result = deviceService.getDeviceList(
+                userId, pageNum, pageSize, search, type, breedType);
+        return ApiResponse.success(result);
     }
 
     /**
@@ -50,13 +46,9 @@ public class DeviceController {
     @GetMapping("/statistics")
     public ApiResponse<DeviceStatistics> getStatistics(
             @RequestHeader("Authorization") String token) {
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            DeviceStatistics statistics = deviceService.getStatistics(userId);
-            return ApiResponse.success(statistics);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        DeviceStatistics statistics = deviceService.getStatistics(userId);
+        return ApiResponse.success(statistics);
     }
 
     /**
@@ -65,14 +57,10 @@ public class DeviceController {
      */
     @GetMapping("/{id}")
     public ApiResponse<Map<String, Object>> getDeviceDetail(@PathVariable Long id) {
-        try {
-            Device device = deviceService.getDeviceDetail(id);
-            Map<String, Object> result = new HashMap<>();
-            result.put("data", device);
-            return ApiResponse.success(result);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Device device = deviceService.getDeviceDetail(id);
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", device);
+        return ApiResponse.success(result);
     }
 
     /**
@@ -83,16 +71,12 @@ public class DeviceController {
     public ApiResponse<String> bindDevice(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, String> params) {
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            String deviceNum = params.get("deviceNum");
-            String deviceName = params.get("deviceName");
-            
-            deviceService.bindDevice(userId, deviceNum, deviceName);
-            return ApiResponse.success("绑定成功");
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        String deviceNum = params.get("deviceNum");
+        String deviceName = params.get("deviceName");
+        
+        deviceService.bindDevice(userId, deviceNum, deviceName);
+        return ApiResponse.success("绑定成功");
     }
 
     /**
@@ -103,15 +87,11 @@ public class DeviceController {
     public ApiResponse<String> unbindDevice(
             @RequestHeader("Authorization") String token,
             @RequestBody Map<String, Long> params) {
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            Long deviceId = params.get("deviceId");
-            
-            deviceService.unbindDevice(deviceId, userId);
-            return ApiResponse.success("解绑成功");
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        Long deviceId = params.get("deviceId");
+        
+        deviceService.unbindDevice(deviceId, userId);
+        return ApiResponse.success("解绑成功");
     }
 }
 

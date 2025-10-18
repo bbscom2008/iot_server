@@ -304,16 +304,20 @@
                     if (data.code === 200) {
                         log(`✅ Token 有效 - 成功获取用户信息`, 'success');
                         log(`   用户: ${data.data.data.nikeName} (ID: ${data.data.data.id})`, 'success');
-                    } else {
-                        log(`❌ Token 已失效！`, 'error');
-                        log(`   错误: ${data.msg}`, 'error');
+                    } else if (data.code === 401) {
+                        log(`❌ Token 已过期！返回状态码: 401 ✅`, 'error');
+                        log(`   错误信息: ${data.msg}`, 'error');
                         log('', 'info');
                         log(`🎉 测试成功！Token 在约 ${elapsed} 秒后过期`, 'success');
+                        log(`✅ 返回正确的 401 状态码`, 'success');
                         log(`✅ JWT 过期机制工作正常！`, 'success');
                         
                         document.getElementById('token-status').textContent = '已过期';
                         document.getElementById('token-status').style.color = 'red';
                         
+                        stopTest();
+                    } else {
+                        log(`⚠️ 其他错误 (Code: ${data.code}): ${data.msg}`, 'warning');
                         stopTest();
                     }
                 } catch (error) {

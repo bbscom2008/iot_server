@@ -24,14 +24,10 @@ public class DictDataController {
      */
     @GetMapping("/data/list")
     public ApiResponse<Map<String, Object>> getDictDataList(@RequestParam String dictType) {
-        try {
-            List<DictData> list = dictDataService.getDictDataByType(dictType);
-            Map<String, Object> result = new HashMap<>();
-            result.put("data", list);
-            return ApiResponse.success(result);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        List<DictData> list = dictDataService.getDictDataByType(dictType);
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", list);
+        return ApiResponse.success(result);
     }
 }
 

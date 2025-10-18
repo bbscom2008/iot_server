@@ -1,6 +1,8 @@
 package com.example.demo.util;
 
+import com.example.demo.exception.TokenExpiredException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -40,16 +42,28 @@ public class JwtUtil {
      * 从Token中获取用户ID
      */
     public Long getUserIdFromToken(String token) {
-        Claims claims = getClaims(token);
-        return Long.parseLong(claims.getSubject());
+        try {
+            Claims claims = getClaims(token);
+            return Long.parseLong(claims.getSubject());
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("Token 已过期，请重新登录");
+        } catch (Exception e) {
+            throw new RuntimeException("Token 无效");
+        }
     }
 
     /**
      * 从Token中获取手机号
      */
     public String getPhoneFromToken(String token) {
-        Claims claims = getClaims(token);
-        return (String) claims.get("phone");
+        try {
+            Claims claims = getClaims(token);
+            return (String) claims.get("phone");
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("Token 已过期，请重新登录");
+        } catch (Exception e) {
+            throw new RuntimeException("Token 无效");
+        }
     }
 
     /**

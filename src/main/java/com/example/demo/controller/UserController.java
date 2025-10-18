@@ -28,12 +28,8 @@ public class UserController {
      */
     @PostMapping("/login")
     public ApiResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-        try {
-            LoginResponse response = userService.login(request);
-            return ApiResponse.success(response);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        LoginResponse response = userService.login(request);
+        return ApiResponse.success(response);
     }
 
     /**
@@ -43,16 +39,12 @@ public class UserController {
     @GetMapping("/info")
     public ApiResponse<Map<String, Object>> getUserInfo(
             @RequestHeader("Authorization") String token) {
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            User user = userService.getUserInfo(userId);
-            
-            Map<String, Object> result = new HashMap<>();
-            result.put("data", user);
-            return ApiResponse.success(result);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        User user = userService.getUserInfo(userId);
+        
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", user);
+        return ApiResponse.success(result);
     }
 
     /**
@@ -63,12 +55,8 @@ public class UserController {
     public ApiResponse<String> updateUserInfo(
             @RequestHeader("Authorization") String token,
             @RequestBody User updateData) {
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            userService.updateUserInfo(userId, updateData);
-            return ApiResponse.success("更新成功");
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        userService.updateUserInfo(userId, updateData);
+        return ApiResponse.success("更新成功");
     }
 }

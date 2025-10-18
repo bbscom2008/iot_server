@@ -26,13 +26,9 @@ public class DeviceWarningController {
             @RequestHeader("Authorization") String token,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            PageResult<DeviceWarning> result = deviceWarningService.getWarningList(userId, pageNum, pageSize);
-            return ApiResponse.success(result);
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        PageResult<DeviceWarning> result = deviceWarningService.getWarningList(userId, pageNum, pageSize);
+        return ApiResponse.success(result);
     }
 
     /**
@@ -43,13 +39,9 @@ public class DeviceWarningController {
     public ApiResponse<String> markWarningRead(
             @RequestHeader("Authorization") String token,
             @RequestParam String deviceNum) {
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            deviceWarningService.markWarningRead(deviceNum, userId);
-            return ApiResponse.success("操作成功");
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        deviceWarningService.markWarningRead(deviceNum, userId);
+        return ApiResponse.success("操作成功");
     }
 
     /**
@@ -60,13 +52,9 @@ public class DeviceWarningController {
     public ApiResponse<String> markHkyWarningRead(
             @RequestHeader("Authorization") String token,
             @RequestParam String deviceNum) {
-        try {
-            Long userId = jwtUtil.getUserIdFromToken(token);
-            deviceWarningService.markWarningRead(deviceNum, userId);
-            return ApiResponse.success("操作成功");
-        } catch (Exception e) {
-            return ApiResponse.error(e.getMessage());
-        }
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        deviceWarningService.markWarningRead(deviceNum, userId);
+        return ApiResponse.success("操作成功");
     }
 }
 
