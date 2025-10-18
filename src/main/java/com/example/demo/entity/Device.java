@@ -24,6 +24,7 @@ public class Device {
     private BigDecimal tb;           // 温度B
     private BigDecimal humidity;     // 湿度
     private BigDecimal gasCon;       // 气体浓度
+    private Integer electricQuantity; // 电量（0-100）
     private Integer warningStatus;   // 报警状态
     private Integer outageState;     // 断电状态
     private Integer gasConStatus;    // 气体报警状态

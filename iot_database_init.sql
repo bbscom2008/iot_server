@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS devices (
     tb DECIMAL(5,2) COMMENT '温度B',
     humidity DECIMAL(5,2) COMMENT '湿度',
     gas_con DECIMAL(10,2) COMMENT '气体浓度',
+    electric_quantity INT DEFAULT 100 COMMENT '电量（0-100）',
     warning_status INT DEFAULT 0 COMMENT '报警状态：0-正常 1-报警',
     outage_state INT DEFAULT 0 COMMENT '断电状态：0-正常 1-断电',
     gas_con_status INT DEFAULT 0 COMMENT '气体报警状态：0-正常 1-报警',
@@ -96,11 +97,11 @@ INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES
 ('device_type', '称重系统', '4', 5);
 
 -- 插入测试设备数据
-INSERT INTO devices (user_id, device_num, device_name, device_type, breed_type, device_line_state, `signal`, ta, tb, humidity, gas_con, warning_status) VALUES
-(1, 'DEV001', '1号猪舍报警器', 0, 0, 1, 3, 25.5, 26.0, 60.5, 50.0, 0),
-(1, 'DEV002', '2号猪舍环控仪', 1, 0, 1, 4, 24.0, 24.5, 55.0, 45.0, 0),
-(1, 'DEV003', '3号猪舍报警器', 0, 0, 0, 1, 28.0, 28.5, 70.0, 80.0, 1),
-(2, 'DEV004', '1号鸡舍报警器', 0, 3, 1, 3, 22.0, 22.5, 50.0, 40.0, 0);
+INSERT INTO devices (user_id, device_num, device_name, device_type, breed_type, device_line_state, `signal`, ta, tb, humidity, gas_con, electric_quantity, warning_status) VALUES
+(1, 'DEV001', '1号猪舍报警器', 0, 0, 1, 3, 25.5, 26.0, 60.5, 50.0, 85, 0),
+(1, 'DEV002', '2号猪舍环控仪', 1, 0, 1, 4, 24.0, 24.5, 55.0, 45.0, 93, 0),
+(1, 'DEV003', '3号猪舍报警器', 0, 0, 0, 1, 28.0, 28.5, 70.0, 80.0, 15, 1),
+(2, 'DEV004', '1号鸡舍报警器', 0, 3, 1, 3, 22.0, 22.5, 50.0, 40.0, 72, 0);
 
 -- 插入测试报警数据
 INSERT INTO device_warnings (device_id, device_num, user_id, warning_type, warning_msg, is_read) VALUES

@@ -17,6 +17,7 @@
         <result column="tb" property="tb" jdbcType="DECIMAL"/>
         <result column="humidity" property="humidity" jdbcType="DECIMAL"/>
         <result column="gas_con" property="gasCon" jdbcType="DECIMAL"/>
+        <result column="electric_quantity" property="electricQuantity" jdbcType="INTEGER"/>
         <result column="warning_status" property="warningStatus" jdbcType="INTEGER"/>
         <result column="outage_state" property="outageState" jdbcType="INTEGER"/>
         <result column="gas_con_status" property="gasConStatus" jdbcType="INTEGER"/>
