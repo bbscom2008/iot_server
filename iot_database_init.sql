@@ -98,10 +98,10 @@ INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES
 
 -- 插入测试设备数据
 INSERT INTO devices (user_id, device_num, device_name, device_type, breed_type, device_line_state, `signal`, ta, tb, humidity, gas_con, electric_quantity, warning_status) VALUES
-(1, 'DEV001', '1号猪舍报警器', 0, 0, 1, 3, 25.5, 26.0, 60.5, 50.0, 85, 0),
+(1, 'DEV001', '1号猪舍报警器', 1, 0, 1, 3, 25.5, 26.0, 60.5, 50.0, 85, 0),
 (1, 'DEV002', '2号猪舍环控仪', 1, 0, 1, 4, 24.0, 24.5, 55.0, 45.0, 93, 0),
-(1, 'DEV003', '3号猪舍报警器', 0, 0, 0, 1, 28.0, 28.5, 70.0, 80.0, 15, 1),
-(2, 'DEV004', '1号鸡舍报警器', 0, 3, 1, 3, 22.0, 22.5, 50.0, 40.0, 72, 0);
+(1, 'DEV003', '3号猪舍报警器', 1, 0, 0, 1, 28.0, 28.5, 70.0, 80.0, 15, 1),
+(2, 'DEV004', '1号鸡舍报警器', 1, 3, 1, 3, 22.0, 22.5, 50.0, 40.0, 72, 0);
 
 -- 插入测试报警数据
 INSERT INTO device_warnings (device_id, device_num, user_id, warning_type, warning_msg, is_read) VALUES
