@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.dto.SendVerifyCodeRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import com.example.demo.util.JwtUtil;
@@ -21,6 +23,26 @@ public class UserController {
 
     private final UserService userService;
     private final JwtUtil jwtUtil;
+
+    /**
+     * 用户注册
+     * POST /user/register
+     */
+    @PostMapping("/register")
+    public ApiResponse<String> register(@Valid @RequestBody RegisterRequest request) {
+        userService.register(request);
+        return ApiResponse.success("注册成功");
+    }
+
+    /**
+     * 发送验证码
+     * POST /user/sendVerifyCode
+     */
+    @PostMapping("/sendVerifyCode")
+    public ApiResponse<String> sendVerifyCode(@Valid @RequestBody SendVerifyCodeRequest request) {
+        userService.sendVerifyCode(request.getPhone());
+        return ApiResponse.success("验证码已发送");
+    }
 
     /**
      * 用户登录

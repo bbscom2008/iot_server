@@ -1,0 +1,152 @@
+### ========== 用户注册测试 ==========
+
+### 步骤1：发送验证码
+POST http://localhost:8080/user/sendVerifyCode
+Content-Type: application/json
+
+{
+  "phone": "13700137000"
+}
+
+### 说明：执行后查看后端控制台，会打印验证码，例如：
+### ==============================================
+### 【模拟短信】手机号: 13700137000
+### 【验证码】: 834521
+### 【有效期】: 5分钟
+### ==============================================
+
+###
+
+### 步骤2：使用验证码注册（替换 verifyCode 为上面打印的验证码）
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "phone": "13700137000",
+  "password": "123456",
+  "verifyCode": "834521",
+  "breedingType": "养猪",
+  "position": "老板"
+}
+
+###
+
+### 步骤3：登录测试
+POST http://localhost:8080/user/login
+Content-Type: application/json
+
+{
+  "phone": "13700137000",
+  "password": "123456"
+}
+
+###
+
+### ========== 注册其他用户 ==========
+
+### 发送验证码 - 用户2
+POST http://localhost:8080/user/sendVerifyCode
+Content-Type: application/json
+
+{
+  "phone": "13700137001"
+}
+
+###
+
+### 注册用户2 - 养鸡场饲养员
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "phone": "13700137001",
+  "password": "123456",
+  "verifyCode": "替换为实际验证码",
+  "breedingType": "养鸡",
+  "position": "饲养员"
+}
+
+###
+
+### 发送验证码 - 用户3
+POST http://localhost:8080/user/sendVerifyCode
+Content-Type: application/json
+
+{
+  "phone": "13700137002"
+}
+
+###
+
+### 注册用户3 - 养鸭场老板
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "phone": "13700137002",
+  "password": "123456",
+  "verifyCode": "替换为实际验证码",
+  "breedingType": "养鸭",
+  "position": "老板"
+}
+
+###
+
+### ========== 错误场景测试 ==========
+
+### 测试：手机号已注册
+POST http://localhost:8080/user/sendVerifyCode
+Content-Type: application/json
+
+{
+  "phone": "13800138000"
+}
+
+### 预期响应：{"code":500,"msg":"该手机号已注册"}
+
+###
+
+### 测试：验证码错误
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "phone": "13700137003",
+  "password": "123456",
+  "verifyCode": "000000",
+  "breedingType": "养猪",
+  "position": "老板"
+}
+
+### 预期响应：{"code":500,"msg":"验证码错误或已过期"}
+
+###
+
+### 测试：参数验证 - 手机号为空
+POST http://localhost:8080/user/sendVerifyCode
+Content-Type: application/json
+
+{
+  "phone": ""
+}
+
+### 预期响应：{"code":400,"msg":"手机号不能为空"}
+
+###
+
+### 测试：参数验证 - 缺少养殖类型
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "phone": "13700137004",
+  "password": "123456",
+  "verifyCode": "123456",
+  "breedingType": "",
+  "position": "老板"
+}
+
+### 预期响应：{"code":400,"msg":"养殖类型不能为空"}
+
+###
+

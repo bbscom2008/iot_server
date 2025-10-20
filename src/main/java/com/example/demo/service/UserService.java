@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.util.JwtUtil;
@@ -15,6 +16,7 @@ public class UserService {
 
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
+    private final VerifyCodeService verifyCodeService;
 
     /**
      * 用户登录
@@ -49,6 +51,49 @@ public class UserService {
         // 不返回密码
         user.setPassword(null);
         return user;
+    }
+
+    /**
+     * 用户注册
+     */
+    @Transactional
+    public void register(RegisterRequest request) {
+        // 1. 验证手机号是否已注册
+        User existUser = userMapper.findByPhone(request.getPhone());
+        if (existUser != null) {
+            throw new RuntimeException("该手机号已注册");
+        }
+
+        // 2. 验证验证码， 开发其间，先不校验验证码
+//        boolean isCodeValid = verifyCodeService.verifyCode(request.getPhone(), request.getVerifyCode());
+//        if (!isCodeValid) {
+//            throw new RuntimeException("验证码错误或已过期");
+//        }
+
+        // 3. 创建新用户
+        User user = new User();
+        user.setPhone(request.getPhone());
+        user.setPassword(request.getPassword()); // 注意：生产环境应该加密
+        user.setNikeName(request.getPhone()); // 默认昵称为手机号
+        user.setBreedingType(request.getBreedingType());
+        user.setPosition(request.getPosition());
+
+        // 4. 保存用户
+        userMapper.insert(user);
+    }
+
+    /**
+     * 发送验证码
+     */
+    public void sendVerifyCode(String phone) {
+        // 检查手机号是否已注册
+        User existUser = userMapper.findByPhone(phone);
+        if (existUser != null) {
+            throw new RuntimeException("该手机号已注册");
+        }
+
+        // 发送验证码
+        verifyCodeService.sendVerifyCode(phone);
     }
 
     /**

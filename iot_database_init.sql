@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS users (
     nike_name VARCHAR(50) COMMENT '昵称',
     address VARCHAR(255) COMMENT '地址',
     icon VARCHAR(500) COMMENT '头像URL',
+    breeding_type VARCHAR(20) COMMENT '养殖类型：养猪、养鸭、养鸡、养兔、其他',
+    position VARCHAR(20) COMMENT '岗位：老板、饲养员、其他',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX idx_phone (phone)
@@ -76,9 +78,9 @@ CREATE TABLE IF NOT EXISTS dict_data (
 -- 插入初始数据
 
 -- 插入测试用户（密码：123456）
-INSERT INTO users (phone, password, nike_name, address) VALUES
-('13800138000', '123456', '测试用户', '北京市朝阳区'),
-('13900139000', '123456', '张三', '上海市浦东新区');
+INSERT INTO users (phone, password, nike_name, address, breeding_type, position) VALUES
+('13800138000', '123456', '测试用户', '北京市朝阳区', '养猪', '老板'),
+('13900139000', '123456', '张三', '上海市浦东新区', '养鸡', '饲养员');
 
 -- 插入养殖类型字典
 INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES

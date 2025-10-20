@@ -18,6 +18,11 @@ public interface UserMapper {
     User findById(@Param("id") Long id);
 
     /**
+     * 注册用户
+     */
+    int insert(User user);
+
+    /**
      * 更新用户信息
      */
     int updateUser(User user);

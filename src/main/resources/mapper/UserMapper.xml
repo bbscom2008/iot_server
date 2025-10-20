@@ -11,6 +11,8 @@
         <result column="nike_name" property="nikeName" jdbcType="VARCHAR"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="breeding_type" property="breedingType" jdbcType="VARCHAR"/>
+        <result column="position" property="position" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
         <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -25,6 +27,12 @@
         SELECT * FROM users WHERE id = #{id}
     </select>
 
+    <!-- 注册用户 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (phone, password, nike_name, breeding_type, position, created_at)
+        VALUES (#{phone}, #{password}, #{nikeName}, #{breedingType}, #{position}, NOW())
+    </insert>
+
     <!-- 更新用户信息 -->
     <update id="updateUser">
         UPDATE users
@@ -32,6 +40,8 @@
             <if test="nikeName != null">nike_name = #{nikeName},</if>
             <if test="address != null">address = #{address},</if>
             <if test="icon != null">icon = #{icon},</if>
+            <if test="breedingType != null">breeding_type = #{breedingType},</if>
+            <if test="position != null">position = #{position},</if>
             updated_at = NOW()
         </set>
         WHERE id = #{id}
