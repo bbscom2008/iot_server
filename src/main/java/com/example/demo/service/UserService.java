@@ -7,9 +7,11 @@ import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -58,9 +60,12 @@ public class UserService {
      */
     @Transactional
     public void register(RegisterRequest request) {
+        log.info("开始注册用户，手机号: {}", request.getPhone());
+        
         // 1. 验证手机号是否已注册
         User existUser = userMapper.findByPhone(request.getPhone());
         if (existUser != null) {
+            log.warn("注册失败：手机号已注册 - {}", request.getPhone());
             throw new RuntimeException("该手机号已注册");
         }
 
@@ -79,7 +84,8 @@ public class UserService {
         user.setPosition(request.getPosition());
 
         // 4. 保存用户
-        userMapper.insert(user);
+        int result = userMapper.insert(user);
+        log.info("注册成功，手机号: {}, 用户ID: {}, 影响行数: {}", request.getPhone(), user.getId(), result);
     }
 
     /**

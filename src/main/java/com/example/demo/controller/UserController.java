@@ -10,11 +10,13 @@ import com.example.demo.service.UserService;
 import com.example.demo.util.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -30,8 +32,12 @@ public class UserController {
      */
     @PostMapping("/register")
     public ApiResponse<String> register(@Valid @RequestBody RegisterRequest request) {
+        log.info("收到注册请求，手机号: {}", request.getPhone());
         userService.register(request);
-        return ApiResponse.success("注册成功");
+        log.info("注册成功，准备返回响应");
+        ApiResponse<String> response = ApiResponse.success("注册成功");
+        log.info("返回响应: {}", response);
+        return response;
     }
 
     /**
