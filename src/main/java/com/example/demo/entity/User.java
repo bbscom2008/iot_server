@@ -17,8 +17,8 @@ public class User {
     private String nikeName;
     private String address;
     private String icon;
-    private String breedingType;    // 养殖类型：养猪、养鸭、养鸡、养兔、其他
-    private String position;        // 岗位：老板、饲养员、其他
+    private Integer breedingType;   // 养殖类型：0-猪 1-羊 2-牛 3-鸡 4-鸭 5-其他（对应字典）
+    private Integer role;           // 角色：0-老板 1-饲养员 2-其他（对应字典）
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

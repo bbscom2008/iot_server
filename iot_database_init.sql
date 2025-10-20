@@ -15,8 +15,8 @@ CREATE TABLE IF NOT EXISTS users (
     nike_name VARCHAR(50) COMMENT '昵称',
     address VARCHAR(255) COMMENT '地址',
     icon VARCHAR(500) COMMENT '头像URL',
-    breeding_type VARCHAR(20) COMMENT '养殖类型：养猪、养鸭、养鸡、养兔、其他',
-    position VARCHAR(20) COMMENT '岗位：老板、饲养员、其他',
+    breeding_type INT COMMENT '养殖类型：字典中的 breed_type',
+    role INT COMMENT '角色：字典中的 role_type',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX idx_phone (phone)
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS device_warnings (
 -- 4. 字典数据表
 CREATE TABLE IF NOT EXISTS dict_data (
     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '字典ID',
-    dict_type VARCHAR(50) NOT NULL COMMENT '字典类型：breed_type/device_type',
+    dict_type VARCHAR(50) NOT NULL COMMENT '字典类型：breed_type/device_type/role_type',
     dict_label VARCHAR(100) NOT NULL COMMENT '显示名称',
     dict_value VARCHAR(100) NOT NULL COMMENT '字典值',
     dict_sort INT DEFAULT 0 COMMENT '排序',
@@ -78,9 +78,9 @@ CREATE TABLE IF NOT EXISTS dict_data (
 -- 插入初始数据
 
 -- 插入测试用户（密码：123456）
-INSERT INTO users (phone, password, nike_name, address, breeding_type, position) VALUES
-('13800138000', '123456', '测试用户', '北京市朝阳区', '养猪', '老板'),
-('13900139000', '123456', '张三', '上海市浦东新区', '养鸡', '饲养员');
+INSERT INTO users (phone, password, nike_name, address, breeding_type, role) VALUES
+('13800138000', '123456', '测试用户', '北京市朝阳区', 0, 0),
+('13900139000', '123456', '张三', '上海市浦东新区', 0, 0);
 
 -- 插入养殖类型字典
 INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES
@@ -88,7 +88,13 @@ INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES
 ('breed_type', '羊', '1', 2),
 ('breed_type', '牛', '2', 3),
 ('breed_type', '鸡', '3', 4),
-('breed_type', '鸭', '4', 5);
+('breed_type', '鸭', '4', 5),
+('breed_type', '其他', '5', 6);
+
+INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES
+ ('role_type', '老板', '0', 1),
+ ('role_type', '饲养员', '1', 2),
+ ('role_type', '其他', '2', 3);
 
 -- 插入设备类型字典
 INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES

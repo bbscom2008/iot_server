@@ -1,0 +1,87 @@
+### ========== 注册测试（整数字段）==========
+
+### 测试1：注册用户 - 养猪老板
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "phone": "13711111111",
+  "password": "123456",
+  "verifyCode": "123456",
+  "breedingType": 0,
+  "role": 0
+}
+
+### 预期：{"code":200,"msg":"注册成功"}
+
+###
+
+### 测试2：注册用户 - 养鸭饲养员
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "phone": "13722222222",
+  "password": "123456",
+  "verifyCode": "123456",
+  "breedingType": 4,
+  "role": 1
+}
+
+### 预期：{"code":200,"msg":"注册成功"}
+
+###
+
+### 测试3：注册用户 - 养鸡老板
+POST http://localhost:8080/user/register
+Content-Type: application/json
+
+{
+  "phone": "13733333333",
+  "password": "123456",
+  "verifyCode": "123456",
+  "breedingType": 3,
+  "role": 0
+}
+
+###
+
+### 测试4：登录并查看用户信息（验证字段类型）
+POST http://localhost:8080/user/login
+Content-Type: application/json
+
+{
+  "phone": "13711111111",
+  "password": "123456"
+}
+
+### 查看返回的 user 对象，应该包含：
+### "breedingType": 0 (整数)
+### "role": 0 (整数，不是 position)
+
+###
+
+### 测试5：获取养殖类型字典
+GET http://localhost:8080/user/dict/data/list?dictType=breed_type
+
+### 预期返回：
+### {"code":200,"msg":"success","data":{"data":[
+###   {"dictLabel":"猪","dictValue":"0"},
+###   {"dictLabel":"羊","dictValue":"1"},
+###   ...
+### ]}}
+
+###
+
+### 测试6：获取角色类型字典
+GET http://localhost:8080/user/dict/data/list?dictType=role_type
+
+### 预期返回：
+### {"code":200,"msg":"success","data":{"data":[
+###   {"dictLabel":"老板","dictValue":"0"},
+###   {"dictLabel":"饲养员","dictValue":"1"},
+###   {"dictLabel":"其他","dictValue":"2"}
+### ]}}
+
+###
+

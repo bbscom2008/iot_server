@@ -80,12 +80,13 @@ public class UserService {
         user.setPhone(request.getPhone());
         user.setPassword(request.getPassword()); // 注意：生产环境应该加密
         user.setNikeName(request.getPhone()); // 默认昵称为手机号
-        user.setBreedingType(request.getBreedingType());
-        user.setPosition(request.getPosition());
+        user.setBreedingType(request.getBreedingType()); // Integer 类型
+        user.setRole(request.getRole()); // Integer 类型
 
         // 4. 保存用户
         int result = userMapper.insert(user);
-        log.info("注册成功，手机号: {}, 用户ID: {}, 影响行数: {}", request.getPhone(), user.getId(), result);
+        log.info("注册成功，手机号: {}, 用户ID: {}, 养殖类型: {}, 角色: {}, 影响行数: {}", 
+                request.getPhone(), user.getId(), request.getBreedingType(), request.getRole(), result);
     }
 
     /**
