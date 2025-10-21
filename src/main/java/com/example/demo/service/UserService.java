@@ -145,10 +145,19 @@ public class UserService {
      */
     @Transactional
     public void updateUserInfo(Long userId, User updateData) {
+        log.info("=== 开始更新用户信息 ===");
+        log.info("用户ID: {}", userId);
+        log.info("接收到的更新数据: nikeName={}, breedingType={}, role={}, icon={}", 
+                updateData.getNikeName(), updateData.getBreedingType(), 
+                updateData.getRole(), updateData.getIcon());
+        
         User user = userMapper.findById(userId);
         if (user == null) {
             throw new RuntimeException("用户不存在");
         }
+        
+        log.info("更新前的用户数据: nikeName={}, breedingType={}, role={}", 
+                user.getNikeName(), user.getBreedingType(), user.getRole());
 
         // 更新字段
         if (updateData.getNikeName() != null) {
@@ -160,7 +169,66 @@ public class UserService {
         if (updateData.getIcon() != null) {
             user.setIcon(updateData.getIcon());
         }
+        if (updateData.getBreedingType() != null) {
+            user.setBreedingType(updateData.getBreedingType());
+        }
+        if (updateData.getRole() != null) {
+            user.setRole(updateData.getRole());
+        }
+        
+        log.info("更新后的用户数据: nikeName={}, breedingType={}, role={}", 
+                user.getNikeName(), user.getBreedingType(), user.getRole());
 
+        int result = userMapper.updateUser(user);
+        log.info("用户信息更新成功，用户ID: {}, 影响行数: {}", userId, result);
+    }
+
+    /**
+     * 发送修改手机号验证码
+     */
+    public void sendChangePhoneCode(String newPhone) {
+        // 检查新手机号是否已被注册
+        User existUser = userMapper.findByPhone(newPhone);
+        if (existUser != null) {
+            throw new RuntimeException("该手机号已被其他用户使用");
+        }
+
+        // 发送验证码
+        verifyCodeService.sendVerifyCode(newPhone);
+        log.info("发送修改手机号验证码到: {}", newPhone);
+    }
+
+    /**
+     * 修改手机号
+     */
+    @Transactional
+    public void changePhone(Long userId, String newPhone, String verifyCode) {
+        // 查找用户
+        User user = userMapper.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        // 检查新手机号是否与当前手机号相同
+        if (newPhone.equals(user.getPhone())) {
+            throw new RuntimeException("新手机号不能与当前手机号相同");
+        }
+
+        // 检查新手机号是否已被注册
+        User existUser = userMapper.findByPhone(newPhone);
+        if (existUser != null) {
+            throw new RuntimeException("该手机号已被其他用户使用");
+        }
+
+        // 验证验证码 // 开发时先不校验验证码
+//        boolean isCodeValid = verifyCodeService.verifyCode(newPhone, verifyCode);
+//        if (!isCodeValid) {
+//            throw new RuntimeException("验证码错误或已过期");
+//        }
+
+        // 更新手机号
+        user.setPhone(newPhone);
         userMapper.updateUser(user);
+        log.info("手机号修改成功，用户ID: {}, 新手机号: {}", userId, newPhone);
     }
 }

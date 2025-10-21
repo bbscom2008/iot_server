@@ -6,6 +6,7 @@ import com.example.demo.dto.LoginResponse;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.dto.SendVerifyCodeRequest;
 import com.example.demo.dto.LoginByCodeRequest;
+import com.example.demo.dto.ChangePhoneRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import com.example.demo.util.JwtUtil;
@@ -116,8 +117,34 @@ public class UserController {
     public ApiResponse<String> updateUserInfo(
             @RequestHeader("Authorization") String token,
             @RequestBody User updateData) {
+        log.info("=== Controller 接收到更新请求 ===");
+        log.info("更新数据: {}", updateData);
         Long userId = jwtUtil.getUserIdFromToken(token);
+        log.info("从Token解析的用户ID: {}", userId);
         userService.updateUserInfo(userId, updateData);
         return ApiResponse.success("更新成功");
+    }
+
+    /**
+     * 发送修改手机号验证码
+     * POST /user/sendChangePhoneCode
+     */
+    @PostMapping("/sendChangePhoneCode")
+    public ApiResponse<String> sendChangePhoneCode(@Valid @RequestBody SendVerifyCodeRequest request) {
+        userService.sendChangePhoneCode(request.getPhone());
+        return ApiResponse.success("验证码已发送");
+    }
+
+    /**
+     * 修改手机号
+     * POST /user/changePhone
+     */
+    @PostMapping("/changePhone")
+    public ApiResponse<String> changePhone(
+            @RequestHeader("Authorization") String token,
+            @Valid @RequestBody ChangePhoneRequest request) {
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        userService.changePhone(userId, request.getNewPhone(), request.getVerifyCode());
+        return ApiResponse.success("手机号修改成功");
     }
 }

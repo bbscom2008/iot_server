@@ -1,0 +1,123 @@
+### 个人信息功能测试
+
+### 1. 登录获取Token
+POST http://127.0.0.1:8080/user/login
+Content-Type: application/json
+
+{
+  "phone": "13800138000",
+  "password": "123456"
+}
+
+### 响应示例：
+# {
+#   "code": 200,
+#   "msg": "success",
+#   "data": {
+#     "token": "eyJhbGciOiJIUzI1NiJ9...",
+#     "user": { ... }
+#   }
+# }
+### 记住token，后续请求需要使用
+
+###
+
+### 2. 获取用户信息
+GET http://127.0.0.1:8080/user/info
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInBob25lIjoiMTM4MDAxMzgwMDAiLCJpYXQiOjE3Mjk1MDAwMDAsImV4cCI6MTczMDEwNDgwMH0.xxx
+
+###
+
+### 3. 更新用户基本信息
+POST http://127.0.0.1:8080/user/updateInfo
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInBob25lIjoiMTM4MDAxMzgwMDAiLCJpYXQiOjE3Mjk1MDAwMDAsImV4cCI6MTczMDEwNDgwMH0.xxx
+Content-Type: application/json
+
+{
+  "nikeName": "测试用户",
+  "icon": "http://example.com/avatar.jpg",
+  "breedingType": 0,
+  "role": 0
+}
+
+### 字段说明：
+# breedingType: 0-养猪 1-养羊 2-养牛 3-养鸡 4-养鸭 5-其他
+# role: 0-老板 1-饲养员 2-其他
+
+###
+
+### 4. 发送修改手机号验证码
+POST http://127.0.0.1:8080/user/sendChangePhoneCode
+Content-Type: application/json
+
+{
+  "phone": "13900139000"
+}
+
+### 注意：验证码会在后端控制台输出
+
+###
+
+### 5. 修改手机号
+POST http://127.0.0.1:8080/user/changePhone
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInBob25lIjoiMTM4MDAxMzgwMDAiLCJpYXQiOjE3Mjk1MDAwMDAsImV4cCI6MTczMDEwNDgwMH0.xxx
+Content-Type: application/json
+
+{
+  "newPhone": "13900139000",
+  "verifyCode": "123456"
+}
+
+### 修改成功后需要重新登录
+
+###
+
+### 6. 用新手机号登录
+POST http://127.0.0.1:8080/user/login
+Content-Type: application/json
+
+{
+  "phone": "13900139000",
+  "password": "123456"
+}
+
+###
+
+### 测试错误情况
+
+### 7. 测试：新手机号已被使用
+POST http://127.0.0.1:8080/user/sendChangePhoneCode
+Content-Type: application/json
+
+{
+  "phone": "13800138000"
+}
+
+### 应该返回错误：该手机号已被其他用户使用
+
+###
+
+### 8. 测试：新旧手机号相同
+POST http://127.0.0.1:8080/user/changePhone
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInBob25lIjoiMTM4MDAxMzgwMDAiLCJpYXQiOjE3Mjk1MDAwMDAsImV4cCI6MTczMDEwNDgwMH0.xxx
+Content-Type: application/json
+
+{
+  "newPhone": "13800138000",
+  "verifyCode": "123456"
+}
+
+### 应该返回错误：新手机号不能与当前手机号相同
+
+###
+
+### 9. 测试：手机号格式错误
+POST http://127.0.0.1:8080/user/sendChangePhoneCode
+Content-Type: application/json
+
+{
+  "phone": "12345678901"
+}
+
+### 应该返回错误：手机号格式不正确
+
