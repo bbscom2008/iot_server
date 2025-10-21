@@ -5,6 +5,7 @@ import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.dto.SendVerifyCodeRequest;
+import com.example.demo.dto.LoginByCodeRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import com.example.demo.util.JwtUtil;
@@ -41,22 +42,54 @@ public class UserController {
     }
 
     /**
-     * 发送验证码
-     * POST /user/sendVerifyCode
+     * 发送注册验证码（注册时使用）
+     * POST /user/sendRegisterCode
      */
-    @PostMapping("/sendVerifyCode")
-    public ApiResponse<String> sendVerifyCode(@Valid @RequestBody SendVerifyCodeRequest request) {
-        userService.sendVerifyCode(request.getPhone());
+    @PostMapping("/sendRegisterCode")
+    public ApiResponse<String> sendRegisterCode(@Valid @RequestBody SendVerifyCodeRequest request) {
+        userService.sendRegisterCode(request.getPhone());
         return ApiResponse.success("验证码已发送");
     }
 
     /**
-     * 用户登录
+     * 发送登录验证码（登录时使用）
+     * POST /user/sendLoginCode
+     */
+    @PostMapping("/sendLoginCode")
+    public ApiResponse<String> sendLoginCode(@Valid @RequestBody SendVerifyCodeRequest request) {
+        userService.sendLoginCode(request.getPhone());
+        return ApiResponse.success("验证码已发送");
+    }
+
+    /**
+     * 发送验证码（兼容旧接口）
+     * POST /user/sendVerifyCode
+     * @deprecated 请使用 sendRegisterCode 或 sendLoginCode
+     */
+    @Deprecated
+    @PostMapping("/sendVerifyCode")
+    public ApiResponse<String> sendVerifyCode(@Valid @RequestBody SendVerifyCodeRequest request) {
+        userService.sendRegisterCode(request.getPhone());
+        return ApiResponse.success("验证码已发送");
+    }
+
+    /**
+     * 用户登录（密码登录）
      * POST /user/login
      */
     @PostMapping("/login")
     public ApiResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         LoginResponse response = userService.login(request);
+        return ApiResponse.success(response);
+    }
+
+    /**
+     * 验证码登录
+     * POST /user/loginByCode
+     */
+    @PostMapping("/loginByCode")
+    public ApiResponse<LoginResponse> loginByCode(@Valid @RequestBody LoginByCodeRequest request) {
+        LoginResponse response = userService.loginByCode(request.getPhone(), request.getVerifyCode());
         return ApiResponse.success(response);
     }
 

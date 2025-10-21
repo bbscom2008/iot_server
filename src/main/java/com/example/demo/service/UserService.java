@@ -21,7 +21,7 @@ public class UserService {
     private final VerifyCodeService verifyCodeService;
 
     /**
-     * 用户登录
+     * 用户登录（密码登录）
      */
     public LoginResponse login(LoginRequest request) {
         // 查找用户
@@ -34,6 +34,29 @@ public class UserService {
         if (!user.getPassword().equals(request.getPassword())) {
             throw new RuntimeException("密码错误");
         }
+
+        // 生成Token
+        String token = jwtUtil.generateToken(user.getId(), user.getPhone());
+
+        // 返回登录响应
+        return new LoginResponse(token, LoginResponse.UserInfo.from(user));
+    }
+
+    /**
+     * 验证码登录
+     */
+    public LoginResponse loginByCode(String phone, String verifyCode) {
+        // 查找用户
+        User user = userMapper.findByPhone(phone);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        // 验证验证码 // 开发时先不校验验证码
+//        boolean isCodeValid = verifyCodeService.verifyCode(phone, verifyCode);
+//        if (!isCodeValid) {
+//            throw new RuntimeException("验证码错误或已过期");
+//        }
 
         // 生成Token
         String token = jwtUtil.generateToken(user.getId(), user.getPhone());
@@ -90,13 +113,27 @@ public class UserService {
     }
 
     /**
-     * 发送验证码
+     * 发送注册验证码（注册时使用）
      */
-    public void sendVerifyCode(String phone) {
+    public void sendRegisterCode(String phone) {
         // 检查手机号是否已注册
         User existUser = userMapper.findByPhone(phone);
         if (existUser != null) {
             throw new RuntimeException("该手机号已注册");
+        }
+
+        // 发送验证码
+        verifyCodeService.sendVerifyCode(phone);
+    }
+
+    /**
+     * 发送登录验证码（登录时使用）
+     */
+    public void sendLoginCode(String phone) {
+        // 检查手机号是否已注册
+        User existUser = userMapper.findByPhone(phone);
+        if (existUser == null) {
+            throw new RuntimeException("该手机号未注册");
         }
 
         // 发送验证码
