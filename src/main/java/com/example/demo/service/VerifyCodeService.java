@@ -45,32 +45,35 @@ public class VerifyCodeService {
      * 验证验证码
      */
     public boolean verifyCode(String phone, String code) {
-        VerifyCodeInfo info = verifyCodeMap.get(phone);
-        
-        if (info == null) {
-            log.warn("验证码不存在，手机号: {}", phone);
-            return false;
-        }
-        
-        // 检查是否过期
-        if (System.currentTimeMillis() > info.getExpireTime()) {
-            verifyCodeMap.remove(phone);
-            log.warn("验证码已过期，手机号: {}", phone);
-            return false;
-        }
-        
-        // 验证码校验（忽略大小写）
-        boolean isValid = info.getCode().equalsIgnoreCase(code);
-        
-        // 验证成功后删除验证码（一次性使用）
-        if (isValid) {
-            verifyCodeMap.remove(phone);
-            log.info("验证码验证成功，手机号: {}", phone);
-        } else {
-            log.warn("验证码错误，手机号: {}, 输入: {}, 正确: {}", phone, code, info.getCode());
-        }
-        
-        return isValid;
+        // 开发时先返回为 true
+        return true;
+
+//        VerifyCodeInfo info = verifyCodeMap.get(phone);
+//
+//        if (info == null) {
+//            log.warn("验证码不存在，手机号: {}", phone);
+//            return false;
+//        }
+//
+//        // 检查是否过期
+//        if (System.currentTimeMillis() > info.getExpireTime()) {
+//            verifyCodeMap.remove(phone);
+//            log.warn("验证码已过期，手机号: {}", phone);
+//            return false;
+//        }
+//
+//        // 验证码校验（忽略大小写）
+//        boolean isValid = info.getCode().equalsIgnoreCase(code);
+//
+//        // 验证成功后删除验证码（一次性使用）
+//        if (isValid) {
+//            verifyCodeMap.remove(phone);
+//            log.info("验证码验证成功，手机号: {}", phone);
+//        } else {
+//            log.warn("验证码错误，手机号: {}, 输入: {}, 正确: {}", phone, code, info.getCode());
+//        }
+//
+//        return isValid;
     }
 
     /**

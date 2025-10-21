@@ -7,6 +7,8 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.dto.SendVerifyCodeRequest;
 import com.example.demo.dto.LoginByCodeRequest;
 import com.example.demo.dto.ChangePhoneRequest;
+import com.example.demo.dto.ChangePasswordByOldRequest;
+import com.example.demo.dto.ChangePasswordByPhoneRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import com.example.demo.util.JwtUtil;
@@ -146,5 +148,38 @@ public class UserController {
         Long userId = jwtUtil.getUserIdFromToken(token);
         userService.changePhone(userId, request.getNewPhone(), request.getVerifyCode());
         return ApiResponse.success("手机号修改成功");
+    }
+
+    /**
+     * 发送重置密码验证码
+     * POST /user/sendResetPasswordCode
+     */
+    @PostMapping("/sendResetPasswordCode")
+    public ApiResponse<String> sendResetPasswordCode(@Valid @RequestBody SendVerifyCodeRequest request) {
+        userService.sendResetPasswordCode(request.getPhone());
+        return ApiResponse.success("验证码已发送");
+    }
+
+    /**
+     * 通过原密码修改密码
+     * POST /user/changePasswordByOld
+     */
+    @PostMapping("/changePasswordByOld")
+    public ApiResponse<String> changePasswordByOld(
+            @RequestHeader("Authorization") String token,
+            @Valid @RequestBody ChangePasswordByOldRequest request) {
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        userService.changePasswordByOld(userId, request.getOldPassword(), request.getNewPassword());
+        return ApiResponse.success("密码修改成功");
+    }
+
+    /**
+     * 通过手机号验证码修改密码
+     * POST /user/changePasswordByPhone
+     */
+    @PostMapping("/changePasswordByPhone")
+    public ApiResponse<String> changePasswordByPhone(@Valid @RequestBody ChangePasswordByPhoneRequest request) {
+        userService.changePasswordByPhone(request.getPhone(), request.getVerifyCode(), request.getNewPassword());
+        return ApiResponse.success("密码修改成功");
     }
 }

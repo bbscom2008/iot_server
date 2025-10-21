@@ -38,6 +38,7 @@
         UPDATE users
         <set>
             <if test="phone != null">phone = #{phone},</if>
+            <if test="password != null">password = #{password},</if>
             <if test="nikeName != null">nike_name = #{nikeName},</if>
             <if test="address != null">address = #{address},</if>
             <if test="icon != null">icon = #{icon},</if>

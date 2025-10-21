@@ -52,11 +52,11 @@ public class UserService {
             throw new RuntimeException("用户不存在");
         }
 
-        // 验证验证码 // 开发时先不校验验证码
-//        boolean isCodeValid = verifyCodeService.verifyCode(phone, verifyCode);
-//        if (!isCodeValid) {
-//            throw new RuntimeException("验证码错误或已过期");
-//        }
+        // 验证验证码
+        boolean isCodeValid = verifyCodeService.verifyCode(phone, verifyCode);
+        if (!isCodeValid) {
+            throw new RuntimeException("验证码错误或已过期");
+        }
 
         // 生成Token
         String token = jwtUtil.generateToken(user.getId(), user.getPhone());
@@ -220,15 +220,80 @@ public class UserService {
             throw new RuntimeException("该手机号已被其他用户使用");
         }
 
-        // 验证验证码 // 开发时先不校验验证码
-//        boolean isCodeValid = verifyCodeService.verifyCode(newPhone, verifyCode);
-//        if (!isCodeValid) {
-//            throw new RuntimeException("验证码错误或已过期");
-//        }
+        // 验证验证码
+        boolean isCodeValid = verifyCodeService.verifyCode(newPhone, verifyCode);
+        if (!isCodeValid) {
+            throw new RuntimeException("验证码错误或已过期");
+        }
 
         // 更新手机号
         user.setPhone(newPhone);
         userMapper.updateUser(user);
         log.info("手机号修改成功，用户ID: {}, 新手机号: {}", userId, newPhone);
+    }
+
+    /**
+     * 发送重置密码验证码
+     */
+    public void sendResetPasswordCode(String phone) {
+        // 检查手机号是否已注册
+        User existUser = userMapper.findByPhone(phone);
+        if (existUser == null) {
+            throw new RuntimeException("该手机号未注册");
+        }
+
+        // 发送验证码
+        verifyCodeService.sendVerifyCode(phone);
+        log.info("发送重置密码验证码到: {}", phone);
+    }
+
+    /**
+     * 通过原密码修改密码
+     */
+    @Transactional
+    public void changePasswordByOld(Long userId, String oldPassword, String newPassword) {
+        // 查找用户
+        User user = userMapper.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        // 验证原密码
+        if (!user.getPassword().equals(oldPassword)) {
+            throw new RuntimeException("原密码错误");
+        }
+
+        // 新旧密码不能相同
+        if (oldPassword.equals(newPassword)) {
+            throw new RuntimeException("新密码不能与原密码相同");
+        }
+
+        // 更新密码
+        user.setPassword(newPassword);
+        userMapper.updateUser(user);
+        log.info("密码修改成功（通过原密码），用户ID: {}", userId);
+    }
+
+    /**
+     * 通过手机号验证码修改密码
+     */
+    @Transactional
+    public void changePasswordByPhone(String phone, String verifyCode, String newPassword) {
+        // 查找用户
+        User user = userMapper.findByPhone(phone);
+        if (user == null) {
+            throw new RuntimeException("该手机号未注册");
+        }
+
+        // 验证验证码
+        boolean isCodeValid = verifyCodeService.verifyCode(phone, verifyCode);
+        if (!isCodeValid) {
+            throw new RuntimeException("验证码错误或已过期");
+        }
+
+        // 更新密码
+        user.setPassword(newPassword);
+        userMapper.updateUser(user);
+        log.info("密码修改成功（通过手机号），用户手机号: {}", phone);
     }
 }
