@@ -20,8 +20,10 @@ public class Device {
     private Integer breedType;       // 养殖类型
     private Integer deviceLineState; // 0-离线 1-在线
     private Integer signal;          // 信号强度
-    private BigDecimal ta;           // 温度A
-    private BigDecimal tb;           // 温度B
+    private BigDecimal temperature1;  // 温度1
+    private BigDecimal temperature2;  // 温度2
+    private BigDecimal temperature3;  // 温度3
+    private BigDecimal temperature4;  // 温度4
     private BigDecimal humidity;     // 湿度
     private BigDecimal gasCon;       // 气体浓度
     private Integer electricQuantity; // 电量（0-100）

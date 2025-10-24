@@ -13,8 +13,10 @@
         <result column="breed_type" property="breedType" jdbcType="INTEGER"/>
         <result column="device_line_state" property="deviceLineState" jdbcType="INTEGER"/>
         <result column="signal" property="signal" jdbcType="INTEGER"/>
-        <result column="ta" property="ta" jdbcType="DECIMAL"/>
-        <result column="tb" property="tb" jdbcType="DECIMAL"/>
+        <result column="temperature1" property="temperature1" jdbcType="DECIMAL"/>
+        <result column="temperature2" property="temperature2" jdbcType="DECIMAL"/>
+        <result column="temperature3" property="temperature3" jdbcType="DECIMAL"/>
+        <result column="temperature4" property="temperature4" jdbcType="DECIMAL"/>
         <result column="humidity" property="humidity" jdbcType="DECIMAL"/>
         <result column="gas_con" property="gasCon" jdbcType="DECIMAL"/>
         <result column="electric_quantity" property="electricQuantity" jdbcType="INTEGER"/>
