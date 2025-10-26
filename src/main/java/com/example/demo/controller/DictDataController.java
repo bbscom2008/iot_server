@@ -16,11 +16,10 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class DictDataController {
 
-    // 5个字典服务
+    // 4个字典服务
     private final BreedTypeService breedTypeService;
     private final RoleTypeService roleTypeService;
     private final DeviceTypeService deviceTypeService;
-    private final SensorTypeService sensorTypeService;
     private final WarningTypeService warningTypeService;
 
     /**
@@ -54,18 +53,6 @@ public class DictDataController {
     @GetMapping("/device-type/list")
     public ApiResponse<Map<String, Object>> getDeviceTypeList() {
         List<DeviceType> list = deviceTypeService.findAll();
-        Map<String, Object> result = new HashMap<>();
-        result.put("data", list);
-        return ApiResponse.success(result);
-    }
-
-    /**
-     * 获取传感器类型
-     * GET /user/dict/sensor-type/list
-     */
-    @GetMapping("/sensor-type/list")
-    public ApiResponse<Map<String, Object>> getSensorTypeList() {
-        List<SensorType> list = sensorTypeService.findAll();
         Map<String, Object> result = new HashMap<>();
         result.put("data", list);
         return ApiResponse.success(result);
