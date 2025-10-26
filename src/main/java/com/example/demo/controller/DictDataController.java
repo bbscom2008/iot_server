@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ApiResponse;
-import com.example.demo.entity.DictData;
-import com.example.demo.service.DictDataService;
+import com.example.demo.entity.*;
+import com.example.demo.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,15 +16,68 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class DictDataController {
 
-    private final DictDataService dictDataService;
+    // 5个字典服务
+    private final BreedTypeService breedTypeService;
+    private final RoleTypeService roleTypeService;
+    private final DeviceTypeService deviceTypeService;
+    private final SensorTypeService sensorTypeService;
+    private final WarningTypeService warningTypeService;
 
     /**
-     * 获取字典数据
-     * GET /user/dict/data/list
+     * 获取养殖类型
+     * GET /user/dict/breed-type/list
      */
-    @GetMapping("/data/list")
-    public ApiResponse<Map<String, Object>> getDictDataList(@RequestParam String dictType) {
-        List<DictData> list = dictDataService.getDictDataByType(dictType);
+    @GetMapping("/breed-type/list")
+    public ApiResponse<Map<String, Object>> getBreedTypeList() {
+        List<BreedType> list = breedTypeService.findAll();
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", list);
+        return ApiResponse.success(result);
+    }
+
+    /**
+     * 获取角色类型
+     * GET /user/dict/role-type/list
+     */
+    @GetMapping("/role-type/list")
+    public ApiResponse<Map<String, Object>> getRoleTypeList() {
+        List<RoleType> list = roleTypeService.findAll();
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", list);
+        return ApiResponse.success(result);
+    }
+
+    /**
+     * 获取设备类型
+     * GET /user/dict/device-type/list
+     */
+    @GetMapping("/device-type/list")
+    public ApiResponse<Map<String, Object>> getDeviceTypeList() {
+        List<DeviceType> list = deviceTypeService.findAll();
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", list);
+        return ApiResponse.success(result);
+    }
+
+    /**
+     * 获取传感器类型
+     * GET /user/dict/sensor-type/list
+     */
+    @GetMapping("/sensor-type/list")
+    public ApiResponse<Map<String, Object>> getSensorTypeList() {
+        List<SensorType> list = sensorTypeService.findAll();
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", list);
+        return ApiResponse.success(result);
+    }
+
+    /**
+     * 获取报警类型
+     * GET /user/dict/warning-type/list
+     */
+    @GetMapping("/warning-type/list")
+    public ApiResponse<Map<String, Object>> getWarningTypeList() {
+        List<WarningType> list = warningTypeService.findAll();
         Map<String, Object> result = new HashMap<>();
         result.put("data", list);
         return ApiResponse.success(result);

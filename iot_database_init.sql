@@ -1,11 +1,6 @@
 -- IoT农牧物联网系统数据库初始化脚本
 
--- 创建数据库
-CREATE DATABASE IF NOT EXISTS iot_system 
-CHARACTER SET utf8mb4 
-COLLATE utf8mb4_unicode_ci;
 
-USE iot_system;
 
 -- 1. 用户表
 CREATE TABLE IF NOT EXISTS users (
@@ -14,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL COMMENT '密码',
     nike_name VARCHAR(50) COMMENT '昵称',
     address VARCHAR(255) COMMENT '地址',
-    icon VARCHAR(500) COMMENT '头像URL',
+    icon mediumtext COMMENT '头像(Base64编码或URL)',
     breeding_type INT COMMENT '养殖类型：字典中的 breed_type',
     role INT COMMENT '角色：字典中的 role_type',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -65,17 +60,60 @@ CREATE TABLE IF NOT EXISTS device_warnings (
     INDEX idx_is_read (is_read)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='设备报警表';
 
--- 4. 字典数据表
-CREATE TABLE IF NOT EXISTS dict_data (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '字典ID',
-    dict_type VARCHAR(50) NOT NULL COMMENT '字典类型：breed_type/device_type/role_type',
+-- 4. 养殖类型表
+CREATE TABLE IF NOT EXISTS breed_type (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID',
     dict_label VARCHAR(100) NOT NULL COMMENT '显示名称',
     dict_value VARCHAR(100) NOT NULL COMMENT '字典值',
     dict_sort INT DEFAULT 0 COMMENT '排序',
     remark VARCHAR(500) COMMENT '备注',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    INDEX idx_dict_type (dict_type)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='字典数据表';
+    INDEX idx_dict_value (dict_value)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='养殖类型表';
+
+-- 5. 角色类型表
+CREATE TABLE IF NOT EXISTS role_type (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID',
+    dict_label VARCHAR(100) NOT NULL COMMENT '显示名称',
+    dict_value VARCHAR(100) NOT NULL COMMENT '字典值',
+    dict_sort INT DEFAULT 0 COMMENT '排序',
+    remark VARCHAR(500) COMMENT '备注',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    INDEX idx_dict_value (dict_value)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='角色类型表';
+
+-- 6. 设备类型表
+CREATE TABLE IF NOT EXISTS device_type (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID',
+    dict_label VARCHAR(100) NOT NULL COMMENT '显示名称',
+    dict_value VARCHAR(100) NOT NULL COMMENT '字典值',
+    dict_sort INT DEFAULT 0 COMMENT '排序',
+    remark VARCHAR(500) COMMENT '备注',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    INDEX idx_dict_value (dict_value)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='设备类型表';
+
+-- 7. 传感器类型表
+CREATE TABLE IF NOT EXISTS sensor_type (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID',
+    dict_label VARCHAR(100) NOT NULL COMMENT '显示名称',
+    dict_value VARCHAR(100) NOT NULL COMMENT '字典值',
+    dict_sort INT DEFAULT 0 COMMENT '排序',
+    remark VARCHAR(500) COMMENT '备注',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    INDEX idx_dict_value (dict_value)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='传感器类型表';
+
+-- 8. 报警类型表
+CREATE TABLE IF NOT EXISTS warning_type (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID',
+    dict_label VARCHAR(100) NOT NULL COMMENT '显示名称',
+    dict_value VARCHAR(100) NOT NULL COMMENT '字典值',
+    dict_sort INT DEFAULT 0 COMMENT '排序',
+    remark VARCHAR(500) COMMENT '备注',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    INDEX idx_dict_value (dict_value)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='报警类型表';
 
 -- 插入初始数据
 
@@ -84,27 +122,43 @@ INSERT INTO users (phone, password, nike_name, address, breeding_type, role) VAL
 ('13800138000', '123456', '测试用户', '北京市朝阳区', 0, 0),
 ('13900139000', '123456', '张三', '上海市浦东新区', 0, 0);
 
--- 插入养殖类型字典
-INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES
-('breed_type', '猪', '0', 1),
-('breed_type', '羊', '1', 2),
-('breed_type', '牛', '2', 3),
-('breed_type', '鸡', '3', 4),
-('breed_type', '鸭', '4', 5),
-('breed_type', '其他', '5', 6);
+-- 插入养殖类型数据
+INSERT INTO breed_type (dict_label, dict_value, dict_sort) VALUES
+('猪', '0', 1),
+('羊', '1', 2),
+('牛', '2', 3),
+('鸡', '3', 4),
+('鸭', '4', 5),
+('其他', '5', 6);
 
-INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES
- ('role_type', '老板', '0', 1),
- ('role_type', '饲养员', '1', 2),
- ('role_type', '其他', '2', 3);
+-- 插入角色类型数据
+INSERT INTO role_type (dict_label, dict_value, dict_sort) VALUES
+('老板', '0', 1),
+('饲养员', '1', 2),
+('其他', '2', 3);
 
--- 插入设备类型字典
-INSERT INTO dict_data (dict_type, dict_label, dict_value, dict_sort) VALUES
-('device_type', '报警器', '0', 1),
-('device_type', '环控仪', '1', 2),
-('device_type', '变频器', '2', 3),
-('device_type', '控制器', '3', 4),
-('device_type', '称重系统', '4', 5);
+-- 插入设备类型数据
+INSERT INTO device_type (dict_label, dict_value, dict_sort) VALUES
+('报警器', '0', 1),
+('环控仪', '1', 2),
+('变频器', '2', 3),
+('控制器', '3', 4),
+('称重系统', '4', 5);
+
+-- 插入传感器类型数据
+INSERT INTO sensor_type (dict_label, dict_value, dict_sort, remark) VALUES
+('温度', '0', 1, '温度传感器'),
+('湿度', '1', 2, '湿度传感器'),
+('气体', '2', 3, '气体传感器'),
+('气压', '3', 4, '气压传感器');
+
+-- 插入报警类型数据
+INSERT INTO warning_type (dict_label, dict_value, dict_sort, remark) VALUES
+('温度报警', '0', 1, '温度超出安全范围'),
+('湿度报警', '1', 2, '湿度超出安全范围'),
+('气体报警', '2', 3, '气体浓度超标'),
+('断电报警', '3', 4, '设备断电');
+
 
 -- 插入测试设备数据
 INSERT INTO devices (user_id, device_num, device_name, device_type, breed_type, device_line_state, `signal`, temperature1, temperature2, temperature3, temperature4, humidity, gas_con, electric_quantity, warning_status) VALUES
@@ -128,6 +182,18 @@ SELECT * FROM devices;
 SELECT '=== 报警数据 ===' as '';
 SELECT * FROM device_warnings;
 
-SELECT '=== 字典数据 ===' as '';
-SELECT * FROM dict_data;
+SELECT '=== 养殖类型数据 ===' as '';
+SELECT * FROM breed_type;
+
+SELECT '=== 角色类型数据 ===' as '';
+SELECT * FROM role_type;
+
+SELECT '=== 设备类型数据 ===' as '';
+SELECT * FROM device_type;
+
+SELECT '=== 传感器类型数据 ===' as '';
+SELECT * FROM sensor_type;
+
+SELECT '=== 报警类型数据 ===' as '';
+SELECT * FROM warning_type;
 

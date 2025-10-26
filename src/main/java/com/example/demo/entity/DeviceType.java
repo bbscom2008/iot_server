@@ -9,10 +9,9 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DictData {
+public class DeviceType {
 
     private Long id;
-    private String dictType;
     private String dictLabel;
     private String dictValue;
     private Integer dictSort;
