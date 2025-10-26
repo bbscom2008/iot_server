@@ -6,9 +6,8 @@
 
     <resultMap id="BaseResultMap" type="com.example.demo.entity.DeviceType">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="dict_label" property="dictLabel" jdbcType="VARCHAR"/>
-        <result column="dict_value" property="dictValue" jdbcType="VARCHAR"/>
-        <result column="dict_sort" property="dictSort" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type_id" property="typeId" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -16,7 +15,7 @@
     <!-- 查询所有 -->
     <select id="findAll" resultMap="BaseResultMap">
         SELECT * FROM device_type
-        ORDER BY dict_sort ASC
+        ORDER BY id ASC
     </select>
 
     <!-- 根据ID查询 -->

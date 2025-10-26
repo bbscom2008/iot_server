@@ -12,9 +12,8 @@ import java.time.LocalDateTime;
 public class DeviceType {
 
     private Long id;
-    private String dictLabel;
-    private String dictValue;
-    private Integer dictSort;
+    private String name;
+    private String typeId;
     private String remark;
     private LocalDateTime createdAt;
 }
