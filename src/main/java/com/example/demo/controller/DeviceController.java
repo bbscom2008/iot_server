@@ -4,8 +4,10 @@ import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.DeviceStatistics;
 import com.example.demo.dto.PageResult;
 import com.example.demo.entity.Device;
+import com.example.demo.entity.MotorFan;
 import com.example.demo.entity.Sensor;
 import com.example.demo.service.DeviceService;
+import com.example.demo.service.MotorFanService;
 import com.example.demo.service.SensorService;
 import com.example.demo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class DeviceController {
 
     private final DeviceService deviceService;
     private final SensorService sensorService;
+    private final MotorFanService motorFanService;
     private final JwtUtil jwtUtil;
     
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -54,6 +57,22 @@ public class DeviceController {
         sensorMap.put("createdAt", formatDateTime(sensor.getCreatedAt()));
         sensorMap.put("updatedAt", formatDateTime(sensor.getUpdatedAt()));
         return sensorMap;
+    }
+    
+    /**
+     * 将 MotorFan 对象转换为 Map，并格式化时间字段
+     */
+    private Map<String, Object> motorFanToMap(MotorFan motorFan) {
+        if (motorFan == null) return null;
+        Map<String, Object> motorFanMap = new HashMap<>();
+        motorFanMap.put("id", motorFan.getId());
+        motorFanMap.put("fanName", motorFan.getFanName());
+        motorFanMap.put("deviceId", motorFan.getDeviceId());
+        motorFanMap.put("deviceNum", motorFan.getDeviceNum());
+        motorFanMap.put("isRunning", motorFan.getIsRunning());
+        motorFanMap.put("createdTime", formatDateTime(motorFan.getCreatedTime()));
+        motorFanMap.put("updatedTime", formatDateTime(motorFan.getUpdatedTime()));
+        return motorFanMap;
     }
 
     /**
@@ -126,6 +145,11 @@ public class DeviceController {
         List<Map<String, Object>> sensorList = sensors != null ? 
             sensors.stream().map(this::sensorToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
         
+        // 获取设备的电机风扇数据并格式化
+        List<MotorFan> motorFans = motorFanService.findByDeviceId(id);
+        List<Map<String, Object>> motorFanList = motorFans != null ? 
+            motorFans.stream().map(this::motorFanToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
+        
         // 构建返回数据
         Map<String, Object> result = new HashMap<>();
         result.put("id", device.getId());
@@ -143,6 +167,9 @@ public class DeviceController {
         
         // 添加传感器数组（已格式化）
         result.put("sensors", sensorList);
+        
+        // 添加电机风扇数组（已格式化）
+        result.put("motorFans", motorFanList);
         
         Map<String, Object> response = new HashMap<>();
         response.put("data", result);

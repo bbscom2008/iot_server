@@ -34,7 +34,7 @@
                 AND device_type = #{deviceType}
             </if>
         </where>
-        ORDER BY created_at DESC
+        ORDER BY created_time DESC
         <if test="offset != null and pageSize != null">
             LIMIT #{offset}, #{pageSize}
         </if>
