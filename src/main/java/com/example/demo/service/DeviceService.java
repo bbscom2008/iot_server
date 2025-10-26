@@ -22,12 +22,11 @@ public class DeviceService {
      * 获取设备列表（分页）
      */
     public PageResult<Device> getDeviceList(Long userId, Integer pageNum, Integer pageSize,
-                                             String search, Integer deviceType, Integer breedType) {
+                                             String search, Integer deviceType) {
         Map<String, Object> params = new HashMap<>();
         params.put("userId", userId);
         params.put("search", search);
         params.put("deviceType", deviceType);
-        params.put("breedType", breedType);
 
         // 分页参数
         if (pageNum != null && pageSize != null) {
@@ -81,7 +80,6 @@ public class DeviceService {
         device.setDeviceNum(deviceNum);
         device.setDeviceName(deviceName);
         device.setDeviceType(0); // 默认类型
-        device.setBreedType(0); // 默认养殖类型
         device.setDeviceLineState(0); // 默认离线
 
         deviceMapper.insert(device);

@@ -31,11 +31,10 @@ public class DeviceController {
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String search,
-            @RequestParam(required = false) Integer type,
-            @RequestParam(required = false) Integer breedType) {
+            @RequestParam(required = false) Integer type) {
         Long userId = jwtUtil.getUserIdFromToken(token);
         PageResult<Device> result = deviceService.getDeviceList(
-                userId, pageNum, pageSize, search, type, breedType);
+                userId, pageNum, pageSize, search, type);
         return ApiResponse.success(result);
     }
 

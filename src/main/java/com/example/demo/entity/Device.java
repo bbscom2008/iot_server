@@ -17,7 +17,6 @@ public class Device {
     private String deviceNum;
     private String deviceName;
     private Integer deviceType;      // 0-报警器 1-环控仪 2-变频器
-    private Integer breedType;       // 养殖类型
     private Integer deviceLineState; // 0-离线 1-在线
     private Integer signal;          // 信号强度
     private BigDecimal temperature1;  // 温度1
