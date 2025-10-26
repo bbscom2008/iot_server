@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,33 @@ public class DeviceController {
     private final DeviceService deviceService;
     private final SensorService sensorService;
     private final JwtUtil jwtUtil;
+    
+    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
+    /**
+     * 格式化时间，去掉 T
+     */
+    private String formatDateTime(LocalDateTime dateTime) {
+        return dateTime != null ? dateTime.format(DATETIME_FORMATTER) : null;
+    }
+    
+    /**
+     * 将 Sensor 对象转换为 Map，并格式化时间字段
+     */
+    private Map<String, Object> sensorToMap(Sensor sensor) {
+        if (sensor == null) return null;
+        Map<String, Object> sensorMap = new HashMap<>();
+        sensorMap.put("id", sensor.getId());
+        sensorMap.put("deviceId", sensor.getDeviceId());
+        sensorMap.put("deviceNum", sensor.getDeviceNum());
+        sensorMap.put("sensorTypeId", sensor.getSensorTypeId());
+        sensorMap.put("sensorName", sensor.getSensorName());
+        sensorMap.put("sensorValue", sensor.getSensorValue());
+        sensorMap.put("unit", sensor.getUnit());
+        sensorMap.put("createdAt", formatDateTime(sensor.getCreatedAt()));
+        sensorMap.put("updatedAt", formatDateTime(sensor.getUpdatedAt()));
+        return sensorMap;
+    }
 
     /**
      * 获取设备列表
@@ -54,15 +83,18 @@ public class DeviceController {
             deviceMap.put("signal", device.getSignal());
             deviceMap.put("electricQuantity", device.getElectricQuantity());
             deviceMap.put("warningStatus", device.getWarningStatus());
-            deviceMap.put("createdAt", device.getCreatedAt());
-            deviceMap.put("updatedAt", device.getUpdatedAt());
+            deviceMap.put("createdTime", formatDateTime(device.getCreatedTime()));
+            deviceMap.put("updatedTime", formatDateTime(device.getUpdatedTime()));
+            deviceMap.put("lastOfflineTime", formatDateTime(device.getLastOfflineTime()));
             
-            // 获取设备的传感器数据
+            // 获取设备的传感器数据并格式化
             List<Sensor> sensors = sensorService.findByDeviceId(device.getId());
-            deviceMap.put("sensors", sensors != null ? sensors : new java.util.ArrayList<>());
+            List<Map<String, Object>> sensorList = sensors != null ? 
+                sensors.stream().map(this::sensorToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
+            deviceMap.put("sensors", sensorList);
             
             return deviceMap;
-        }).collect(java.util.stream.Collectors.toList());
+        }).collect(Collectors.toList());
         
         PageResult<Map<String, Object>> result = PageResult.of(deviceListWithSensors, deviceResult.getTotal());
         
@@ -89,8 +121,10 @@ public class DeviceController {
     public ApiResponse<Map<String, Object>> getDeviceDetail(@PathVariable Long id) {
         Device device = deviceService.getDeviceDetail(id);
         
-        // 获取设备的传感器数据
+        // 获取设备的传感器数据并格式化
         List<Sensor> sensors = sensorService.findByDeviceId(id);
+        List<Map<String, Object>> sensorList = sensors != null ? 
+            sensors.stream().map(this::sensorToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
         
         // 构建返回数据
         Map<String, Object> result = new HashMap<>();
@@ -103,11 +137,12 @@ public class DeviceController {
         result.put("signal", device.getSignal());
         result.put("electricQuantity", device.getElectricQuantity());
         result.put("warningStatus", device.getWarningStatus());
-        result.put("createdAt", device.getCreatedAt());
-        result.put("updatedAt", device.getUpdatedAt());
+        result.put("createdTime", formatDateTime(device.getCreatedTime()));
+        result.put("updatedTime", formatDateTime(device.getUpdatedTime()));
+        result.put("lastOfflineTime", formatDateTime(device.getLastOfflineTime()));
         
-        // 添加传感器数组
-        result.put("sensors", sensors != null ? sensors : new java.util.ArrayList<>());
+        // 添加传感器数组（已格式化）
+        result.put("sensors", sensorList);
         
         Map<String, Object> response = new HashMap<>();
         response.put("data", result);

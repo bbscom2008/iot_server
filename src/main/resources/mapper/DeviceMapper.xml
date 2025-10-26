@@ -14,8 +14,9 @@
         <result column="signal" property="signal" jdbcType="INTEGER"/>
         <result column="electric_quantity" property="electricQuantity" jdbcType="INTEGER"/>
         <result column="warning_status" property="warningStatus" jdbcType="INTEGER"/>
-        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
-        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+        <result column="last_offline_time" property="lastOfflineTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <!-- 查询设备列表 -->
@@ -68,7 +69,7 @@
 
     <!-- 绑定设备 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO devices (user_id, device_num, device_name, device_type, created_at)
+        INSERT INTO devices (user_id, device_num, device_name, device_type, created_time)
         VALUES (#{userId}, #{deviceNum}, #{deviceName}, #{deviceType}, NOW())
     </insert>
 

@@ -21,7 +21,8 @@ public class Device {
     private Integer signal;          // 信号强度
     private Integer electricQuantity; // 电量（0-100）
     private Integer warningStatus;   // 报警状态：0-正常 1-报警
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
+    private LocalDateTime lastOfflineTime; // 最后离线时间
 }
 
