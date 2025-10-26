@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.SensorMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.Sensor">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
+        <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
+        <result column="sensor_type_id" property="sensorTypeId" jdbcType="INTEGER"/>
+        <result column="sensor_name" property="sensorName" jdbcType="VARCHAR"/>
+        <result column="sensor_value" property="sensorValue" jdbcType="DECIMAL"/>
+        <result column="unit" property="unit" jdbcType="VARCHAR"/>
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 根据设备ID查询所有传感器 -->
+    <select id="findByDeviceId" resultMap="BaseResultMap">
+        SELECT * FROM sensors
+        WHERE device_id = #{deviceId}
+        ORDER BY sensor_type_id ASC
+    </select>
+
+    <!-- 根据设备编号查询所有传感器 -->
+    <select id="findByDeviceNum" resultMap="BaseResultMap">
+        SELECT * FROM sensors
+        WHERE device_num = #{deviceNum}
+        ORDER BY sensor_type_id ASC
+    </select>
+
+    <!-- 根据ID查询传感器 -->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT * FROM sensors
+        WHERE id = #{id}
+    </select>
+
+    <!-- 新增传感器 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sensors (device_id, device_num, sensor_type_id, sensor_name, sensor_value, unit, created_at, updated_at)
+        VALUES (#{deviceId}, #{deviceNum}, #{sensorTypeId}, #{sensorName}, #{sensorValue}, #{unit}, NOW(), NOW())
+    </insert>
+
+    <!-- 更新传感器值 -->
+    <update id="updateValue">
+        UPDATE sensors
+        SET sensor_value = #{sensorValue}, updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除传感器 -->
+    <delete id="deleteById">
+        DELETE FROM sensors WHERE id = #{id}
+    </delete>
+
+    <!-- 删除设备的所有传感器 -->
+    <delete id="deleteByDeviceId">
+        DELETE FROM sensors WHERE device_id = #{deviceId}
+    </delete>
+
+</mapper>
+

@@ -12,16 +12,8 @@
         <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
         <result column="device_line_state" property="deviceLineState" jdbcType="INTEGER"/>
         <result column="signal" property="signal" jdbcType="INTEGER"/>
-        <result column="temperature1" property="temperature1" jdbcType="DECIMAL"/>
-        <result column="temperature2" property="temperature2" jdbcType="DECIMAL"/>
-        <result column="temperature3" property="temperature3" jdbcType="DECIMAL"/>
-        <result column="temperature4" property="temperature4" jdbcType="DECIMAL"/>
-        <result column="humidity" property="humidity" jdbcType="DECIMAL"/>
-        <result column="gas_con" property="gasCon" jdbcType="DECIMAL"/>
         <result column="electric_quantity" property="electricQuantity" jdbcType="INTEGER"/>
         <result column="warning_status" property="warningStatus" jdbcType="INTEGER"/>
-        <result column="outage_state" property="outageState" jdbcType="INTEGER"/>
-        <result column="gas_con_status" property="gasConStatus" jdbcType="INTEGER"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
         <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -99,7 +91,7 @@
     <select id="countWarningByUserId" resultType="long">
         SELECT COUNT(*) FROM devices 
         WHERE user_id = #{userId} 
-        AND (warning_status = 1 OR outage_state = 1 OR gas_con_status = 1)
+        AND warning_status = 1
     </select>
 
 </mapper>
