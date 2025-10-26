@@ -83,9 +83,9 @@ public class DeviceController {
 
     /**
      * 获取设备详情
-     * GET /device/{id}
+     * GET /device/detail/{id}
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public ApiResponse<Map<String, Object>> getDeviceDetail(@PathVariable Long id) {
         Device device = deviceService.getDeviceDetail(id);
         
