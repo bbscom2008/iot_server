@@ -3,7 +3,9 @@ package com.example.demo.service;
 import com.example.demo.dto.DeviceStatistics;
 import com.example.demo.dto.PageResult;
 import com.example.demo.entity.Device;
+import com.example.demo.entity.Sensor;
 import com.example.demo.mapper.DeviceMapper;
+import com.example.demo.mapper.SensorMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import java.util.Map;
 public class DeviceService {
 
     private final DeviceMapper deviceMapper;
+    private final SensorMapper sensorMapper;
 
     /**
      * 获取设备列表（分页）
@@ -61,6 +64,13 @@ public class DeviceService {
             throw new RuntimeException("设备不存在");
         }
         return device;
+    }
+    
+    /**
+     * 获取设备的传感器列表
+     */
+    public List<Sensor> getDeviceSensors(Long deviceId) {
+        return sensorMapper.findByDeviceId(deviceId);
     }
 
     /**
