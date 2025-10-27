@@ -3,9 +3,9 @@
 
 CREATE TABLE IF NOT EXISTS frequency_motor (
     id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '变频电机ID',
-    device_id BIGINT NOT NULL COMMENT '设备ID',
-    device_num VARCHAR(50) NOT NULL COMMENT '设备编号',
-    name VARCHAR(50) NOT NULL COMMENT '变频电机名称：变频1、变频2',
+    device_id BIGINT NOT NULL COMMENT '所属设备的ID',
+    device_num VARCHAR(50) NOT NULL COMMENT '所属设备的编号',
+    name VARCHAR(50) NOT NULL COMMENT '变频电机名称',
     protect_speed DECIMAL(10,2) COMMENT '保护转速',
     is_auto TINYINT NOT NULL DEFAULT 0 COMMENT '运行模式：0-手动 1-自动，默认手动',
     manual_speed DECIMAL(10,2) DEFAULT 10 COMMENT '手动转速，默认10',
@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS frequency_motor (
     run_time INT DEFAULT 60 COMMENT '运行时间（秒），默认60秒',
     pause_time INT DEFAULT 30 COMMENT '暂停时间（秒），默认30秒',
     control_type TINYINT DEFAULT 1 COMMENT '控制类型：1-温控 2-湿控 3-气体，默认1',
+    temp_probe_num VARCHAR(128) COMMENT '温度探头编号',
     temp_upper DECIMAL(10,2) COMMENT '温度上限',
     temp_lower DECIMAL(10,2) COMMENT '温度下限',
     humidity_upper DECIMAL(10,2) COMMENT '湿度上限',
