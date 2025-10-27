@@ -1,0 +1,65 @@
+package com.example.demo.service;
+
+import com.example.demo.entity.FrequencyMotor;
+import com.example.demo.mapper.FrequencyMotorMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class FrequencyMotorService {
+
+    private final FrequencyMotorMapper frequencyMotorMapper;
+
+    /**
+     * 根据设备ID查询所有变频电机
+     */
+    public List<FrequencyMotor> findByDeviceId(Long deviceId) {
+        return frequencyMotorMapper.findByDeviceId(deviceId);
+    }
+
+    /**
+     * 根据设备编号查询所有变频电机
+     */
+    public List<FrequencyMotor> findByDeviceNum(String deviceNum) {
+        return frequencyMotorMapper.findByDeviceNum(deviceNum);
+    }
+
+    /**
+     * 根据ID查询变频电机
+     */
+    public FrequencyMotor findById(Long id) {
+        return frequencyMotorMapper.findById(id);
+    }
+
+    /**
+     * 新增变频电机
+     */
+    public void insert(FrequencyMotor frequencyMotor) {
+        frequencyMotorMapper.insert(frequencyMotor);
+    }
+
+    /**
+     * 更新变频电机配置
+     */
+    public void update(FrequencyMotor frequencyMotor) {
+        frequencyMotorMapper.update(frequencyMotor);
+    }
+
+    /**
+     * 删除变频电机
+     */
+    public void deleteById(Long id) {
+        frequencyMotorMapper.deleteById(id);
+    }
+
+    /**
+     * 删除设备的所有变频电机
+     */
+    public void deleteByDeviceId(Long deviceId) {
+        frequencyMotorMapper.deleteByDeviceId(deviceId);
+    }
+}
+

@@ -4,9 +4,11 @@ import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.DeviceStatistics;
 import com.example.demo.dto.PageResult;
 import com.example.demo.entity.Device;
+import com.example.demo.entity.FrequencyMotor;
 import com.example.demo.entity.MotorFan;
 import com.example.demo.entity.Sensor;
 import com.example.demo.service.DeviceService;
+import com.example.demo.service.FrequencyMotorService;
 import com.example.demo.service.MotorFanService;
 import com.example.demo.service.SensorService;
 import com.example.demo.util.JwtUtil;
@@ -30,6 +32,7 @@ public class DeviceController {
     private final DeviceService deviceService;
     private final SensorService sensorService;
     private final MotorFanService motorFanService;
+    private final FrequencyMotorService frequencyMotorService;
     private final JwtUtil jwtUtil;
     
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -73,6 +76,34 @@ public class DeviceController {
         motorFanMap.put("createdTime", formatDateTime(motorFan.getCreatedTime()));
         motorFanMap.put("updatedTime", formatDateTime(motorFan.getUpdatedTime()));
         return motorFanMap;
+    }
+    
+    /**
+     * 将 FrequencyMotor 对象转换为 Map，并格式化时间字段
+     */
+    private Map<String, Object> frequencyMotorToMap(FrequencyMotor frequencyMotor) {
+        if (frequencyMotor == null) return null;
+        Map<String, Object> motorMap = new HashMap<>();
+        motorMap.put("id", frequencyMotor.getId());
+        motorMap.put("deviceId", frequencyMotor.getDeviceId());
+        motorMap.put("deviceNum", frequencyMotor.getDeviceNum());
+        motorMap.put("name", frequencyMotor.getName());
+        motorMap.put("protectSpeed", frequencyMotor.getProtectSpeed());
+        motorMap.put("isAuto", frequencyMotor.getIsAuto());
+        motorMap.put("manualSpeed", frequencyMotor.getManualSpeed());
+        motorMap.put("value", frequencyMotor.getValue());
+        motorMap.put("runTime", frequencyMotor.getRunTime());
+        motorMap.put("pauseTime", frequencyMotor.getPauseTime());
+        motorMap.put("controlType", frequencyMotor.getControlType());
+        motorMap.put("tempUpper", frequencyMotor.getTempUpper());
+        motorMap.put("tempLower", frequencyMotor.getTempLower());
+        motorMap.put("humidityUpper", frequencyMotor.getHumidityUpper());
+        motorMap.put("humidityLower", frequencyMotor.getHumidityLower());
+        motorMap.put("gasUpper", frequencyMotor.getGasUpper());
+        motorMap.put("gasLower", frequencyMotor.getGasLower());
+        motorMap.put("createdTime", formatDateTime(frequencyMotor.getCreatedTime()));
+        motorMap.put("updatedTime", formatDateTime(frequencyMotor.getUpdatedTime()));
+        return motorMap;
     }
 
     /**
@@ -150,6 +181,11 @@ public class DeviceController {
         List<Map<String, Object>> motorFanList = motorFans != null ? 
             motorFans.stream().map(this::motorFanToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
         
+        // 获取设备的变频电机数据并格式化
+        List<FrequencyMotor> frequencyMotors = frequencyMotorService.findByDeviceId(id);
+        List<Map<String, Object>> frequencyMotorList = frequencyMotors != null ? 
+            frequencyMotors.stream().map(this::frequencyMotorToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
+        
         // 构建返回数据
         Map<String, Object> result = new HashMap<>();
         result.put("id", device.getId());
@@ -170,6 +206,9 @@ public class DeviceController {
         
         // 添加电机风扇数组（已格式化）
         result.put("motorFans", motorFanList);
+        
+        // 添加变频电机数组（已格式化）
+        result.put("frequencyMotors", frequencyMotorList);
         
         Map<String, Object> response = new HashMap<>();
         response.put("data", result);
