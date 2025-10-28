@@ -1,5 +1,6 @@
 package com.example.demo.util;
 
+import com.example.demo.exception.TokenInvalidException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +14,11 @@ public class TokenUtil {
      * 从token中获取用户ID
      * @param token JWT token
      * @return 用户ID
-     * @throws RuntimeException 如果token无效
+     * @throws TokenInvalidException 如果token无效
      */
     public Long getUserIdFromToken(String token) {
         if (token == null || token.isEmpty()) {
-            throw new RuntimeException("请先登录");
+            throw new TokenInvalidException("请先登录");
         }
         return jwtUtil.getUserIdFromToken(token);
     }

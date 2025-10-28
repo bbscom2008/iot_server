@@ -43,5 +43,10 @@ public interface SensorMapper {
      * 删除设备的所有传感器
      */
     int deleteByDeviceId(Long deviceId);
+
+    /**
+     * 根据传感器类型查询最大设备编号
+     */
+    String findMaxDeviceNumByType(Integer sensorTypeId);
 }
 

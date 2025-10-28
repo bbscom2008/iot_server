@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.example.demo.entity.Sensor">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
         <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
         <result column="sensor_type_id" property="sensorTypeId" jdbcType="INTEGER"/>
         <result column="sensor_name" property="sensorName" jdbcType="VARCHAR"/>
@@ -19,7 +19,7 @@
     <!-- 根据设备ID查询所有传感器 -->
     <select id="findByDeviceId" resultMap="BaseResultMap">
         SELECT * FROM sensors
-        WHERE device_id = #{deviceId}
+        WHERE parent_id = #{deviceId}
         ORDER BY sensor_type_id ASC
     </select>
 
@@ -38,8 +38,8 @@
 
     <!-- 新增传感器 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sensors (device_id, device_num, sensor_type_id, sensor_name, sensor_value, unit, created_at, updated_at)
-        VALUES (#{deviceId}, #{deviceNum}, #{sensorTypeId}, #{sensorName}, #{sensorValue}, #{unit}, NOW(), NOW())
+        INSERT INTO sensors (parent_id, device_num, sensor_type_id, sensor_name, sensor_value, unit, created_at, updated_at)
+        VALUES (#{parentId}, #{deviceNum}, #{sensorTypeId}, #{sensorName}, #{sensorValue}, #{unit}, NOW(), NOW())
     </insert>
 
     <!-- 更新传感器值 -->
@@ -56,8 +56,19 @@
 
     <!-- 删除设备的所有传感器 -->
     <delete id="deleteByDeviceId">
-        DELETE FROM sensors WHERE device_id = #{deviceId}
+        DELETE FROM sensors WHERE parent_id = #{deviceId}
     </delete>
+
+    <!-- 根据传感器类型查询最大设备编号 -->
+    <select id="findMaxDeviceNumByType" resultType="string">
+        SELECT device_num 
+        FROM sensors 
+        WHERE sensor_type_id = #{sensorTypeId}
+          AND device_num REGEXP '^sen-[0-9]+-[0-9]+$'
+        ORDER BY 
+          CAST(SUBSTRING_INDEX(device_num, '-', -1) AS UNSIGNED) DESC
+        LIMIT 1
+    </select>
 
 </mapper>
 

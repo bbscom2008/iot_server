@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import com.example.demo.dto.ApiResponse;
 import com.example.demo.exception.TokenExpiredException;
+import com.example.demo.exception.TokenInvalidException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,15 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<ApiResponse<Void>> handleTokenExpiredException(TokenExpiredException e) {
+        ApiResponse<Void> response = ApiResponse.error(401, e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    /**
+     * 处理 Token 无效异常 - 返回 HTTP 401
+     */
+    @ExceptionHandler(TokenInvalidException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTokenInvalidException(TokenInvalidException e) {
         ApiResponse<Void> response = ApiResponse.error(401, e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }

@@ -1,6 +1,7 @@
 package com.example.demo.util;
 
 import com.example.demo.exception.TokenExpiredException;
+import com.example.demo.exception.TokenInvalidException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -48,7 +49,7 @@ public class JwtUtil {
         } catch (ExpiredJwtException e) {
             throw new TokenExpiredException("Token 已过期，请重新登录");
         } catch (Exception e) {
-            throw new RuntimeException("Token 无效");
+            throw new TokenInvalidException("Token 无效");
         }
     }
 
@@ -62,7 +63,7 @@ public class JwtUtil {
         } catch (ExpiredJwtException e) {
             throw new TokenExpiredException("Token 已过期，请重新登录");
         } catch (Exception e) {
-            throw new RuntimeException("Token 无效");
+            throw new TokenInvalidException("Token 无效");
         }
     }
 

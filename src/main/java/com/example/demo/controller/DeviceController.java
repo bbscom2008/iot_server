@@ -51,7 +51,7 @@ public class DeviceController {
         if (sensor == null) return null;
         Map<String, Object> sensorMap = new HashMap<>();
         sensorMap.put("id", sensor.getId());
-        sensorMap.put("deviceId", sensor.getDeviceId());
+        sensorMap.put("parentId", sensor.getParentId());
         sensorMap.put("deviceNum", sensor.getDeviceNum());
         sensorMap.put("sensorTypeId", sensor.getSensorTypeId());
         sensorMap.put("sensorName", sensor.getSensorName());
