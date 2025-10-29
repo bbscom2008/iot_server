@@ -52,7 +52,7 @@ public class DeviceService {
         List<Device> list = deviceMapper.findList(params);
         Long total = deviceMapper.countDevice(params);
 
-        return PageResult.of(list, total);
+        return PageResult.of(list, total, pageNum, pageSize);
     }
 
     /**
@@ -104,7 +104,7 @@ public class DeviceService {
                 })
                 .collect(Collectors.toList());
         
-        return PageResult.of(deviceListDTO, deviceResult.getTotal());
+        return PageResult.of(deviceListDTO, deviceResult.getTotal(), pageNum, pageSize);
     }
 
     /**

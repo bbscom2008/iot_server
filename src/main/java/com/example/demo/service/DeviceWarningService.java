@@ -35,7 +35,7 @@ public class DeviceWarningService {
         List<DeviceWarning> list = deviceWarningMapper.findList(params);
         Long total = deviceWarningMapper.countWarning(params);
 
-        return PageResult.of(list, total);
+        return PageResult.of(list, total, pageNum, pageSize);
     }
 
     /**
