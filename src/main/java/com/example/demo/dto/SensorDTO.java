@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -23,7 +22,7 @@ public class SensorDTO implements Serializable {
     private String deviceNum;       // 当前设备编号
     private Integer sensorTypeId;   // 传感器类型ID
     private String sensorName;      // 传感器名称
-    private BigDecimal sensorValue; // 传感器值
+    private Double sensorValue;     // 传感器值（Double类型）
     private String unit;            // 单位
 
     @JsonFormat(pattern = DateUtils.DATE_TIME_FORMAT, timezone = DateUtils.TIME_ZONE)

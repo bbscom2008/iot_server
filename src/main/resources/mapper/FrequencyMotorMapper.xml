@@ -9,20 +9,20 @@
         <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
         <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="protect_speed" property="protectSpeed" jdbcType="DECIMAL"/>
+        <result column="protect_speed" property="protectSpeed" jdbcType="DOUBLE"/>
         <result column="is_auto" property="isAuto" jdbcType="INTEGER"/>
-        <result column="manual_speed" property="manualSpeed" jdbcType="DECIMAL"/>
+        <result column="manual_speed" property="manualSpeed" jdbcType="DOUBLE"/>
         <result column="value" property="value" jdbcType="INTEGER"/>
         <result column="run_time" property="runTime" jdbcType="INTEGER"/>
         <result column="pause_time" property="pauseTime" jdbcType="INTEGER"/>
         <result column="control_type" property="controlType" jdbcType="INTEGER"/>
         <result column="temp_sensor_id" property="tempSensorId" jdbcType="BIGINT"/>
-        <result column="temp_upper" property="tempUpper" jdbcType="DECIMAL"/>
-        <result column="temp_lower" property="tempLower" jdbcType="DECIMAL"/>
-        <result column="humidity_upper" property="humidityUpper" jdbcType="DECIMAL"/>
-        <result column="humidity_lower" property="humidityLower" jdbcType="DECIMAL"/>
-        <result column="gas_upper" property="gasUpper" jdbcType="DECIMAL"/>
-        <result column="gas_lower" property="gasLower" jdbcType="DECIMAL"/>
+        <result column="temp_upper" property="tempUpper" jdbcType="DOUBLE"/>
+        <result column="temp_lower" property="tempLower" jdbcType="DOUBLE"/>
+        <result column="humidity_upper" property="humidityUpper" jdbcType="DOUBLE"/>
+        <result column="humidity_lower" property="humidityLower" jdbcType="DOUBLE"/>
+        <result column="gas_upper" property="gasUpper" jdbcType="DOUBLE"/>
+        <result column="gas_lower" property="gasLower" jdbcType="DOUBLE"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>

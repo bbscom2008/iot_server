@@ -10,7 +10,7 @@
         <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
         <result column="sensor_type_id" property="sensorTypeId" jdbcType="INTEGER"/>
         <result column="sensor_name" property="sensorName" jdbcType="VARCHAR"/>
-        <result column="sensor_value" property="sensorValue" jdbcType="DECIMAL"/>
+        <result column="sensor_value" property="sensorValue" jdbcType="DOUBLE"/>
         <result column="unit" property="unit" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
         <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
@@ -68,6 +68,12 @@
         ORDER BY 
           CAST(SUBSTRING_INDEX(device_num, '-', -1) AS UNSIGNED) DESC
         LIMIT 1
+    </select>
+
+    <!-- 查询所有传感器 -->
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM sensors
+        ORDER BY parent_id ASC, sensor_type_id ASC
     </select>
 
 </mapper>

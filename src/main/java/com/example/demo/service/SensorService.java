@@ -80,7 +80,7 @@ public class SensorService {
      * 更新传感器值
      */
     public void updateSensorValue(Long sensorId, Double sensorValue) {
-        sensorMapper.updateValue(sensorId, java.math.BigDecimal.valueOf(sensorValue));
+        sensorMapper.updateValue(sensorId, sensorValue);
     }
 
     /**

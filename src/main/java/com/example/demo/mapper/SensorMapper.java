@@ -2,8 +2,8 @@ package com.example.demo.mapper;
 
 import com.example.demo.entity.Sensor;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -32,7 +32,7 @@ public interface SensorMapper {
     /**
      * 更新传感器值
      */
-    int updateValue(Long id, BigDecimal sensorValue);
+    int updateValue(@Param("id") Long id, @Param("sensorValue") Double sensorValue);
 
     /**
      * 删除传感器
@@ -48,5 +48,10 @@ public interface SensorMapper {
      * 根据传感器类型查询最大设备编号
      */
     String findMaxDeviceNumByType(Integer sensorTypeId);
+
+    /**
+     * 查询所有传感器（用于定时任务批量记录数据）
+     */
+    List<Sensor> findAll();
 }
 
