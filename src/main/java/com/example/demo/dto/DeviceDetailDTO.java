@@ -27,7 +27,6 @@ public class DeviceDetailDTO {
     private String createdTime;      // 创建时间（格式化后的字符串）
     private String updatedTime;      // 更新时间（格式化后的字符串）
     private String lastOfflineTime;  // 最后离线时间（格式化后的字符串）
-//    private Device device; // 设备信息
     private List<SensorDTO> sensors;         // 传感器列表
     private List<MotorFanDTO> motorFans;     // 风机列表
     private List<FrequencyMotorDTO> frequencyMotors; // 变频电机列表

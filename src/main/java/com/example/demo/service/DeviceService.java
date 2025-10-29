@@ -1,11 +1,18 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.DeviceDetailDTO;
+import com.example.demo.dto.DeviceListDTO;
 import com.example.demo.dto.DeviceStatistics;
 import com.example.demo.dto.PageResult;
 import com.example.demo.entity.Device;
+import com.example.demo.entity.FrequencyMotor;
+import com.example.demo.entity.MotorFan;
 import com.example.demo.entity.Sensor;
 import com.example.demo.mapper.DeviceMapper;
+import com.example.demo.mapper.FrequencyMotorMapper;
+import com.example.demo.mapper.MotorFanMapper;
 import com.example.demo.mapper.SensorMapper;
+import com.example.demo.util.DtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +28,9 @@ public class DeviceService {
 
     private final DeviceMapper deviceMapper;
     private final SensorMapper sensorMapper;
+    private final MotorFanMapper motorFanMapper;
+    private final FrequencyMotorMapper frequencyMotorMapper;
+    private final DtoConverter dtoConverter;
 
     /**
      * 获取设备列表（分页）
@@ -56,7 +67,7 @@ public class DeviceService {
     }
 
     /**
-     * 获取设备详情
+     * 获取设备详情（返回 Entity）
      */
     public Device getDeviceDetail(Long deviceId) {
         Device device = deviceMapper.findById(deviceId);
@@ -67,10 +78,33 @@ public class DeviceService {
     }
     
     /**
-     * 获取设备的传感器列表
+     * 获取设备详情 DTO（包含所有关联数据）
      */
-    public List<Sensor> getDeviceSensors(Long deviceId) {
-        return sensorMapper.findByDeviceId(deviceId);
+    public DeviceDetailDTO getDeviceDetailDTO(Long deviceId) {
+        Device device = getDeviceDetail(deviceId);
+        List<Sensor> sensors = sensorMapper.findByDeviceId(deviceId);
+        List<MotorFan> motorFans = motorFanMapper.findByDeviceId(deviceId);
+        List<FrequencyMotor> frequencyMotors = frequencyMotorMapper.findByDeviceId(deviceId);
+        
+        return dtoConverter.toDeviceDetailDTO(device, sensors, motorFans, frequencyMotors);
+    }
+    
+    /**
+     * 获取设备列表 DTO（批量查询传感器）
+     */
+    public PageResult<DeviceListDTO> getDeviceListDTO(Long userId, Integer pageNum, Integer pageSize,
+                                                       String search, Integer deviceType) {
+        PageResult<Device> deviceResult = getDeviceList(userId, pageNum, pageSize, search, deviceType);
+        
+        // 批量转换为 DTO，减少数据库查询次数
+        List<DeviceListDTO> deviceListDTO = deviceResult.getList().stream()
+                .map(device -> {
+                    List<Sensor> sensors = sensorMapper.findByDeviceId(device.getId());
+                    return dtoConverter.toDeviceListDTO(device, sensors);
+                })
+                .collect(Collectors.toList());
+        
+        return PageResult.of(deviceListDTO, deviceResult.getTotal());
     }
 
     /**
