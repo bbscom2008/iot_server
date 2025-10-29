@@ -1,10 +1,13 @@
 package com.example.demo.dto;
 
+import com.example.demo.util.DateUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * 变频电机数据传输对象
@@ -32,7 +35,11 @@ public class FrequencyMotorDTO {
     private BigDecimal humidityLower; // 湿度下限
     private BigDecimal gasUpper;     // 气体上限
     private BigDecimal gasLower;     // 气体下限
-    private String createdTime;     // 创建时间（格式化后的字符串）
-    private String updatedTime;     // 更新时间（格式化后的字符串）
+    
+    @JsonFormat(pattern = DateUtils.DATE_TIME_FORMAT, timezone = DateUtils.TIME_ZONE)
+    private LocalDateTime createdTime;     // 创建时间
+    
+    @JsonFormat(pattern = DateUtils.DATE_TIME_FORMAT, timezone = DateUtils.TIME_ZONE)
+    private LocalDateTime updatedTime;     // 更新时间
 }
 
