@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ApiResponse;
-import com.example.demo.dto.DeviceStatistics;
-import com.example.demo.dto.PageResult;
+import com.example.demo.dto.*;
 import com.example.demo.entity.Device;
 import com.example.demo.entity.FrequencyMotor;
 import com.example.demo.entity.MotorFan;
@@ -11,14 +9,11 @@ import com.example.demo.service.DeviceService;
 import com.example.demo.service.FrequencyMotorService;
 import com.example.demo.service.MotorFanService;
 import com.example.demo.service.SensorService;
+import com.example.demo.util.DtoConverter;
 import com.example.demo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,84 +29,14 @@ public class DeviceController {
     private final MotorFanService motorFanService;
     private final FrequencyMotorService frequencyMotorService;
     private final JwtUtil jwtUtil;
-    
-    private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    
-    /**
-     * 格式化时间，去掉 T
-     */
-    private String formatDateTime(LocalDateTime dateTime) {
-        return dateTime != null ? dateTime.format(DATETIME_FORMATTER) : null;
-    }
-    
-    /**
-     * 将 Sensor 对象转换为 Map，并格式化时间字段
-     */
-    private Map<String, Object> sensorToMap(Sensor sensor) {
-        if (sensor == null) return null;
-        Map<String, Object> sensorMap = new HashMap<>();
-        sensorMap.put("id", sensor.getId());
-        sensorMap.put("parentId", sensor.getParentId());
-        sensorMap.put("deviceNum", sensor.getDeviceNum());
-        sensorMap.put("sensorTypeId", sensor.getSensorTypeId());
-        sensorMap.put("sensorName", sensor.getSensorName());
-        sensorMap.put("sensorValue", sensor.getSensorValue());
-        sensorMap.put("unit", sensor.getUnit());
-        sensorMap.put("createdAt", formatDateTime(sensor.getCreatedAt()));
-        sensorMap.put("updatedAt", formatDateTime(sensor.getUpdatedAt()));
-        return sensorMap;
-    }
-    
-    /**
-     * 将 MotorFan 对象转换为 Map，并格式化时间字段
-     */
-    private Map<String, Object> motorFanToMap(MotorFan motorFan) {
-        if (motorFan == null) return null;
-        Map<String, Object> motorFanMap = new HashMap<>();
-        motorFanMap.put("id", motorFan.getId());
-        motorFanMap.put("fanName", motorFan.getFanName());
-        motorFanMap.put("deviceId", motorFan.getDeviceId());
-        motorFanMap.put("deviceNum", motorFan.getDeviceNum());
-        motorFanMap.put("isRunning", motorFan.getIsRunning());
-        motorFanMap.put("createdTime", formatDateTime(motorFan.getCreatedTime()));
-        motorFanMap.put("updatedTime", formatDateTime(motorFan.getUpdatedTime()));
-        return motorFanMap;
-    }
-    
-    /**
-     * 将 FrequencyMotor 对象转换为 Map，并格式化时间字段
-     */
-    private Map<String, Object> frequencyMotorToMap(FrequencyMotor frequencyMotor) {
-        if (frequencyMotor == null) return null;
-        Map<String, Object> motorMap = new HashMap<>();
-        motorMap.put("id", frequencyMotor.getId());
-        motorMap.put("deviceId", frequencyMotor.getDeviceId());
-        motorMap.put("deviceNum", frequencyMotor.getDeviceNum());
-        motorMap.put("name", frequencyMotor.getName());
-        motorMap.put("protectSpeed", frequencyMotor.getProtectSpeed());
-        motorMap.put("isAuto", frequencyMotor.getIsAuto());
-        motorMap.put("manualSpeed", frequencyMotor.getManualSpeed());
-        motorMap.put("value", frequencyMotor.getValue());
-        motorMap.put("runTime", frequencyMotor.getRunTime());
-        motorMap.put("pauseTime", frequencyMotor.getPauseTime());
-        motorMap.put("controlType", frequencyMotor.getControlType());
-        motorMap.put("tempUpper", frequencyMotor.getTempUpper());
-        motorMap.put("tempLower", frequencyMotor.getTempLower());
-        motorMap.put("humidityUpper", frequencyMotor.getHumidityUpper());
-        motorMap.put("humidityLower", frequencyMotor.getHumidityLower());
-        motorMap.put("gasUpper", frequencyMotor.getGasUpper());
-        motorMap.put("gasLower", frequencyMotor.getGasLower());
-        motorMap.put("createdTime", formatDateTime(frequencyMotor.getCreatedTime()));
-        motorMap.put("updatedTime", formatDateTime(frequencyMotor.getUpdatedTime()));
-        return motorMap;
-    }
+    private final DtoConverter dtoConverter;
 
     /**
      * 获取设备列表
      * GET /device/list
      */
     @GetMapping("/list")
-    public ApiResponse<PageResult<Map<String, Object>>> getDeviceList(
+    public ApiResponse<PageResult<DeviceListDTO>> getDeviceList(
             @RequestHeader("Authorization") String token,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
@@ -121,32 +46,15 @@ public class DeviceController {
         PageResult<Device> deviceResult = deviceService.getDeviceList(
                 userId, pageNum, pageSize, search, type);
         
-        // 为每个设备添加传感器数据
-        List<Map<String, Object>> deviceListWithSensors = deviceResult.getList().stream().map(device -> {
-            Map<String, Object> deviceMap = new HashMap<>();
-            deviceMap.put("id", device.getId());
-            deviceMap.put("userId", device.getUserId());
-            deviceMap.put("deviceNum", device.getDeviceNum());
-            deviceMap.put("deviceName", device.getDeviceName());
-            deviceMap.put("deviceType", device.getDeviceType());
-            deviceMap.put("deviceLineState", device.getDeviceLineState());
-            deviceMap.put("signal", device.getSignal());
-            deviceMap.put("electricQuantity", device.getElectricQuantity());
-            deviceMap.put("warningStatus", device.getWarningStatus());
-            deviceMap.put("createdTime", formatDateTime(device.getCreatedTime()));
-            deviceMap.put("updatedTime", formatDateTime(device.getUpdatedTime()));
-            deviceMap.put("lastOfflineTime", formatDateTime(device.getLastOfflineTime()));
-            
-            // 获取设备的传感器数据并格式化
-            List<Sensor> sensors = sensorService.findByDeviceId(device.getId());
-            List<Map<String, Object>> sensorList = sensors != null ? 
-                sensors.stream().map(this::sensorToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
-            deviceMap.put("sensors", sensorList);
-            
-            return deviceMap;
-        }).collect(Collectors.toList());
-        
-        PageResult<Map<String, Object>> result = PageResult.of(deviceListWithSensors, deviceResult.getTotal());
+        // 转换为 DTO
+        List<DeviceListDTO> deviceListDTO = deviceResult.getList().stream()
+                .map(device -> {
+                    List<com.example.demo.entity.Sensor> sensors = sensorService.findByDeviceId(device.getId());
+                    return dtoConverter.toDeviceListDTO(device, sensors);
+                })
+                .collect(Collectors.toList());
+
+        PageResult<DeviceListDTO> result = PageResult.of(deviceListDTO, deviceResult.getTotal());
         
         return ApiResponse.success(result);
     }
@@ -168,51 +76,18 @@ public class DeviceController {
      * GET /device/detail/{id}
      */
     @GetMapping("/detail/{id}")
-    public ApiResponse<Map<String, Object>> getDeviceDetail(@PathVariable Long id) {
+    public ApiResponse<DeviceDetailDTO> getDeviceDetail(@PathVariable Long id) {
         Device device = deviceService.getDeviceDetail(id);
         
-        // 获取设备的传感器数据并格式化
+        // 获取设备的传感器、风机、变频电机数据
         List<Sensor> sensors = sensorService.findByDeviceId(id);
-        List<Map<String, Object>> sensorList = sensors != null ? 
-            sensors.stream().map(this::sensorToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
-        
-        // 获取设备的电机风扇数据并格式化
         List<MotorFan> motorFans = motorFanService.findByDeviceId(id);
-        List<Map<String, Object>> motorFanList = motorFans != null ? 
-            motorFans.stream().map(this::motorFanToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
-        
-        // 获取设备的变频电机数据并格式化
         List<FrequencyMotor> frequencyMotors = frequencyMotorService.findByDeviceId(id);
-        List<Map<String, Object>> frequencyMotorList = frequencyMotors != null ? 
-            frequencyMotors.stream().map(this::frequencyMotorToMap).collect(Collectors.toList()) : new java.util.ArrayList<>();
         
-        // 构建返回数据
-        Map<String, Object> result = new HashMap<>();
-        result.put("id", device.getId());
-        result.put("userId", device.getUserId());
-        result.put("deviceNum", device.getDeviceNum());
-        result.put("deviceName", device.getDeviceName());
-        result.put("deviceType", device.getDeviceType());
-        result.put("deviceLineState", device.getDeviceLineState());
-        result.put("signal", device.getSignal());
-        result.put("electricQuantity", device.getElectricQuantity());
-        result.put("warningStatus", device.getWarningStatus());
-        result.put("createdTime", formatDateTime(device.getCreatedTime()));
-        result.put("updatedTime", formatDateTime(device.getUpdatedTime()));
-        result.put("lastOfflineTime", formatDateTime(device.getLastOfflineTime()));
+        // 转换为 DTO
+        DeviceDetailDTO deviceDetailDTO = dtoConverter.toDeviceDetailDTO(device, sensors, motorFans, frequencyMotors);
         
-        // 添加传感器数组（已格式化）
-        result.put("sensors", sensorList);
-        
-        // 添加电机风扇数组（已格式化）
-        result.put("motorFans", motorFanList);
-        
-        // 添加变频电机数组（已格式化）
-        result.put("frequencyMotors", frequencyMotorList);
-        
-        Map<String, Object> response = new HashMap<>();
-        response.put("data", result);
-        return ApiResponse.success(response);
+        return ApiResponse.success(deviceDetailDTO);
     }
 
     /**

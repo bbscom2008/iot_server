@@ -16,6 +16,7 @@
         <result column="run_time" property="runTime" jdbcType="INTEGER"/>
         <result column="pause_time" property="pauseTime" jdbcType="INTEGER"/>
         <result column="control_type" property="controlType" jdbcType="INTEGER"/>
+        <result column="temp_sensor_id" property="tempSensorId" jdbcType="BIGINT"/>
         <result column="temp_upper" property="tempUpper" jdbcType="DECIMAL"/>
         <result column="temp_lower" property="tempLower" jdbcType="DECIMAL"/>
         <result column="humidity_upper" property="humidityUpper" jdbcType="DECIMAL"/>
@@ -49,11 +50,11 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO frequency_motor 
         (device_id, device_num, name, protect_speed, is_auto, manual_speed, value, run_time, pause_time, 
-         control_type, temp_upper, temp_lower, humidity_upper, humidity_lower, gas_upper, gas_lower, 
+         control_type, temp_sensor_id, temp_upper, temp_lower, humidity_upper, humidity_lower, gas_upper, gas_lower, 
          created_time, updated_time)
         VALUES 
         (#{deviceId}, #{deviceNum}, #{name}, #{protectSpeed}, #{isAuto}, #{manualSpeed}, #{value}, #{runTime}, #{pauseTime},
-         #{controlType}, #{tempUpper}, #{tempLower}, #{humidityUpper}, #{humidityLower}, #{gasUpper}, #{gasLower},
+         #{controlType}, #{tempSensorId}, #{tempUpper}, #{tempLower}, #{humidityUpper}, #{humidityLower}, #{gasUpper}, #{gasLower},
          NOW(), NOW())
     </insert>
 
@@ -67,6 +68,7 @@
             run_time = #{runTime},
             pause_time = #{pauseTime},
             control_type = #{controlType},
+            temp_sensor_id = #{tempSensorId},
             temp_upper = #{tempUpper},
             temp_lower = #{tempLower},
             humidity_upper = #{humidityUpper},
