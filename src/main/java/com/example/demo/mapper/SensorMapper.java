@@ -35,6 +35,11 @@ public interface SensorMapper {
     int updateValue(@Param("id") Long id, @Param("sensorValue") Double sensorValue);
 
     /**
+     * 更新传感器信息
+     */
+    int update(Sensor sensor);
+
+    /**
      * 删除传感器
      */
     int deleteById(Long id);
@@ -53,5 +58,10 @@ public interface SensorMapper {
      * 查询所有传感器（用于定时任务批量记录数据）
      */
     List<Sensor> findAll();
+
+    /**
+     * 根据传感器编号查询传感器
+     */
+    Sensor findBySensorCode(@Param("sensorCode") String sensorCode);
 }
 

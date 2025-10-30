@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ApiResponse;
+import com.example.demo.dto.SensorDTO;
 import com.example.demo.entity.Sensor;
 import com.example.demo.service.SensorService;
+import com.example.demo.util.DtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,7 @@ import java.util.Map;
 public class SensorController {
 
     private final SensorService sensorService;
+    private final DtoConverter dtoConverter;
 
     /**
      * 根据设备ID获取传感器列表
@@ -47,11 +50,13 @@ public class SensorController {
      * GET /sensor/{id}
      */
     @GetMapping("/{id}")
-    public ApiResponse<Map<String, Object>> getSensorById(@PathVariable Long id) {
+    public ApiResponse<SensorDTO> getSensorById(@PathVariable Long id) {
         Sensor sensor = sensorService.findById(id);
-        Map<String, Object> result = new HashMap<>();
-        result.put("data", sensor);
-        return ApiResponse.success(result);
+        if (sensor == null) {
+            throw new RuntimeException("传感器不存在");
+        }
+        SensorDTO sensorDTO = dtoConverter.toSensorDTO(sensor);
+        return ApiResponse.success(sensorDTO);
     }
 
     /**
@@ -75,6 +80,16 @@ public class SensorController {
         Double sensorValue = params.get("sensorValue");
         sensorService.updateSensorValue(id, sensorValue);
         return ApiResponse.success("传感器值更新成功");
+    }
+
+    /**
+     * 更新传感器信息
+     * PUT /sensor/update
+     */
+    @PutMapping("/update")
+    public ApiResponse<String> updateSensor(@RequestBody Sensor sensor) {
+        sensorService.updateSensor(sensor);
+        return ApiResponse.success("传感器更新成功");
     }
 
     /**

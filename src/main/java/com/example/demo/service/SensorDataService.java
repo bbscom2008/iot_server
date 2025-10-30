@@ -31,7 +31,7 @@ public class SensorDataService {
     /**
      * 记录传感器数据（每10秒执行一次）
      */
-    @Scheduled(fixedRate = 10000) // 10秒执行一次
+//    @Scheduled(fixedRate = 10000) // 10秒执行一次
     public void recordSensorData() {
         // 查询所有在线设备的所有传感器
         List<Sensor> allSensors = sensorMapper.findAll();

@@ -50,6 +50,16 @@
         WHERE id = #{id}
     </update>
 
+    <!-- 更新传感器信息 -->
+    <update id="update">
+        UPDATE sensors
+        SET sensor_name = #{sensorName},
+            sensor_code = #{sensorCode},
+            adjust_value = #{adjustValue},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
     <!-- 删除传感器 -->
     <delete id="deleteById">
         DELETE FROM sensors WHERE id = #{id}
@@ -75,6 +85,12 @@
     <select id="findAll" resultMap="BaseResultMap">
         SELECT * FROM sensors
         ORDER BY parent_id ASC, sensor_type_id ASC
+    </select>
+
+    <!-- 根据传感器编号查询传感器 -->
+    <select id="findBySensorCode" resultMap="BaseResultMap">
+        SELECT * FROM sensors
+        WHERE sensor_code = #{sensorCode}
     </select>
 
 </mapper>

@@ -45,6 +45,13 @@ public class SensorService {
             String sensorCode = generateSensorCode(sensor.getSensorTypeId());
             sensor.setSensorCode(sensorCode);
         }
+        
+        // 检查 sensor_code 是否已存在
+        Sensor existingSensor = sensorMapper.findBySensorCode(sensor.getSensorCode());
+        if (existingSensor != null) {
+            throw new RuntimeException("传感器编号已存在：" + sensor.getSensorCode());
+        }
+        
         sensorMapper.insert(sensor);
     }
 
@@ -81,6 +88,21 @@ public class SensorService {
      */
     public void updateSensorValue(Long sensorId, Double sensorValue) {
         sensorMapper.updateValue(sensorId, sensorValue);
+    }
+
+    /**
+     * 更新传感器信息
+     */
+    public void updateSensor(Sensor sensor) {
+        // 如果修改了 sensor_code，需要检查是否与其他传感器重复
+        if (sensor.getSensorCode() != null && !sensor.getSensorCode().isEmpty()) {
+            Sensor existingSensor = sensorMapper.findBySensorCode(sensor.getSensorCode());
+            if (existingSensor != null && !existingSensor.getId().equals(sensor.getId())) {
+                throw new RuntimeException("传感器编号已存在：" + sensor.getSensorCode());
+            }
+        }
+        
+        sensorMapper.update(sensor);
     }
 
     /**
