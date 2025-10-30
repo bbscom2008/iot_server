@@ -9,7 +9,7 @@
         <result column="sensor_id" property="sensorId" jdbcType="BIGINT"/>
         <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
         <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
-        <result column="sensor_num" property="sensorNum" jdbcType="VARCHAR"/>
+        <result column="sensor_num" property="sensorCode" jdbcType="VARCHAR"/>
         <result column="sensor_type_id" property="sensorTypeId" jdbcType="INTEGER"/>
         <result column="sensor_name" property="sensorName" jdbcType="VARCHAR"/>
         <result column="sensor_value" property="sensorValue" jdbcType="DOUBLE"/>
@@ -23,7 +23,7 @@
         (sensor_id, device_id, device_num, sensor_num, sensor_type_id, sensor_name, sensor_value, unit, record_time)
         VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.sensorId}, #{item.deviceId}, #{item.deviceNum}, #{item.sensorNum}, 
+            (#{item.sensorId}, #{item.deviceId}, #{item.deviceNum}, #{item.sensorCode}, 
              #{item.sensorTypeId}, #{item.sensorName}, #{item.sensorValue}, #{item.unit}, #{item.recordTime})
         </foreach>
     </insert>

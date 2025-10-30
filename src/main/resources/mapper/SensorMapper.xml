@@ -7,10 +7,11 @@
     <resultMap id="BaseResultMap" type="com.example.demo.entity.Sensor">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
-        <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
+        <result column="sensor_code" property="sensorCode" jdbcType="VARCHAR"/>
         <result column="sensor_type_id" property="sensorTypeId" jdbcType="INTEGER"/>
         <result column="sensor_name" property="sensorName" jdbcType="VARCHAR"/>
         <result column="sensor_value" property="sensorValue" jdbcType="DOUBLE"/>
+        <result column="adjust_value" property="adjustValue" jdbcType="DOUBLE"/>
         <result column="unit" property="unit" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
         <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
@@ -26,7 +27,7 @@
     <!-- 根据设备编号查询所有传感器 -->
     <select id="findByDeviceNum" resultMap="BaseResultMap">
         SELECT * FROM sensors
-        WHERE device_num = #{deviceNum}
+        WHERE sensor_code = #{deviceNum}
         ORDER BY sensor_type_id ASC
     </select>
 
@@ -38,8 +39,8 @@
 
     <!-- 新增传感器 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sensors (parent_id, device_num, sensor_type_id, sensor_name, sensor_value, unit, created_at, updated_at)
-        VALUES (#{parentId}, #{deviceNum}, #{sensorTypeId}, #{sensorName}, #{sensorValue}, #{unit}, NOW(), NOW())
+        INSERT INTO sensors (parent_id, sensor_code, sensor_type_id, sensor_name, sensor_value, adjust_value, unit, created_at, updated_at)
+        VALUES (#{parentId}, #{sensorCode}, #{sensorTypeId}, #{sensorName}, #{sensorValue}, #{adjustValue}, #{unit}, NOW(), NOW())
     </insert>
 
     <!-- 更新传感器值 -->
@@ -61,12 +62,12 @@
 
     <!-- 根据传感器类型查询最大设备编号 -->
     <select id="findMaxDeviceNumByType" resultType="string">
-        SELECT device_num 
+        SELECT sensor_code 
         FROM sensors 
         WHERE sensor_type_id = #{sensorTypeId}
-          AND device_num REGEXP '^sen-[0-9]+-[0-9]+$'
+          AND sensor_code REGEXP '^sen-[0-9]+-[0-9]+$'
         ORDER BY 
-          CAST(SUBSTRING_INDEX(device_num, '-', -1) AS UNSIGNED) DESC
+          CAST(SUBSTRING_INDEX(sensor_code, '-', -1) AS UNSIGNED) DESC
         LIMIT 1
     </select>
 

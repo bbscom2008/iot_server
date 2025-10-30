@@ -19,10 +19,11 @@ public class SensorDTO implements Serializable {
     
     private Long id;
     private Long parentId;          // 所属父设备ID
-    private String deviceNum;       // 当前设备编号
+    private String sensorCode;      // 传感器编号
     private Integer sensorTypeId;   // 传感器类型ID
     private String sensorName;      // 传感器名称
     private Double sensorValue;     // 传感器值（Double类型）
+    private Double adjustValue; // 校正值（范围：-1024.00 到 1024.00）
     private String unit;            // 单位
 
     @JsonFormat(pattern = DateUtils.DATE_TIME_FORMAT, timezone = DateUtils.TIME_ZONE)

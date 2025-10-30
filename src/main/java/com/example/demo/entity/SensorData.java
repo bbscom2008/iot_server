@@ -19,7 +19,7 @@ public class SensorData {
     private Long sensorId;           // 传感器ID，关联sensor表的id
     private Long deviceId;           // 设备ID，关联device表的id
     private String deviceNum;        // 设备编号
-    private String sensorNum;        // 传感器编号
+    private String sensorCode;       // 传感器编号
     private Integer sensorTypeId;    // 传感器类型ID：5-温度 6-湿度 7-气体
     private String sensorName;       // 传感器名称
     private Double sensorValue;      // 传感器值（Double类型，精度足够，性能更好）
@@ -30,7 +30,7 @@ public class SensorData {
     public SensorData(Sensor sensor, LocalDateTime recordTime) {
         this.sensorId = sensor.getId();
         this.deviceId = sensor.getParentId();
-        this.sensorNum = sensor.getDeviceNum();
+        this.sensorCode = sensor.getSensorCode();
         this.sensorTypeId = sensor.getSensorTypeId();
         this.sensorName = sensor.getSensorName();
         this.sensorValue = sensor.getSensorValue();

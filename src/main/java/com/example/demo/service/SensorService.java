@@ -36,24 +36,24 @@ public class SensorService {
 
     /**
      * 新增传感器
-     * 自动生成 device_num 格式：sen-{sensor_type_id}-{从1001开始递增}
+     * 自动生成 sensor_code 格式：sen-{sensor_type_id}-{从1001开始递增}
      */
     public void addSensor(Sensor sensor) {
-        // 如果 device_num 为空或不符合格式，自动生成
-        if (sensor.getDeviceNum() == null || sensor.getDeviceNum().isEmpty() || 
-            !sensor.getDeviceNum().matches("^sen-\\d+-\\d+$")) {
-            String deviceNum = generateDeviceNum(sensor.getSensorTypeId());
-            sensor.setDeviceNum(deviceNum);
+        // 如果 sensor_code 为空或不符合格式，自动生成
+        if (sensor.getSensorCode() == null || sensor.getSensorCode().isEmpty() || 
+            !sensor.getSensorCode().matches("^sen-\\d+-\\d+$")) {
+            String sensorCode = generateSensorCode(sensor.getSensorTypeId());
+            sensor.setSensorCode(sensorCode);
         }
         sensorMapper.insert(sensor);
     }
 
     /**
-     * 生成传感器设备编号
+     * 生成传感器编号
      * 格式：sen-{sensor_type_id}-{从1001开始递增}
      * 每个 sensor_type_id 独立计数，都从 1001 开始
      */
-    private String generateDeviceNum(Integer sensorTypeId) {
+    private String generateSensorCode(Integer sensorTypeId) {
         // 查询当前 sensor_type_id 的最大编号
         String maxDeviceNum = sensorMapper.findMaxDeviceNumByType(sensorTypeId);
         
