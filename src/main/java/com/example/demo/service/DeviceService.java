@@ -12,6 +12,7 @@ import com.example.demo.mapper.DeviceMapper;
 import com.example.demo.mapper.FrequencyMotorMapper;
 import com.example.demo.mapper.MotorFanMapper;
 import com.example.demo.mapper.SensorMapper;
+import com.example.demo.mapper.SensorDataMapper;
 import com.example.demo.util.DtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ public class DeviceService {
     private final SensorMapper sensorMapper;
     private final MotorFanMapper motorFanMapper;
     private final FrequencyMotorMapper frequencyMotorMapper;
+    private final SensorDataMapper sensorDataMapper;
     private final DtoConverter dtoConverter;
 
     /**
@@ -144,6 +146,37 @@ public class DeviceService {
             throw new RuntimeException("无权操作此设备");
         }
 
+        deviceMapper.deleteById(deviceId);
+    }
+
+    /**
+     * 删除设备（级联删除所有关联数据）
+     */
+    @Transactional
+    public void deleteDevice(Long deviceId, Long userId) {
+        Device device = deviceMapper.findById(deviceId);
+        if (device == null) {
+            throw new RuntimeException("设备不存在");
+        }
+
+        // 验证设备归属
+        if (!device.getUserId().equals(userId)) {
+            throw new RuntimeException("无权操作此设备");
+        }
+
+        // 1. 删除传感器历史数据
+        sensorDataMapper.deleteByDeviceId(deviceId);
+
+        // 2. 删除传感器
+        sensorMapper.deleteByDeviceId(deviceId);
+
+        // 3. 删除风机
+        motorFanMapper.deleteByDeviceId(deviceId);
+
+        // 4. 删除变频电机
+        frequencyMotorMapper.deleteByDeviceId(deviceId);
+
+        // 5. 删除设备本身
         deviceMapper.deleteById(deviceId);
     }
 }

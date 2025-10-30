@@ -90,5 +90,18 @@ public class DeviceController {
         deviceService.unbindDevice(deviceId, userId);
         return ApiResponse.success("解绑成功");
     }
+
+    /**
+     * 删除设备
+     * DELETE /device/delete/{id}
+     */
+    @DeleteMapping("/delete/{id}")
+    public ApiResponse<String> deleteDevice(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long id) {
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        deviceService.deleteDevice(id, userId);
+        return ApiResponse.success("删除成功");
+    }
 }
 

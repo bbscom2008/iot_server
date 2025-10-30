@@ -43,5 +43,10 @@ public interface SensorDataMapper {
      * 获取指定设备的所有传感器最新记录
      */
     List<SensorData> getLatestByDeviceId(@Param("deviceId") Long deviceId);
+
+    /**
+     * 删除设备的所有传感器历史数据
+     */
+    int deleteByDeviceId(@Param("deviceId") Long deviceId);
 }
 

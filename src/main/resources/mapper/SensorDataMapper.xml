@@ -81,5 +81,11 @@
         ORDER BY sd1.sensor_type_id, sd1.sensor_id
     </select>
 
+    <!-- 删除设备的所有传感器历史数据 -->
+    <delete id="deleteByDeviceId">
+        DELETE FROM sensor_data
+        WHERE device_id = #{deviceId}
+    </delete>
+
 </mapper>
 
