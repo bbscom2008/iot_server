@@ -118,7 +118,7 @@
             <if test="gasSwitch != null">gas_switch = #{gasSwitch},</if>
             <if test="dialingMethod != null">dialing_method = #{dialingMethod},</if>
             <if test="alarmMethod != null">alarm_method = #{alarmMethod},</if>
-            <if test="alarmPhones != null">alarm_phones = #{alarmPhones},</if>
+            <if test="alarmPhones != null">alarm_phones = #{alarmPhones,typeHandler=com.example.demo.handler.StringListTypeHandler},</if>
             updated_time = NOW()
         </set>
         WHERE id = #{id}
