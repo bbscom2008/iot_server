@@ -18,12 +18,12 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
         <result column="last_offline_time" property="lastOfflineTime" jdbcType="TIMESTAMP"/>
         <result column="level_time" property="levelTime" jdbcType="INTEGER"/>
-        <result column="gas_upper_limit" property="gasUpperLimit" jdbcType="DOUBLE"/>
-        <result column="gas_lower_limit" property="gasLowerLimit" jdbcType="DOUBLE"/>
-        <result column="temp_upper_limit" property="tempUpperLimit" jdbcType="DOUBLE"/>
-        <result column="temp_lower_limit" property="tempLowerLimit" jdbcType="DOUBLE"/>
-        <result column="humidity_upper_limit" property="humidityUpperLimit" jdbcType="DOUBLE"/>
-        <result column="humidity_lower_limit" property="humidityLowerLimit" jdbcType="DOUBLE"/>
+        <result column="gas_upper_limit" property="gasUpperLimit" jdbcType="INTEGER"/>
+        <result column="gas_lower_limit" property="gasLowerLimit" jdbcType="INTEGER"/>
+        <result column="temp_upper_limit" property="tempUpperLimit" jdbcType="DECIMAL"/>
+        <result column="temp_lower_limit" property="tempLowerLimit" jdbcType="DECIMAL"/>
+        <result column="humidity_upper_limit" property="humidityUpperLimit" jdbcType="DECIMAL"/>
+        <result column="humidity_lower_limit" property="humidityLowerLimit" jdbcType="DECIMAL"/>
         <result column="master_switch" property="masterSwitch" jdbcType="INTEGER"/>
         <result column="power_off_switch" property="powerOffSwitch" jdbcType="INTEGER"/>
         <result column="temp_switch" property="tempSwitch" jdbcType="INTEGER"/>

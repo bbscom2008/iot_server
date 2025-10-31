@@ -26,8 +26,8 @@ public class Device {
     
     // 设备设置相关字段
     private Integer levelTime;              // 阶梯时间（秒），大于等于0的整数
-    private Double gasUpperLimit;          // 气体上限（ppm）
-    private Double gasLowerLimit;          // 气体下限（ppm）
+    private Integer gasUpperLimit;         // 气体上限（ppm）
+    private Integer gasLowerLimit;         // 气体下限（ppm）
     private Double tempUpperLimit;         // 温度上限（°C）
     private Double tempLowerLimit;         // 温度下限（°C）
     private Double humidityUpperLimit;     // 湿度上限（%）

@@ -18,8 +18,8 @@ public class DeviceSettingsRequest {
     
     private Integer levelTime;           // 阶梯时间（秒）
     
-    private Double gasUpperLimit;        // 气体上限（ppm）
-    private Double gasLowerLimit;        // 气体下限（ppm）
+    private Integer gasUpperLimit;       // 气体上限（ppm）
+    private Integer gasLowerLimit;       // 气体下限（ppm）
     private Double tempUpperLimit;       // 温度上限（°C）
     private Double tempLowerLimit;       // 温度下限（°C）
     private Double humidityUpperLimit;   // 湿度上限（%）
