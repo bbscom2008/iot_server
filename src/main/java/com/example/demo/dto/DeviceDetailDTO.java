@@ -52,7 +52,7 @@ public class DeviceDetailDTO {
     private Integer gasSwitch;              // 气体开关：0-关闭 1-开启
     private Integer dialingMethod;          // 拨打方式：1-同时拨打 2-依次拨打
     private Integer alarmMethod;            // 报警方式：1-打电话 2-发短信 3-打电话和发短信
-    private String alarmPhones;             // 报警电话 JSON字符串，最多10个电话
+    private List<String> alarmPhones;       // 报警电话列表，最多10个电话
     
     private List<SensorDTO> sensors;         // 传感器列表
     private List<MotorFanDTO> motorFans;     // 风机列表

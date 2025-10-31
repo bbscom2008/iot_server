@@ -31,7 +31,7 @@
         <result column="gas_switch" property="gasSwitch" jdbcType="INTEGER"/>
         <result column="dialing_method" property="dialingMethod" jdbcType="TINYINT"/>
         <result column="alarm_method" property="alarmMethod" jdbcType="TINYINT"/>
-        <result column="alarm_phones" property="alarmPhones" jdbcType="VARCHAR"/>
+        <result column="alarm_phones" property="alarmPhones" jdbcType="VARCHAR" typeHandler="com.example.demo.handler.StringListTypeHandler"/>
     </resultMap>
 
     <!-- 查询设备列表 -->
