@@ -38,6 +38,25 @@ public class DtoConverter {
     }
     
     /**
+     * 通用DTO转实体方法
+     * 
+     * @param source 源DTO对象
+     * @param entityClass 实体类型
+     * @return 实体对象
+     */
+    public <T> T toEntity(Object source, Class<T> entityClass) {
+        if (source == null) return null;
+        try {
+            Constructor<T> constructor = entityClass.getDeclaredConstructor();
+            T entity = constructor.newInstance();
+            BeanUtils.copyProperties(source, entity);
+            return entity;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to convert DTO to entity: " + entityClass.getName(), e);
+        }
+    }
+    
+    /**
      * 通用列表转DTO列表方法
      * 
      * @param sources 源实体列表

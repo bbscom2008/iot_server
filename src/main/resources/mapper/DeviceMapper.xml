@@ -17,6 +17,21 @@
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
         <result column="last_offline_time" property="lastOfflineTime" jdbcType="TIMESTAMP"/>
+        <result column="level_time" property="levelTime" jdbcType="INTEGER"/>
+        <result column="gas_upper_limit" property="gasUpperLimit" jdbcType="DOUBLE"/>
+        <result column="gas_lower_limit" property="gasLowerLimit" jdbcType="DOUBLE"/>
+        <result column="temp_upper_limit" property="tempUpperLimit" jdbcType="DOUBLE"/>
+        <result column="temp_lower_limit" property="tempLowerLimit" jdbcType="DOUBLE"/>
+        <result column="humidity_upper_limit" property="humidityUpperLimit" jdbcType="DOUBLE"/>
+        <result column="humidity_lower_limit" property="humidityLowerLimit" jdbcType="DOUBLE"/>
+        <result column="master_switch" property="masterSwitch" jdbcType="INTEGER"/>
+        <result column="power_off_switch" property="powerOffSwitch" jdbcType="INTEGER"/>
+        <result column="temp_switch" property="tempSwitch" jdbcType="INTEGER"/>
+        <result column="humidity_switch" property="humiditySwitch" jdbcType="INTEGER"/>
+        <result column="gas_switch" property="gasSwitch" jdbcType="INTEGER"/>
+        <result column="dialing_method" property="dialingMethod" jdbcType="TINYINT"/>
+        <result column="alarm_method" property="alarmMethod" jdbcType="TINYINT"/>
+        <result column="alarm_phones" property="alarmPhones" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!-- 查询设备列表 -->
@@ -77,6 +92,37 @@
     <delete id="deleteById">
         DELETE FROM devices WHERE id = #{id}
     </delete>
+
+    <!-- 更新设备信息 -->
+    <update id="update">
+        UPDATE devices
+        <set>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="deviceLineState != null">device_line_state = #{deviceLineState},</if>
+            <if test="signal != null">signal = #{signal},</if>
+            <if test="electricQuantity != null">electric_quantity = #{electricQuantity},</if>
+            <if test="warningStatus != null">warning_status = #{warningStatus},</if>
+            <if test="lastOfflineTime != null">last_offline_time = #{lastOfflineTime},</if>
+            <if test="levelTime != null">level_time = #{levelTime},</if>
+            <if test="gasUpperLimit != null">gas_upper_limit = #{gasUpperLimit},</if>
+            <if test="gasLowerLimit != null">gas_lower_limit = #{gasLowerLimit},</if>
+            <if test="tempUpperLimit != null">temp_upper_limit = #{tempUpperLimit},</if>
+            <if test="tempLowerLimit != null">temp_lower_limit = #{tempLowerLimit},</if>
+            <if test="humidityUpperLimit != null">humidity_upper_limit = #{humidityUpperLimit},</if>
+            <if test="humidityLowerLimit != null">humidity_lower_limit = #{humidityLowerLimit},</if>
+            <if test="masterSwitch != null">master_switch = #{masterSwitch},</if>
+            <if test="powerOffSwitch != null">power_off_switch = #{powerOffSwitch},</if>
+            <if test="tempSwitch != null">temp_switch = #{tempSwitch},</if>
+            <if test="humiditySwitch != null">humidity_switch = #{humiditySwitch},</if>
+            <if test="gasSwitch != null">gas_switch = #{gasSwitch},</if>
+            <if test="dialingMethod != null">dialing_method = #{dialingMethod},</if>
+            <if test="alarmMethod != null">alarm_method = #{alarmMethod},</if>
+            <if test="alarmPhones != null">alarm_phones = #{alarmPhones},</if>
+            updated_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
 
     <!-- 统计用户所有设备数 -->
     <select id="countAllByUserId" resultType="long">

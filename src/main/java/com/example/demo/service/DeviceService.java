@@ -150,6 +150,31 @@ public class DeviceService {
     }
 
     /**
+     * 更新设备设置
+     */
+    @Transactional
+    public void updateDeviceSettings(Long deviceId, Long userId, Device device) {
+        Device existDevice = deviceMapper.findById(deviceId);
+        if (existDevice == null) {
+            throw new RuntimeException("设备不存在");
+        }
+
+        // 验证设备归属
+        if (!existDevice.getUserId().equals(userId)) {
+            throw new RuntimeException("无权操作此设备");
+        }
+
+        // 设置设备ID
+        device.setId(deviceId);
+        
+        // 执行更新
+        int rows = deviceMapper.update(device);
+        if (rows == 0) {
+            throw new RuntimeException("更新失败");
+        }
+    }
+
+    /**
      * 删除设备（级联删除所有关联数据）
      */
     @Transactional

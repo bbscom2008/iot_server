@@ -41,6 +41,11 @@ public interface DeviceMapper {
     int deleteById(@Param("id") Long id);
 
     /**
+     * 更新设备信息
+     */
+    int update(Device device);
+
+    /**
      * 统计用户所有设备数
      */
     Long countAllByUserId(@Param("userId") Long userId);

@@ -3,13 +3,17 @@ package com.example.demo.controller;
 import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.DeviceDetailDTO;
 import com.example.demo.dto.DeviceListDTO;
+import com.example.demo.dto.DeviceSettingsRequest;
 import com.example.demo.dto.DeviceStatistics;
 import com.example.demo.dto.PageResult;
+import com.example.demo.entity.Device;
 import com.example.demo.service.DeviceService;
+import com.example.demo.util.DtoConverter;
 import com.example.demo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -20,6 +24,7 @@ public class DeviceController {
 
     private final DeviceService deviceService;
     private final JwtUtil jwtUtil;
+    private final DtoConverter dtoConverter;
 
     /**
      * 获取设备列表
@@ -89,6 +94,24 @@ public class DeviceController {
         
         deviceService.unbindDevice(deviceId, userId);
         return ApiResponse.success("解绑成功");
+    }
+
+    /**
+     * 更新设备设置
+     * PUT /device/settings/{id}
+     */
+    @PutMapping("/settings/{id}")
+    public ApiResponse<String> updateDeviceSettings(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long id,
+            @Valid @RequestBody DeviceSettingsRequest request) {
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        
+        // 使用工具类将 DTO 转换为 Entity
+        Device device = dtoConverter.toEntity(request, Device.class);
+        
+        deviceService.updateDeviceSettings(id, userId, device);
+        return ApiResponse.success("更新成功");
     }
 
     /**
