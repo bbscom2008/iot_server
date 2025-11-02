@@ -19,7 +19,7 @@ public class FrequencyMotorDTO {
     private Long id;
     private Long deviceId;          // 设备ID
     private String deviceNum;       // 设备编号
-    private String name;            // 变频电机名称
+    private String deviceName;      // 变频电机名称
     private Double protectSpeed;    // 保护转速（Double类型）
     private Integer isAuto;         // 运行模式：0-手动 1-自动
     private Double manualSpeed;     // 手动转速（Double类型）

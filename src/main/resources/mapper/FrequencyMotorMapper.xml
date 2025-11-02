@@ -8,7 +8,7 @@
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
         <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
         <result column="protect_speed" property="protectSpeed" jdbcType="DOUBLE"/>
         <result column="is_auto" property="isAuto" jdbcType="INTEGER"/>
         <result column="manual_speed" property="manualSpeed" jdbcType="DOUBLE"/>
@@ -49,11 +49,11 @@
     <!-- 新增变频电机 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO frequency_motor 
-        (device_id, device_num, name, protect_speed, is_auto, manual_speed, value, run_time, pause_time, 
+        (device_id, device_num, device_name, protect_speed, is_auto, manual_speed, value, run_time, pause_time, 
          control_type, temp_sensor_id, temp_upper, temp_lower, humidity_upper, humidity_lower, gas_upper, gas_lower, 
          created_time, updated_time)
         VALUES 
-        (#{deviceId}, #{deviceNum}, #{name}, #{protectSpeed}, #{isAuto}, #{manualSpeed}, #{value}, #{runTime}, #{pauseTime},
+        (#{deviceId}, #{deviceNum}, #{deviceName}, #{protectSpeed}, #{isAuto}, #{manualSpeed}, #{value}, #{runTime}, #{pauseTime},
          #{controlType}, #{tempSensorId}, #{tempUpper}, #{tempLower}, #{humidityUpper}, #{humidityLower}, #{gasUpper}, #{gasLower},
          NOW(), NOW())
     </insert>
@@ -75,6 +75,7 @@
             humidity_lower = #{humidityLower},
             gas_upper = #{gasUpper},
             gas_lower = #{gasLower},
+            device_name = #{deviceName},
             updated_time = NOW()
         WHERE id = #{id}
     </update>
