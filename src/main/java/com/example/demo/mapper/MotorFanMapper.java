@@ -34,6 +34,11 @@ public interface MotorFanMapper {
     int updateRunningStatus(Long id, Integer isRunning);
 
     /**
+     * 更新风机配置
+     */
+    int update(MotorFan motorFan);
+
+    /**
      * 删除风扇
      */
     int deleteById(Long id);

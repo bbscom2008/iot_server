@@ -10,6 +10,42 @@
         <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
         <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
         <result column="is_running" property="isRunning" jdbcType="INTEGER"/>
+        <result column="control_mode" property="controlMode" jdbcType="INTEGER"/>
+        <result column="auto_mode" property="autoMode" jdbcType="INTEGER"/>
+        <result column="probe_sensor_id" property="probeSensorId" jdbcType="BIGINT"/>
+        
+        <result column="temp_upper" property="tempUpper" jdbcType="DECIMAL"/>
+        <result column="temp_lower" property="tempLower" jdbcType="DECIMAL"/>
+        <result column="run_time" property="runTime" jdbcType="INTEGER"/>
+        <result column="pause_time" property="pauseTime" jdbcType="INTEGER"/>
+        
+        <result column="humidity_upper" property="humidityUpper" jdbcType="DECIMAL"/>
+        <result column="humidity_lower" property="humidityLower" jdbcType="DECIMAL"/>
+        
+        <result column="gas_upper" property="gasUpper" jdbcType="INTEGER"/>
+        <result column="gas_lower" property="gasLower" jdbcType="INTEGER"/>
+        
+        <result column="timer1_enabled" property="timer1Enabled" jdbcType="INTEGER"/>
+        <result column="timer1_start_time" property="timer1StartTime" jdbcType="VARCHAR"/>
+        <result column="timer1_end_time" property="timer1EndTime" jdbcType="VARCHAR"/>
+        <result column="timer1_probe_sensor_id" property="timer1ProbeSensorId" jdbcType="BIGINT"/>
+        <result column="timer1_start_temp" property="timer1StartTemp" jdbcType="DECIMAL"/>
+        <result column="timer1_stop_temp" property="timer1StopTemp" jdbcType="DECIMAL"/>
+        
+        <result column="timer2_enabled" property="timer2Enabled" jdbcType="INTEGER"/>
+        <result column="timer2_start_time" property="timer2StartTime" jdbcType="VARCHAR"/>
+        <result column="timer2_end_time" property="timer2EndTime" jdbcType="VARCHAR"/>
+        <result column="timer2_probe_sensor_id" property="timer2ProbeSensorId" jdbcType="BIGINT"/>
+        <result column="timer2_start_temp" property="timer2StartTemp" jdbcType="DECIMAL"/>
+        <result column="timer2_stop_temp" property="timer2StopTemp" jdbcType="DECIMAL"/>
+        
+        <result column="timer3_enabled" property="timer3Enabled" jdbcType="INTEGER"/>
+        <result column="timer3_start_time" property="timer3StartTime" jdbcType="VARCHAR"/>
+        <result column="timer3_end_time" property="timer3EndTime" jdbcType="VARCHAR"/>
+        <result column="timer3_probe_sensor_id" property="timer3ProbeSensorId" jdbcType="BIGINT"/>
+        <result column="timer3_start_temp" property="timer3StartTemp" jdbcType="DECIMAL"/>
+        <result column="timer3_stop_temp" property="timer3StopTemp" jdbcType="DECIMAL"/>
+        
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -43,6 +79,46 @@
     <update id="updateRunningStatus">
         UPDATE motor_fan
         SET is_running = #{isRunning}, updated_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 更新风机配置 -->
+    <update id="update">
+        UPDATE motor_fan
+        <set>
+            <if test="fanName != null">fan_name = #{fanName},</if>
+            <if test="isRunning != null">is_running = #{isRunning},</if>
+            <if test="controlMode != null">control_mode = #{controlMode},</if>
+            <if test="autoMode != null">auto_mode = #{autoMode},</if>
+            <if test="probeSensorId != null">probe_sensor_id = #{probeSensorId},</if>
+            <if test="tempUpper != null">temp_upper = #{tempUpper},</if>
+            <if test="tempLower != null">temp_lower = #{tempLower},</if>
+            <if test="runTime != null">run_time = #{runTime},</if>
+            <if test="pauseTime != null">pause_time = #{pauseTime},</if>
+            <if test="humidityUpper != null">humidity_upper = #{humidityUpper},</if>
+            <if test="humidityLower != null">humidity_lower = #{humidityLower},</if>
+            <if test="gasUpper != null">gas_upper = #{gasUpper},</if>
+            <if test="gasLower != null">gas_lower = #{gasLower},</if>
+            <if test="timer1Enabled != null">timer1_enabled = #{timer1Enabled},</if>
+            <if test="timer1StartTime != null">timer1_start_time = #{timer1StartTime},</if>
+            <if test="timer1EndTime != null">timer1_end_time = #{timer1EndTime},</if>
+            <if test="timer1ProbeSensorId != null">timer1_probe_sensor_id = #{timer1ProbeSensorId},</if>
+            <if test="timer1StartTemp != null">timer1_start_temp = #{timer1StartTemp},</if>
+            <if test="timer1StopTemp != null">timer1_stop_temp = #{timer1StopTemp},</if>
+            <if test="timer2Enabled != null">timer2_enabled = #{timer2Enabled},</if>
+            <if test="timer2StartTime != null">timer2_start_time = #{timer2StartTime},</if>
+            <if test="timer2EndTime != null">timer2_end_time = #{timer2EndTime},</if>
+            <if test="timer2ProbeSensorId != null">timer2_probe_sensor_id = #{timer2ProbeSensorId},</if>
+            <if test="timer2StartTemp != null">timer2_start_temp = #{timer2StartTemp},</if>
+            <if test="timer2StopTemp != null">timer2_stop_temp = #{timer2StopTemp},</if>
+            <if test="timer3Enabled != null">timer3_enabled = #{timer3Enabled},</if>
+            <if test="timer3StartTime != null">timer3_start_time = #{timer3StartTime},</if>
+            <if test="timer3EndTime != null">timer3_end_time = #{timer3EndTime},</if>
+            <if test="timer3ProbeSensorId != null">timer3_probe_sensor_id = #{timer3ProbeSensorId},</if>
+            <if test="timer3StartTemp != null">timer3_start_temp = #{timer3StartTemp},</if>
+            <if test="timer3StopTemp != null">timer3_stop_temp = #{timer3StopTemp},</if>
+            updated_time = NOW()
+        </set>
         WHERE id = #{id}
     </update>
 

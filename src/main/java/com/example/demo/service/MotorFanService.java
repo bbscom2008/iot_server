@@ -49,6 +49,13 @@ public class MotorFanService {
     }
 
     /**
+     * 更新风机配置
+     */
+    public void update(MotorFan motorFan) {
+        motorFanMapper.update(motorFan);
+    }
+
+    /**
      * 删除风扇
      */
     public void deleteById(Long id) {
