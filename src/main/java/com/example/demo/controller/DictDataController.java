@@ -18,7 +18,7 @@ public class DictDataController {
 
     // 4个字典服务
     private final BreedTypeService breedTypeService;
-    private final RoleTypeService roleTypeService;
+    private final UserRoleService userRoleService;
     private final DeviceTypeService deviceTypeService;
     private final WarningTypeService warningTypeService;
 
@@ -35,12 +35,25 @@ public class DictDataController {
     }
 
     /**
-     * 获取角色类型
+     * 获取角色类型（所有平台）
      * GET /user/dict/role-type/list
      */
     @GetMapping("/role-type/list")
     public ApiResponse<Map<String, Object>> getRoleTypeList() {
-        List<RoleType> list = roleTypeService.findAll();
+        List<UserRole> list = userRoleService.findAll();
+        Map<String, Object> result = new HashMap<>();
+        result.put("data", list);
+        return ApiResponse.success(result);
+    }
+
+    /**
+     * 根据平台获取角色类型
+     * GET /user/dict/role-type/list/{platform}
+     * @param platform mobile 或 web
+     */
+    @GetMapping("/role-type/list/{platform}")
+    public ApiResponse<Map<String, Object>> getRoleTypeByPlatform(@PathVariable String platform) {
+        List<UserRole> list = userRoleService.findByPlatform(platform);
         Map<String, Object> result = new HashMap<>();
         result.put("data", list);
         return ApiResponse.success(result);
