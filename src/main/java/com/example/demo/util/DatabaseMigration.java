@@ -33,7 +33,7 @@ public class DatabaseMigration implements CommandLineRunner {
             jdbcTemplate.execute(
                 "ALTER TABLE `user_role` " +
                 "ADD COLUMN `platform` VARCHAR(20) NOT NULL DEFAULT 'mobile' " +
-                "COMMENT '平台类型：mobile-手机端，web-PC端' AFTER `dict_value`"
+                "COMMENT '平台类型：mobile-手机端，web-PC端' AFTER `role_id`"
             );
             System.out.println("✓ 添加 platform 字段成功");
             
@@ -43,7 +43,7 @@ public class DatabaseMigration implements CommandLineRunner {
             
             // 4. 插入 PC 端角色
             jdbcTemplate.execute(
-                "INSERT INTO `user_role` (`dict_label`, `dict_value`, `platform`, `dict_sort`, `remark`, `created_at`) VALUES " +
+                "INSERT INTO `user_role` (`label`, `role_id`, `platform`, `sort`, `remark`, `created_at`) VALUES " +
                 "('管理员', '10', 'web', 1, 'PC端管理员', NOW()), " +
                 "('员工', '11', 'web', 2, 'PC端员工', NOW())"
             );
@@ -52,7 +52,7 @@ public class DatabaseMigration implements CommandLineRunner {
             // 5. 添加复合唯一索引
             jdbcTemplate.execute(
                 "ALTER TABLE `user_role` " +
-                "ADD UNIQUE INDEX `uk_dict_value_platform` (`dict_value`, `platform`)"
+                "ADD UNIQUE INDEX `uk_role_id_platform` (`role_id`, `platform`)"
             );
             System.out.println("✓ 添加复合唯一索引成功");
             

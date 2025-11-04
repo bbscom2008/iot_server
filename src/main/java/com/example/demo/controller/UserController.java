@@ -97,6 +97,40 @@ public class UserController {
     }
 
     /**
+     * 用户登出
+     * POST /user/logout
+     */
+    @PostMapping("/logout")
+    public ApiResponse<String> logout() {
+        // JWT是无状态的，登出操作主要在前端清除token
+        // 后端可以在这里记录登出日志或执行其他业务逻辑
+        log.info("用户登出");
+        return ApiResponse.success("登出成功");
+    }
+
+    /**
+     * 获取Token中的角色信息（用于测试）
+     * GET /user/token-info
+     */
+    @GetMapping("/token-info")
+    public ApiResponse<Map<String, Object>> getTokenInfo(
+            @RequestHeader("Authorization") String token) {
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        String phone = jwtUtil.getPhoneFromToken(token);
+        String platform = jwtUtil.getPlatformFromToken(token);
+        String roleId = jwtUtil.getRoleIdFromToken(token);
+        
+        Map<String, Object> tokenInfo = new HashMap<>();
+        tokenInfo.put("userId", userId);
+        tokenInfo.put("phone", phone);
+        tokenInfo.put("platform", platform);
+        tokenInfo.put("roleId", roleId);
+        tokenInfo.put("isAdmin", "10".equals(roleId)); // 角色ID为10的是管理员
+        
+        return ApiResponse.success(tokenInfo);
+    }
+
+    /**
      * 获取用户信息
      * GET /user/info
      */

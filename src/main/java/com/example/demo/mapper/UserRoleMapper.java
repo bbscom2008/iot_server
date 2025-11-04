@@ -24,5 +24,10 @@ public interface UserRoleMapper {
      * 根据ID查询
      */
     UserRole findById(Long id);
+
+    /**
+     * 根据 roleId 和 platform 查询角色
+     */
+    UserRole findByRoleIdAndPlatform(@Param("roleId") String roleId, @Param("platform") String platform);
 }
 

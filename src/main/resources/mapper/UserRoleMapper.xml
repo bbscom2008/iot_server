@@ -6,10 +6,10 @@
 
     <resultMap id="BaseResultMap" type="com.example.demo.entity.UserRole">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="dict_label" property="dictLabel" jdbcType="VARCHAR"/>
-        <result column="dict_value" property="dictValue" jdbcType="VARCHAR"/>
+        <result column="label" property="label" jdbcType="VARCHAR"/>
+        <result column="role_id" property="roleId" jdbcType="VARCHAR"/>
         <result column="platform" property="platform" jdbcType="VARCHAR"/>
-        <result column="dict_sort" property="dictSort" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -17,20 +17,26 @@
     <!-- 查询所有 -->
     <select id="findAll" resultMap="BaseResultMap">
         SELECT * FROM user_role
-        ORDER BY dict_sort ASC
+        ORDER BY sort ASC
     </select>
 
     <!-- 根据平台查询 -->
     <select id="findByPlatform" resultMap="BaseResultMap">
         SELECT * FROM user_role
         WHERE platform = #{platform}
-        ORDER BY dict_sort ASC
+        ORDER BY sort ASC
     </select>
 
     <!-- 根据ID查询 -->
     <select id="findById" resultMap="BaseResultMap">
         SELECT * FROM user_role
         WHERE id = #{id}
+    </select>
+
+    <!-- 根据 roleId 和 platform 查询 -->
+    <select id="findByRoleIdAndPlatform" resultMap="BaseResultMap">
+        SELECT * FROM user_role
+        WHERE role_id = #{roleId} AND platform = #{platform}
     </select>
 
 </mapper>

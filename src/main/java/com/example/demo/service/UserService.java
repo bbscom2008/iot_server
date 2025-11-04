@@ -4,7 +4,9 @@ import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
+import com.example.demo.entity.UserRole;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.mapper.UserRoleMapper;
 import com.example.demo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final JwtUtil jwtUtil;
     private final VerifyCodeService verifyCodeService;
+    private final UserRoleMapper userRoleMapper;
 
     /**
      * 用户登录（密码登录）
@@ -43,8 +46,14 @@ public class UserService {
         
         log.info("密码验证通过，准备生成Token");
 
-        // 生成Token
-        String token = jwtUtil.generateToken(user.getId(), user.getPhone());
+        // 根据用户的 role 字段判断平台类型
+        String platform = determinePlatform(user.getRole());
+        String roleId = String.valueOf(user.getRole());
+        
+        log.info("用户角色: {}, 平台类型: {}", roleId, platform);
+
+        // 生成Token（包含角色信息）
+        String token = jwtUtil.generateToken(user.getId(), user.getPhone(), platform, roleId);
         log.info("登录成功，用户ID: {}, Token已生成", user.getId());
 
         // 返回登录响应
@@ -67,8 +76,12 @@ public class UserService {
             throw new RuntimeException("验证码错误或已过期");
         }
 
-        // 生成Token
-        String token = jwtUtil.generateToken(user.getId(), user.getPhone());
+        // 根据用户的 role 字段判断平台类型
+        String platform = determinePlatform(user.getRole());
+        String roleId = String.valueOf(user.getRole());
+
+        // 生成Token（包含角色信息）
+        String token = jwtUtil.generateToken(user.getId(), user.getPhone(), platform, roleId);
 
         // 返回登录响应
         return new LoginResponse(token, LoginResponse.UserInfo.from(user));
@@ -254,6 +267,19 @@ public class UserService {
         // 发送验证码
         verifyCodeService.sendVerifyCode(phone);
         log.info("发送重置密码验证码到: {}", phone);
+    }
+
+    /**
+     * 根据用户角色ID判断平台类型
+     * 角色ID 0-2 为手机端（0-老板, 1-饲养员, 2-其他）
+     * 角色ID 10+ 为 PC端（10-管理员, 11-员工）
+     */
+    private String determinePlatform(Integer role) {
+        if (role == null) {
+            return "mobile"; // 默认为手机端
+        }
+        // role >= 10 为 PC端，< 10 为手机端
+        return role >= 10 ? "web" : "mobile";
     }
 
     /**

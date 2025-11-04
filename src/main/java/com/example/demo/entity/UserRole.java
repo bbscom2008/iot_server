@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 public class UserRole {
 
     private Long id;
-    private String dictLabel;
-    private String dictValue;
-    private String platform;  // 平台类型：mobile-手机端，web-PC端
-    private Integer dictSort;
+    private String label;        // 角色名称
+    private String roleId;       // 角色ID
+    private String platform;     // 平台类型：mobile-手机端，web-PC端
+    private Integer sort;        // 排序
     private String remark;
     private LocalDateTime createdAt;
 }
