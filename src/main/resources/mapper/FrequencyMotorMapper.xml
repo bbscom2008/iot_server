@@ -75,6 +75,7 @@
             humidity_lower = #{humidityLower},
             gas_upper = #{gasUpper},
             gas_lower = #{gasLower},
+            device_name = #{deviceName},
             updated_time = NOW()
         WHERE id = #{id}
     </update>

@@ -97,6 +97,7 @@
     <update id="update">
         UPDATE devices
         <set>
+            <if test="deviceNum != null">device_num = #{deviceNum},</if>
             <if test="deviceName != null">device_name = #{deviceName},</if>
             <if test="deviceType != null">device_type = #{deviceType},</if>
             <if test="deviceLineState != null">device_line_state = #{deviceLineState},</if>

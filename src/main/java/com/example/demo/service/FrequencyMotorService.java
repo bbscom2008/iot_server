@@ -44,8 +44,8 @@ public class FrequencyMotorService {
     /**
      * 更新变频电机配置
      */
-    public void update(FrequencyMotor frequencyMotor) {
-        frequencyMotorMapper.update(frequencyMotor);
+    public int update(FrequencyMotor frequencyMotor) {
+        return frequencyMotorMapper.update(frequencyMotor);
     }
 
     /**

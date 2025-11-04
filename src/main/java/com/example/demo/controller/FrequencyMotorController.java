@@ -31,8 +31,11 @@ public class FrequencyMotorController {
         if (existMotor == null) {
             throw new RuntimeException("变频电机不存在");
         }
-        
-        frequencyMotorService.update(frequencyMotor);
+
+        int affected = frequencyMotorService.update(frequencyMotor);
+        if (affected <= 0) {
+            throw new RuntimeException("更新失败，未影响任何行");
+        }
         return ApiResponse.success("更新成功");
     }
 
