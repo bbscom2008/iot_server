@@ -65,7 +65,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse<Void>> handleRuntimeException(RuntimeException e) {
-        ApiResponse<Void> response = ApiResponse.error(e.getMessage());
+        e.printStackTrace();
+        String errorMsg = e.getMessage() != null ? e.getMessage() : "系统错误";
+        ApiResponse<Void> response = ApiResponse.error(errorMsg);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
@@ -99,7 +101,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleException(Exception e) {
         e.printStackTrace();
-        ApiResponse<Void> response = ApiResponse.error(500, "系统错误：" + e.getMessage());
+        String errorMsg = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+        ApiResponse<Void> response = ApiResponse.error(500, "系统错误：" + errorMsg);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }

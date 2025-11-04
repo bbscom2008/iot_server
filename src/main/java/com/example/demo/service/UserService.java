@@ -24,19 +24,28 @@ public class UserService {
      * 用户登录（密码登录）
      */
     public LoginResponse login(LoginRequest request) {
+        log.info("开始密码登录，手机号: {}", request.getPhone());
+        
         // 查找用户
         User user = userMapper.findByPhone(request.getPhone());
         if (user == null) {
-            throw new RuntimeException("用户不存在");
+            log.warn("登录失败：用户不存在 - {}", request.getPhone());
+            throw new RuntimeException("用户不存在，请先注册");
         }
+        
+        log.info("找到用户，ID: {}, 手机号: {}", user.getId(), user.getPhone());
 
         // 验证密码（注意：生产环境应该使用加密密码）
-        if (!user.getPassword().equals(request.getPassword())) {
+        if (user.getPassword() == null || !user.getPassword().equals(request.getPassword())) {
+            log.warn("登录失败：密码错误 - {}", request.getPhone());
             throw new RuntimeException("密码错误");
         }
+        
+        log.info("密码验证通过，准备生成Token");
 
         // 生成Token
         String token = jwtUtil.generateToken(user.getId(), user.getPhone());
+        log.info("登录成功，用户ID: {}, Token已生成", user.getId());
 
         // 返回登录响应
         return new LoginResponse(token, LoginResponse.UserInfo.from(user));
