@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
+import com.example.demo.dto.PageResult;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserRole;
@@ -12,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -330,5 +335,28 @@ public class UserService {
         user.setPassword(newPassword);
         userMapper.updateUser(user);
         log.info("密码修改成功（通过手机号），用户手机号: {}", phone);
+    }
+
+    /**
+     * 获取用户列表（分页）
+     */
+    public PageResult<User> getUserList(Integer pageNum, Integer pageSize, String search) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("search", search);
+
+        // 分页参数
+        if (pageNum != null && pageSize != null) {
+            int offset = (pageNum - 1) * pageSize;
+            params.put("offset", offset);
+            params.put("pageSize", pageSize);
+        }
+
+        List<User> list = userMapper.findList(params);
+        Long total = userMapper.countUser(params);
+
+        // 不返回密码
+        list.forEach(user -> user.setPassword(null));
+
+        return PageResult.of(list, total, pageNum, pageSize);
     }
 }

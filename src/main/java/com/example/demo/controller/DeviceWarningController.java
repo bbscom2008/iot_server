@@ -27,7 +27,12 @@ public class DeviceWarningController {
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize) {
         Long userId = jwtUtil.getUserIdFromToken(token);
-        PageResult<DeviceWarning> result = deviceWarningService.getWarningList(userId, pageNum, pageSize);
+        String platform = jwtUtil.getPlatformFromToken(token);
+        
+        // web端可以查看所有报警，mobile端只能查看自己的
+        Long queryUserId = "web".equals(platform) ? null : userId;
+        
+        PageResult<DeviceWarning> result = deviceWarningService.getWarningList(queryUserId, pageNum, pageSize);
         return ApiResponse.success(result);
     }
 

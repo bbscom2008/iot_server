@@ -36,11 +36,15 @@ public class DeviceService {
 
     /**
      * 获取设备列表（分页）
+     * @param userId 用户ID，为null时查询所有设备
      */
     public PageResult<Device> getDeviceList(Long userId, Integer pageNum, Integer pageSize,
                                              String search, Integer deviceType) {
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", userId);
+        // userId为null时不添加过滤条件，查询所有设备
+        if (userId != null) {
+            params.put("userId", userId);
+        }
         params.put("search", search);
         params.put("deviceType", deviceType);
 
@@ -59,13 +63,29 @@ public class DeviceService {
 
     /**
      * 获取设备统计
+     * @param userId 用户ID，为null时统计所有设备
      */
     public DeviceStatistics getStatistics(Long userId) {
-        Long allDevice = deviceMapper.countAllByUserId(userId);
-        Long lineDevice = deviceMapper.countOnlineByUserId(userId);
-        Long warningDevice = deviceMapper.countWarningByUserId(userId);
+        Long totalDevices;
+        Long onlineDevices;
+        Long alarmDevices;
+        
+        if (userId == null) {
+            // web端：查询所有设备的统计
+            totalDevices = deviceMapper.countAll();
+            onlineDevices = deviceMapper.countOnline();
+            alarmDevices = deviceMapper.countWarning();
+        } else {
+            // mobile端：只查询当前用户的设备
+            totalDevices = deviceMapper.countAllByUserId(userId);
+            onlineDevices = deviceMapper.countOnlineByUserId(userId);
+            alarmDevices = deviceMapper.countWarningByUserId(userId);
+        }
+        
+        // 计算离线设备数
+        Long offlineDevices = totalDevices - onlineDevices;
 
-        return new DeviceStatistics(allDevice, lineDevice, warningDevice);
+        return new DeviceStatistics(totalDevices, onlineDevices, offlineDevices, alarmDevices);
     }
 
     /**

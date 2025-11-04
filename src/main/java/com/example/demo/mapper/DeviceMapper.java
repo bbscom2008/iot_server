@@ -59,5 +59,20 @@ public interface DeviceMapper {
      * 统计用户报警设备数
      */
     Long countWarningByUserId(@Param("userId") Long userId);
+
+    /**
+     * 统计所有设备数（web端使用）
+     */
+    Long countAll();
+
+    /**
+     * 统计所有在线设备数（web端使用）
+     */
+    Long countOnline();
+
+    /**
+     * 统计所有报警设备数（web端使用）
+     */
+    Long countWarning();
 }
 

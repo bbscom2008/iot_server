@@ -4,6 +4,9 @@ import com.example.demo.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Map;
+
 @Mapper
 public interface UserMapper {
 
@@ -26,4 +29,14 @@ public interface UserMapper {
      * 更新用户信息
      */
     int updateUser(User user);
+
+    /**
+     * 查询用户列表
+     */
+    List<User> findList(Map<String, Object> params);
+
+    /**
+     * 统计用户总数
+     */
+    Long countUser(Map<String, Object> params);
 }

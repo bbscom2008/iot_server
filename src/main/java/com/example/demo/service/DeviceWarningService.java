@@ -19,10 +19,14 @@ public class DeviceWarningService {
 
     /**
      * 获取报警列表（分页）
+     * @param userId 用户ID，为null时查询所有报警
      */
     public PageResult<DeviceWarning> getWarningList(Long userId, Integer pageNum, Integer pageSize) {
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", userId);
+        // userId为null时不添加过滤条件，查询所有报警
+        if (userId != null) {
+            params.put("userId", userId);
+        }
         params.put("isRead", 0); // 只查询未读
 
         // 分页参数

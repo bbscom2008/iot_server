@@ -142,5 +142,20 @@
         AND warning_status = 1
     </select>
 
+    <!-- 统计所有设备数（web端使用） -->
+    <select id="countAll" resultType="long">
+        SELECT COUNT(*) FROM devices
+    </select>
+
+    <!-- 统计所有在线设备数（web端使用） -->
+    <select id="countOnline" resultType="long">
+        SELECT COUNT(*) FROM devices WHERE device_line_state = 1
+    </select>
+
+    <!-- 统计所有报警设备数（web端使用） -->
+    <select id="countWarning" resultType="long">
+        SELECT COUNT(*) FROM devices WHERE warning_status = 1
+    </select>
+
 </mapper>
 

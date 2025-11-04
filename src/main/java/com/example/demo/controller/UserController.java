@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.ApiResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
+import com.example.demo.dto.PageResult;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.dto.SendVerifyCodeRequest;
 import com.example.demo.dto.LoginByCodeRequest;
@@ -192,6 +193,26 @@ public class UserController {
     public ApiResponse<String> sendResetPasswordCode(@Valid @RequestBody SendVerifyCodeRequest request) {
         userService.sendResetPasswordCode(request.getPhone());
         return ApiResponse.success("验证码已发送");
+    }
+
+    /**
+     * 获取用户列表（web端使用）
+     * GET /user/list
+     */
+    @GetMapping("/list")
+    public ApiResponse<PageResult<User>> getUserList(
+            @RequestHeader("Authorization") String token,
+            @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String search) {
+        // 验证是web端用户
+        String platform = jwtUtil.getPlatformFromToken(token);
+        if (!"web".equals(platform)) {
+            return ApiResponse.error("无权访问");
+        }
+        
+        PageResult<User> result = userService.getUserList(pageNum, pageSize, search);
+        return ApiResponse.success(result);
     }
 
     /**

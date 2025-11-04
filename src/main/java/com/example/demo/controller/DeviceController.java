@@ -38,8 +38,13 @@ public class DeviceController {
             @RequestParam(required = false) String search,
             @RequestParam(required = false) Integer type) {
         Long userId = jwtUtil.getUserIdFromToken(token);
+        String platform = jwtUtil.getPlatformFromToken(token);
+        
+        // web端可以查看所有数据，mobile端只能查看自己的数据
+        Long queryUserId = "web".equals(platform) ? null : userId;
+        
         PageResult<DeviceListDTO> result = deviceService.getDeviceListDTO(
-                userId, pageNum, pageSize, search, type);
+                queryUserId, pageNum, pageSize, search, type);
         return ApiResponse.success(result);
     }
 
@@ -51,7 +56,12 @@ public class DeviceController {
     public ApiResponse<DeviceStatistics> getStatistics(
             @RequestHeader("Authorization") String token) {
         Long userId = jwtUtil.getUserIdFromToken(token);
-        DeviceStatistics statistics = deviceService.getStatistics(userId);
+        String platform = jwtUtil.getPlatformFromToken(token);
+        
+        // web端查看所有统计，mobile端只看自己的
+        Long queryUserId = "web".equals(platform) ? null : userId;
+        
+        DeviceStatistics statistics = deviceService.getStatistics(queryUserId);
         return ApiResponse.success(statistics);
     }
 
