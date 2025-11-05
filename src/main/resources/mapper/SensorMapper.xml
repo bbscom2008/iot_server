@@ -33,16 +33,6 @@
         <result column="user_name" property="userName" />
         <result column="user_phone" property="userPhone" />
     </resultMap>
-        WHERE id = #{id}
-    </update>
-
-    <!-- 更新传感器信息 -->
-    <update id="update">
-        UPDATE sensors
-        SET sensor_name = #{sensorName},
-            sensor_code = #{sensorCode},
-            adjust_value = #{adjustValue},
-            updated_at = NOW()
 
     <!-- 根据传感器编号查询传感器 -->
     <select id="findBySensorCode" resultMap="BaseResultMap">
