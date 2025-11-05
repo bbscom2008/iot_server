@@ -14,8 +14,12 @@ import java.util.List;
 @NoArgsConstructor
 public class DeviceSettingsRequest {
     
+    private Long userId;                 // 用户ID（可为空）
+    
     @NotBlank(message = "设备名称不能为空")
     private String deviceName;           // 设备名称
+    
+    @NotBlank(message = "设备编号不能为空")
     private String deviceNum;            // 设备编号
     
     private Integer levelTime;           // 阶梯时间（秒）

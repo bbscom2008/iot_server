@@ -91,7 +91,12 @@ public class DeviceController {
         
         // 如果是 web 端，可以指定 userId，否则使用当前登录用户
         if ("web".equals(platform) && params.containsKey("userId")) {
-            userId = Long.valueOf(params.get("userId").toString());
+            Object userIdObj = params.get("userId");
+            if (userIdObj != null) {
+                userId = Long.valueOf(userIdObj.toString());
+            } else {
+                userId = null;
+            }
         } else {
             userId = jwtUtil.getUserIdFromToken(token);
         }

@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -166,12 +167,12 @@ public class DeviceService {
 
         // 创建新设备
         Device device = new Device();
-        device.setUserId(userId);
+        device.setUserId(userId); // userId 可以为 null
         device.setDeviceNum(deviceNum);
         device.setDeviceName(deviceName);
         device.setDeviceType(deviceType); // 默认类型
         device.setDeviceLineState(0); // 默认离线
-
+        
         deviceMapper.insert(device);
     }
 
@@ -186,7 +187,7 @@ public class DeviceService {
         }
 
         // 验证设备归属
-        if (!device.getUserId().equals(userId)) {
+        if (!Objects.equals(device.getUserId(), userId)) {
             throw new RuntimeException("无权操作此设备");
         }
 
@@ -204,7 +205,7 @@ public class DeviceService {
         }
 
         // 验证设备归属（web 端管理后台跳过权限验证）
-        if (!PlatformType.WEB.getValue().equals(platform) && !existDevice.getUserId().equals(userId)) {
+        if (!PlatformType.WEB.getValue().equals(platform) && !Objects.equals(existDevice.getUserId(), userId)) {
             throw new RuntimeException("无权操作此设备");
         }
 
@@ -229,7 +230,7 @@ public class DeviceService {
         }
 
         // 验证设备归属（web 端管理后台跳过权限验证）
-        if (!"web".equals(platform) && !device.getUserId().equals(userId)) {
+        if (!"web".equals(platform) && !Objects.equals(device.getUserId(), userId)) {
             throw new RuntimeException("无权操作此设备");
         }
 
