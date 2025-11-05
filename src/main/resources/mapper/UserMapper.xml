@@ -29,8 +29,8 @@
 
     <!-- 注册用户 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO users (phone, password, nike_name, breeding_type, role, created_at)
-        VALUES (#{phone}, #{password}, #{nikeName}, #{breedingType}, #{role}, NOW())
+        INSERT INTO users (phone, password, nike_name, address, breeding_type, role, created_at)
+        VALUES (#{phone}, #{password}, #{nikeName}, #{address}, #{breedingType}, #{role}, NOW())
     </insert>
 
     <!-- 更新用户信息 -->

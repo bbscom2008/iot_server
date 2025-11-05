@@ -17,8 +17,11 @@ public class RegisterRequest {
     @NotBlank(message = "密码不能为空")
     private String password;
 
-    @NotBlank(message = "验证码不能为空")
-    private String verifyCode;
+    private String verifyCode;  // 验证码，管理员后台新增时可不提供
+
+    private String nikeName;  // 昵称，管理员后台可直接提供
+
+    private String address;  // 地址
 
     @NotNull(message = "养殖类型不能为空")
     private Integer breedingType;  // 0-猪 1-羊 2-牛 3-鸡 4-鸭 5-其他

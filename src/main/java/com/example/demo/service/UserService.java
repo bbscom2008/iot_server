@@ -120,24 +120,29 @@ public class UserService {
             throw new RuntimeException("该手机号已注册");
         }
 
-        // 2. 验证验证码， 开发其间，先不校验验证码
-//        boolean isCodeValid = verifyCodeService.verifyCode(request.getPhone(), request.getVerifyCode());
-//        if (!isCodeValid) {
-//            throw new RuntimeException("验证码错误或已过期");
+        // 2. 管理员后台新增时不校验验证码，普通用户注册按旧逻辑校验
+        // 开发期间，全部暂不校验验证码
+//        if (request.getVerifyCode() != null && !request.getVerifyCode().isEmpty()) {
+//            boolean isCodeValid = verifyCodeService.verifyCode(request.getPhone(), request.getVerifyCode());
+//            if (!isCodeValid) {
+//                throw new RuntimeException("验证码错误或已过期");
+//            }
 //        }
 
         // 3. 创建新用户
         User user = new User();
         user.setPhone(request.getPhone());
         user.setPassword(request.getPassword()); // 注意：生产环境应该加密
-        user.setNikeName(request.getPhone()); // 默认昵称为手机号
+        // 使用提供的昵称，若未提供则默认为手机号
+        user.setNikeName(request.getNikeName() != null ? request.getNikeName() : request.getPhone());
+        user.setAddress(request.getAddress()); // 地址
         user.setBreedingType(request.getBreedingType()); // Integer 类型
         user.setRole(request.getRole()); // Integer 类型
 
         // 4. 保存用户
         int result = userMapper.insert(user);
-        log.info("注册成功，手机号: {}, 用户ID: {}, 养殖类型: {}, 角色: {}, 影响行数: {}", 
-                request.getPhone(), user.getId(), request.getBreedingType(), request.getRole(), result);
+        log.info("注册成功，手机号: {}, 用户ID: {}, 昵称: {}, 地址: {}, 养殖类型: {}, 角色: {}, 影响行数: {}", 
+                request.getPhone(), user.getId(), user.getNikeName(), user.getAddress(), request.getBreedingType(), request.getRole(), result);
     }
 
     /**
