@@ -1,10 +1,12 @@
 package com.example.demo.mapper;
 
+import com.example.demo.dto.SensorListDTO;
 import com.example.demo.entity.Sensor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SensorMapper {
@@ -58,6 +60,16 @@ public interface SensorMapper {
      * 查询所有传感器（用于定时任务批量记录数据）
      */
     List<Sensor> findAll();
+
+    /**
+     * 分页查询传感器列表（关联设备和用户信息）
+     */
+    List<SensorListDTO> findListWithDeviceAndUser(Map<String, Object> params);
+
+    /**
+     * 查询传感器总数（关联设备和用户信息）
+     */
+    Long countListWithDeviceAndUser(Map<String, Object> params);
 
     /**
      * 根据传感器编号查询传感器

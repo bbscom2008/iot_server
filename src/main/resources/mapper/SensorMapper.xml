@@ -1,52 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.demo.mapper.SensorMapper">
 
     <resultMap id="BaseResultMap" type="com.example.demo.entity.Sensor">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
-        <result column="sensor_code" property="sensorCode" jdbcType="VARCHAR"/>
-        <result column="sensor_type_id" property="sensorTypeId" jdbcType="INTEGER"/>
-        <result column="sensor_name" property="sensorName" jdbcType="VARCHAR"/>
-        <result column="sensor_value" property="sensorValue" jdbcType="DOUBLE"/>
-        <result column="adjust_value" property="adjustValue" jdbcType="DOUBLE"/>
-        <result column="unit" property="unit" jdbcType="VARCHAR"/>
-        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP"/>
-        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP"/>
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="sensor_code" property="sensorCode" />
+        <result column="sensor_type_id" property="sensorTypeId" />
+        <result column="sensor_name" property="sensorName" />
+        <result column="sensor_value" property="sensorValue" />
+        <result column="adjust_value" property="adjustValue" />
+        <result column="unit" property="unit" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
     </resultMap>
-
-    <!-- 根据设备ID查询所有传感器 -->
-    <select id="findByDeviceId" resultMap="BaseResultMap">
-        SELECT * FROM sensors
-        WHERE parent_id = #{deviceId}
-        ORDER BY sensor_type_id ASC
-    </select>
-
-    <!-- 根据设备编号查询所有传感器 -->
-    <select id="findByDeviceNum" resultMap="BaseResultMap">
-        SELECT * FROM sensors
-        WHERE sensor_code = #{deviceNum}
-        ORDER BY sensor_type_id ASC
-    </select>
-
-    <!-- 根据ID查询传感器 -->
-    <select id="findById" resultMap="BaseResultMap">
-        SELECT * FROM sensors
-        WHERE id = #{id}
-    </select>
-
-    <!-- 新增传感器 -->
-    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sensors (parent_id, sensor_code, sensor_type_id, sensor_name, sensor_value, adjust_value, unit, created_at, updated_at)
-        VALUES (#{parentId}, #{sensorCode}, #{sensorTypeId}, #{sensorName}, #{sensorValue}, #{adjustValue}, #{unit}, NOW(), NOW())
-    </insert>
-
-    <!-- 更新传感器值 -->
-    <update id="updateValue">
-        UPDATE sensors
-        SET sensor_value = #{sensorValue}, updated_at = NOW()
+    
+    <resultMap id="SensorListResultMap" type="com.example.demo.dto.SensorListDTO">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="sensor_code" property="sensorCode" />
+        <result column="sensor_type_id" property="sensorTypeId" />
+        <result column="sensor_name" property="sensorName" />
+        <result column="sensor_value" property="sensorValue" />
+        <result column="adjust_value" property="adjustValue" />
+        <result column="unit" property="unit" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+        <!-- 设备信息 -->
+        <result column="device_name" property="deviceName" />
+        <result column="device_num" property="deviceNum" />
+        <!-- 用户信息 -->
+        <result column="user_name" property="userName" />
+        <result column="user_phone" property="userPhone" />
+    </resultMap>
         WHERE id = #{id}
     </update>
 
@@ -57,35 +43,6 @@
             sensor_code = #{sensorCode},
             adjust_value = #{adjustValue},
             updated_at = NOW()
-        WHERE id = #{id}
-    </update>
-
-    <!-- 删除传感器 -->
-    <delete id="deleteById">
-        DELETE FROM sensors WHERE id = #{id}
-    </delete>
-
-    <!-- 删除设备的所有传感器 -->
-    <delete id="deleteByDeviceId">
-        DELETE FROM sensors WHERE parent_id = #{deviceId}
-    </delete>
-
-    <!-- 根据传感器类型查询最大设备编号 -->
-    <select id="findMaxDeviceNumByType" resultType="string">
-        SELECT sensor_code 
-        FROM sensors 
-        WHERE sensor_type_id = #{sensorTypeId}
-          AND sensor_code REGEXP '^sen-[0-9]+-[0-9]+$'
-        ORDER BY 
-          CAST(SUBSTRING_INDEX(sensor_code, '-', -1) AS UNSIGNED) DESC
-        LIMIT 1
-    </select>
-
-    <!-- 查询所有传感器 -->
-    <select id="findAll" resultMap="BaseResultMap">
-        SELECT * FROM sensors
-        ORDER BY parent_id ASC, sensor_type_id ASC
-    </select>
 
     <!-- 根据传感器编号查询传感器 -->
     <select id="findBySensorCode" resultMap="BaseResultMap">
@@ -93,5 +50,75 @@
         WHERE sensor_code = #{sensorCode}
     </select>
 
-</mapper>
+    <!-- 分页查询传感器列表（关联设备和用户信息） -->
+    <select id="findListWithDeviceAndUser" resultMap="SensorListResultMap">
+        SELECT 
+            s.*,
+            d.device_name as device_name,
+            d.device_num as device_num,
+            u.nike_name as user_name,
+            u.phone as user_phone
+        FROM sensors s
+        LEFT JOIN devices d ON s.parent_id = d.id
+        LEFT JOIN users u ON d.user_id = u.id
+        <where>
+            <if test="deviceId != null">
+                AND s.parent_id = #{deviceId}
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                AND d.device_name LIKE CONCAT('%', #{deviceName}, '%')
+            </if>
+            <if test="deviceNum != null and deviceNum != ''">
+                AND d.device_num LIKE CONCAT('%', #{deviceNum}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                AND u.nike_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                AND u.phone LIKE CONCAT('%', #{userPhone}, '%')
+            </if>
+            <if test="sensorName != null and sensorName != ''">
+                AND s.sensor_name LIKE CONCAT('%', #{sensorName}, '%')
+            </if>
+            <if test="sensorCode != null and sensorCode != ''">
+                AND s.sensor_code LIKE CONCAT('%', #{sensorCode}, '%')
+            </if>
+        </where>
+        ORDER BY s.created_at DESC
+        <if test="offset != null and pageSize != null">
+            LIMIT #{offset}, #{pageSize}
+        </if>
+    </select>
 
+    <!-- 查询传感器总数（关联设备和用户信息） -->
+    <select id="countListWithDeviceAndUser" resultType="long">
+        SELECT COUNT(*)
+        FROM sensors s
+        LEFT JOIN devices d ON s.parent_id = d.id
+        LEFT JOIN users u ON d.user_id = u.id
+        <where>
+            <if test="deviceId != null">
+                AND s.parent_id = #{deviceId}
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                AND d.device_name LIKE CONCAT('%', #{deviceName}, '%')
+            </if>
+            <if test="deviceNum != null and deviceNum != ''">
+                AND d.device_num LIKE CONCAT('%', #{deviceNum}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                AND u.nike_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                AND u.phone LIKE CONCAT('%', #{userPhone}, '%')
+            </if>
+            <if test="sensorName != null and sensorName != ''">
+                AND s.sensor_name LIKE CONCAT('%', #{sensorName}, '%')
+            </if>
+            <if test="sensorCode != null and sensorCode != ''">
+                AND s.sensor_code LIKE CONCAT('%', #{sensorCode}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

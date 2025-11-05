@@ -1,11 +1,13 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.SensorListDTO;
 import com.example.demo.entity.Sensor;
 import com.example.demo.mapper.SensorMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -117,6 +119,20 @@ public class SensorService {
      */
     public void deleteByDeviceId(Long deviceId) {
         sensorMapper.deleteByDeviceId(deviceId);
+    }
+
+    /**
+     * 分页查询传感器列表（关联设备和用户信息）
+     */
+    public List<SensorListDTO> findListWithDeviceAndUser(Map<String, Object> params) {
+        return sensorMapper.findListWithDeviceAndUser(params);
+    }
+
+    /**
+     * 查询传感器总数（关联设备和用户信息）
+     */
+    public Long countListWithDeviceAndUser(Map<String, Object> params) {
+        return sensorMapper.countListWithDeviceAndUser(params);
     }
 }
 
