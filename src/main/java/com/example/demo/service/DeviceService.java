@@ -4,10 +4,12 @@ import com.example.demo.dto.DeviceDetailDTO;
 import com.example.demo.dto.DeviceListDTO;
 import com.example.demo.dto.DeviceStatistics;
 import com.example.demo.dto.PageResult;
+import com.example.demo.dto.SensorDTO;
 import com.example.demo.entity.Device;
 import com.example.demo.entity.FrequencyMotor;
 import com.example.demo.entity.MotorFan;
 import com.example.demo.entity.Sensor;
+import com.example.demo.enums.PlatformType;
 import com.example.demo.mapper.DeviceMapper;
 import com.example.demo.mapper.FrequencyMotorMapper;
 import com.example.demo.mapper.MotorFanMapper;
@@ -115,25 +117,47 @@ public class DeviceService {
      * 获取设备列表 DTO（批量查询传感器）
      */
     public PageResult<DeviceListDTO> getDeviceListDTO(Long userId, Integer pageNum, Integer pageSize,
-                                                       String search, Integer deviceType) {
-        PageResult<Device> deviceResult = getDeviceList(userId, pageNum, pageSize, search, deviceType);
+                                                       String deviceName, String deviceNum, 
+                                                       String userName, String userPhone, 
+                                                       Integer warningStatus) {
+        Map<String, Object> params = new HashMap<>();
+        // userId为null时不添加过滤条件，查询所有设备
+        if (userId != null) {
+            params.put("userId", userId);
+        }
+        params.put("deviceName", deviceName);
+        params.put("deviceNum", deviceNum);
+        params.put("userName", userName);
+        params.put("userPhone", userPhone);
+        params.put("warningStatus", warningStatus);
+
+        // 分页参数
+        if (pageNum != null && pageSize != null) {
+            int offset = (pageNum - 1) * pageSize;
+            params.put("offset", offset);
+            params.put("pageSize", pageSize);
+        }
+
+        List<DeviceListDTO> list = deviceMapper.findListWithUser(params);
+        Long total = deviceMapper.countDeviceWithUser(params);
         
-        // 批量转换为 DTO，减少数据库查询次数
-        List<DeviceListDTO> deviceListDTO = deviceResult.getList().stream()
-                .map(device -> {
-                    List<Sensor> sensors = sensorMapper.findByDeviceId(device.getId());
-                    return dtoConverter.toDeviceListDTO(device, sensors);
-                })
-                .collect(Collectors.toList());
-        
-        return PageResult.of(deviceListDTO, deviceResult.getTotal(), pageNum, pageSize);
+        // 批量查询传感器
+        list.forEach(device -> {
+            List<Sensor> sensors = sensorMapper.findByDeviceId(device.getId());
+            List<SensorDTO> sensorDTOs = sensors.stream()
+                    .map(sensor -> dtoConverter.toSensorDTO(sensor))
+                    .collect(Collectors.toList());
+            device.setSensors(sensorDTOs);
+        });
+
+        return PageResult.of(list, total, pageNum, pageSize);
     }
 
     /**
      * 绑定设备
      */
     @Transactional
-    public void bindDevice(Long userId, String deviceNum, String deviceName) {
+    public void bindDevice(Long userId, String deviceNum, String deviceName, Integer deviceType) {
         // 检查设备是否已被绑定
         Device existDevice = deviceMapper.findByDeviceNum(deviceNum);
         if (existDevice != null) {
@@ -145,7 +169,7 @@ public class DeviceService {
         device.setUserId(userId);
         device.setDeviceNum(deviceNum);
         device.setDeviceName(deviceName);
-        device.setDeviceType(0); // 默认类型
+        device.setDeviceType(deviceType); // 默认类型
         device.setDeviceLineState(0); // 默认离线
 
         deviceMapper.insert(device);
@@ -173,14 +197,14 @@ public class DeviceService {
      * 更新设备设置
      */
     @Transactional
-    public void updateDeviceSettings(Long deviceId, Long userId, Device device) {
+    public void updateDeviceSettings(Long deviceId, Long userId, String platform, Device device) {
         Device existDevice = deviceMapper.findById(deviceId);
         if (existDevice == null) {
             throw new RuntimeException("设备不存在");
         }
 
-        // 验证设备归属
-        if (!existDevice.getUserId().equals(userId)) {
+        // 验证设备归属（web 端管理后台跳过权限验证）
+        if (!PlatformType.WEB.getValue().equals(platform) && !existDevice.getUserId().equals(userId)) {
             throw new RuntimeException("无权操作此设备");
         }
 
@@ -198,14 +222,14 @@ public class DeviceService {
      * 删除设备（级联删除所有关联数据）
      */
     @Transactional
-    public void deleteDevice(Long deviceId, Long userId) {
+    public void deleteDevice(Long deviceId, Long userId, String platform) {
         Device device = deviceMapper.findById(deviceId);
         if (device == null) {
             throw new RuntimeException("设备不存在");
         }
 
-        // 验证设备归属
-        if (!device.getUserId().equals(userId)) {
+        // 验证设备归属（web 端管理后台跳过权限验证）
+        if (!"web".equals(platform) && !device.getUserId().equals(userId)) {
             throw new RuntimeException("无权操作此设备");
         }
 

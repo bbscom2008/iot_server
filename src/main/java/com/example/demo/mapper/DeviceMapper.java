@@ -1,5 +1,6 @@
 package com.example.demo.mapper;
 
+import com.example.demo.dto.DeviceListDTO;
 import com.example.demo.entity.Device;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,9 +17,19 @@ public interface DeviceMapper {
     List<Device> findList(Map<String, Object> params);
 
     /**
+     * 查询设备列表（包含用户信息）
+     */
+    List<DeviceListDTO> findListWithUser(Map<String, Object> params);
+
+    /**
      * 查询设备总数
      */
     Long countDevice(Map<String, Object> params);
+
+    /**
+     * 查询设备总数（包含用户信息筛选）
+     */
+    Long countDeviceWithUser(Map<String, Object> params);
 
     /**
      * 根据ID查询设备

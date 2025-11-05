@@ -20,6 +20,8 @@ public class DeviceListDTO {
     
     private Long id;
     private Long userId;
+    private String userName;         // 用户名称
+    private String userPhone;        // 用户手机号
     private String deviceNum;
     private String deviceName;
     private Integer deviceType;      // 设备类型ID

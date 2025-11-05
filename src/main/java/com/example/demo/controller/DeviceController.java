@@ -35,8 +35,11 @@ public class DeviceController {
             @RequestHeader("Authorization") String token,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) Integer type) {
+            @RequestParam(required = false) String deviceName,
+            @RequestParam(required = false) String deviceNum,
+            @RequestParam(required = false) String userName,
+            @RequestParam(required = false) String userPhone,
+            @RequestParam(required = false) Integer warningStatus) {
         Long userId = jwtUtil.getUserIdFromToken(token);
         String platform = jwtUtil.getPlatformFromToken(token);
         
@@ -44,7 +47,7 @@ public class DeviceController {
         Long queryUserId = "web".equals(platform) ? null : userId;
         
         PageResult<DeviceListDTO> result = deviceService.getDeviceListDTO(
-                queryUserId, pageNum, pageSize, search, type);
+                queryUserId, pageNum, pageSize, deviceName, deviceNum, userName, userPhone, warningStatus);
         return ApiResponse.success(result);
     }
 
@@ -82,12 +85,22 @@ public class DeviceController {
     @PostMapping("/bind")
     public ApiResponse<String> bindDevice(
             @RequestHeader("Authorization") String token,
-            @RequestBody Map<String, String> params) {
-        Long userId = jwtUtil.getUserIdFromToken(token);
-        String deviceNum = params.get("deviceNum");
-        String deviceName = params.get("deviceName");
+            @RequestBody Map<String, Object> params) {
+        String platform = jwtUtil.getPlatformFromToken(token);
+        Long userId;
         
-        deviceService.bindDevice(userId, deviceNum, deviceName);
+        // 如果是 web 端，可以指定 userId，否则使用当前登录用户
+        if ("web".equals(platform) && params.containsKey("userId")) {
+            userId = Long.valueOf(params.get("userId").toString());
+        } else {
+            userId = jwtUtil.getUserIdFromToken(token);
+        }
+        
+        String deviceNum = (String) params.get("deviceNum");
+        String deviceName = (String) params.get("deviceName");
+        Integer deviceType =  (Integer) params.get("deviceType");
+
+        deviceService.bindDevice(userId, deviceNum, deviceName, deviceType);
         return ApiResponse.success("绑定成功");
     }
 
@@ -116,11 +129,12 @@ public class DeviceController {
             @PathVariable Long id,
             @Valid @RequestBody DeviceSettingsRequest request) {
         Long userId = jwtUtil.getUserIdFromToken(token);
+        String platform = jwtUtil.getPlatformFromToken(token);
         
         // 使用工具类将 DTO 转换为 Entity
         Device device = dtoConverter.toEntity(request, Device.class);
         
-        deviceService.updateDeviceSettings(id, userId, device);
+        deviceService.updateDeviceSettings(id, userId, platform, device);
         return ApiResponse.success("更新成功");
     }
 
@@ -133,7 +147,8 @@ public class DeviceController {
             @RequestHeader("Authorization") String token,
             @PathVariable Long id) {
         Long userId = jwtUtil.getUserIdFromToken(token);
-        deviceService.deleteDevice(id, userId);
+        String platform = jwtUtil.getPlatformFromToken(token);
+        deviceService.deleteDevice(id, userId, platform);
         return ApiResponse.success("删除成功");
     }
 }

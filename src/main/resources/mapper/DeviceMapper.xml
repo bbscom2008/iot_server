@@ -34,7 +34,85 @@
         <result column="alarm_phones" property="alarmPhones" jdbcType="VARCHAR" typeHandler="com.example.demo.handler.StringListTypeHandler"/>
     </resultMap>
 
-    <!-- 查询设备列表 -->
+    <resultMap id="DeviceListResultMap" type="com.example.demo.dto.DeviceListDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
+        <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
+        <result column="device_line_state" property="deviceLineState" jdbcType="INTEGER"/>
+        <result column="signal" property="signal" jdbcType="INTEGER"/>
+        <result column="electric_quantity" property="electricQuantity" jdbcType="INTEGER"/>
+        <result column="warning_status" property="warningStatus" jdbcType="INTEGER"/>
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
+        <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+        <result column="last_offline_time" property="lastOfflineTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 查询设备列表（包含用户信息） -->
+    <select id="findListWithUser" resultMap="DeviceListResultMap">
+        SELECT 
+            d.*,
+            u.nike_name as user_name,
+            u.phone as user_phone
+        FROM devices d
+        LEFT JOIN users u ON d.user_id = u.id
+        <where>
+            <if test="userId != null">
+                AND d.user_id = #{userId}
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                AND d.device_name LIKE CONCAT('%', #{deviceName}, '%')
+            </if>
+            <if test="deviceNum != null and deviceNum != ''">
+                AND d.device_num LIKE CONCAT('%', #{deviceNum}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                AND u.nike_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                AND u.phone LIKE CONCAT('%', #{userPhone}, '%')
+            </if>
+            <if test="warningStatus != null">
+                AND d.warning_status = #{warningStatus}
+            </if>
+        </where>
+        ORDER BY d.created_time DESC
+        <if test="offset != null and pageSize != null">
+            LIMIT #{offset}, #{pageSize}
+        </if>
+    </select>
+
+    <!-- 查询设备总数（包含用户信息筛选） -->
+    <select id="countDeviceWithUser" resultType="long">
+        SELECT COUNT(*)
+        FROM devices d
+        LEFT JOIN users u ON d.user_id = u.id
+        <where>
+            <if test="userId != null">
+                AND d.user_id = #{userId}
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                AND d.device_name LIKE CONCAT('%', #{deviceName}, '%')
+            </if>
+            <if test="deviceNum != null and deviceNum != ''">
+                AND d.device_num LIKE CONCAT('%', #{deviceNum}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                AND u.nike_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                AND u.phone LIKE CONCAT('%', #{userPhone}, '%')
+            </if>
+            <if test="warningStatus != null">
+                AND d.warning_status = #{warningStatus}
+            </if>
+        </where>
+    </select>
+
+    <!-- 原查询设备列表 -->
     <select id="findList" resultMap="BaseResultMap">
         SELECT * FROM devices
         <where>
