@@ -11,6 +11,7 @@ import com.example.demo.mapper.UserRoleMapper;
 import com.example.demo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import com.example.demo.enums.PlatformType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,13 +53,13 @@ public class UserService {
         log.info("密码验证通过，准备生成Token");
 
         // 根据用户的 role 字段判断平台类型
-        String platform = determinePlatform(user.getRole());
+        PlatformType platform = determinePlatform(user.getRole());
         String roleId = String.valueOf(user.getRole());
         
-        log.info("用户角色: {}, 平台类型: {}", roleId, platform);
+        log.info("用户角色: {}, 平台类型: {}", roleId, platform.getValue());
 
         // 生成Token（包含角色信息）
-        String token = jwtUtil.generateToken(user.getId(), user.getPhone(), platform, roleId);
+        String token = jwtUtil.generateToken(user.getId(), user.getPhone(), platform.getValue(), roleId);
         log.info("登录成功，用户ID: {}, Token已生成", user.getId());
 
         // 返回登录响应
@@ -82,11 +83,11 @@ public class UserService {
         }
 
         // 根据用户的 role 字段判断平台类型
-        String platform = determinePlatform(user.getRole());
+        PlatformType platform = determinePlatform(user.getRole());
         String roleId = String.valueOf(user.getRole());
 
         // 生成Token（包含角色信息）
-        String token = jwtUtil.generateToken(user.getId(), user.getPhone(), platform, roleId);
+        String token = jwtUtil.generateToken(user.getId(), user.getPhone(), platform.getValue(), roleId);
 
         // 返回登录响应
         return new LoginResponse(token, LoginResponse.UserInfo.from(user));
@@ -279,12 +280,12 @@ public class UserService {
      * 角色ID 0-2 为手机端（0-老板, 1-饲养员, 2-其他）
      * 角色ID 10+ 为 PC端（10-管理员, 11-员工）
      */
-    private String determinePlatform(Integer role) {
+    private PlatformType determinePlatform(Integer role) {
         if (role == null) {
-            return "mobile"; // 默认为手机端
+            return PlatformType.MOBILE; // 默认为手机端
         }
         // role >= 10 为 PC端，< 10 为手机端
-        return role >= 10 ? "web" : "mobile";
+        return role >= 10 ? PlatformType.WEB : PlatformType.MOBILE;
     }
 
     /**
@@ -340,9 +341,13 @@ public class UserService {
     /**
      * 获取用户列表（分页）
      */
-    public PageResult<User> getUserList(Integer pageNum, Integer pageSize, String search) {
+    public PageResult<User> getUserList(Integer pageNum, Integer pageSize, String search, String platform, String nickName, String phone, Integer breedingType) {
         Map<String, Object> params = new HashMap<>();
         params.put("search", search);
+        params.put("platform", platform);
+        params.put("nickName", nickName);
+        params.put("phone", phone);
+        params.put("breedingType", breedingType);
 
         // 分页参数
         if (pageNum != null && pageSize != null) {
@@ -358,5 +363,34 @@ public class UserService {
         list.forEach(user -> user.setPassword(null));
 
         return PageResult.of(list, total, pageNum, pageSize);
+    }
+
+    /**
+     * 管理员更新指定用户信息
+     */
+    @Transactional
+    public void updateUserByAdmin(Long userId, User updateData) {
+        log.info("管理员更新用户信息，用户ID: {}", userId);
+        User user = userMapper.findById(userId);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
+        if (updateData.getNikeName() != null) user.setNikeName(updateData.getNikeName());
+        if (updateData.getAddress() != null) user.setAddress(updateData.getAddress());
+        if (updateData.getIcon() != null) user.setIcon(updateData.getIcon());
+        if (updateData.getBreedingType() != null) user.setBreedingType(updateData.getBreedingType());
+        if (updateData.getRole() != null) user.setRole(updateData.getRole());
+        if (updateData.getPassword() != null) user.setPassword(updateData.getPassword());
+        int result = userMapper.updateUser(user);
+        log.info("管理员更新成功，影响行数: {}", result);
+    }
+
+    /**
+     * 管理员删除用户
+     */
+    @Transactional
+    public void deleteUserById(Long userId) {
+        int result = userMapper.deleteById(userId);
+        log.info("管理员删除用户，用户ID: {}, 影响行数: {}", userId, result);
     }
 }

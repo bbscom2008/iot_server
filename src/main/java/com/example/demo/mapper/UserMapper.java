@@ -39,4 +39,9 @@ public interface UserMapper {
      * 统计用户总数
      */
     Long countUser(Map<String, Object> params);
+
+    /**
+     * 删除用户
+     */
+    int deleteById(@Param("id") Long id);
 }

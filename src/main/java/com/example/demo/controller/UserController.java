@@ -13,6 +13,7 @@ import com.example.demo.dto.ChangePasswordByPhoneRequest;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import com.example.demo.util.JwtUtil;
+import com.example.demo.enums.PlatformType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -204,14 +205,19 @@ public class UserController {
             @RequestHeader("Authorization") String token,
             @RequestParam(required = false, defaultValue = "1") Integer pageNum,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-            @RequestParam(required = false) String search) {
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String platform,
+            @RequestParam(required = false, name = "nickName") String nickName,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) Integer breedingType) {
         // 验证是web端用户
-        String platform = jwtUtil.getPlatformFromToken(token);
-        if (!"web".equals(platform)) {
+        String platformUserStr = jwtUtil.getPlatformFromToken(token);
+        PlatformType platformUser = PlatformType.from(platformUserStr);
+        if (platformUser != PlatformType.WEB) {
             return ApiResponse.error("无权访问");
         }
         
-        PageResult<User> result = userService.getUserList(pageNum, pageSize, search);
+        PageResult<User> result = userService.getUserList(pageNum, pageSize, search, platform, nickName, phone, breedingType);
         return ApiResponse.success(result);
     }
 
@@ -228,13 +234,39 @@ public class UserController {
         return ApiResponse.success("密码修改成功");
     }
 
-    /**
-     * 通过手机号验证码修改密码
-     * POST /user/changePasswordByPhone
-     */
     @PostMapping("/changePasswordByPhone")
     public ApiResponse<String> changePasswordByPhone(@Valid @RequestBody ChangePasswordByPhoneRequest request) {
         userService.changePasswordByPhone(request.getPhone(), request.getVerifyCode(), request.getNewPassword());
         return ApiResponse.success("密码修改成功");
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ApiResponse<String> deleteUser(
+            @RequestHeader("Authorization") String token,
+            @PathVariable("id") Long id) {
+        String platformUserStr = jwtUtil.getPlatformFromToken(token);
+        PlatformType platformUser = PlatformType.from(platformUserStr);
+        if (platformUser != PlatformType.WEB) {
+            return ApiResponse.error("无权访问");
+        }
+        userService.deleteUserById(id);
+        return ApiResponse.success("删除成功");
+    }
+
+    /**
+     * 管理员更新指定用户
+     */
+    @PostMapping("/admin/update/{id}")
+    public ApiResponse<String> updateUserByAdmin(
+            @RequestHeader("Authorization") String token,
+            @PathVariable("id") Long id,
+            @RequestBody User updateData) {
+        String platformUserStr = jwtUtil.getPlatformFromToken(token);
+        PlatformType platformUser = PlatformType.from(platformUserStr);
+        if (platformUser != PlatformType.WEB) {
+            return ApiResponse.error("无权访问");
+        }
+        userService.updateUserByAdmin(id, updateData);
+        return ApiResponse.success("更新成功");
     }
 }

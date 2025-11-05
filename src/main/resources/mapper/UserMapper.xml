@@ -51,26 +51,56 @@
 
     <!-- 查询用户列表 -->
     <select id="findList" resultMap="BaseResultMap">
-        SELECT * FROM users
+        SELECT u.* FROM users u
+        LEFT JOIN user_role ur ON u.role = ur.role_id
         <where>
             <if test="search != null and search != ''">
-                AND (phone LIKE CONCAT('%', #{search}, '%') 
-                OR nike_name LIKE CONCAT('%', #{search}, '%'))
+                AND (u.phone LIKE CONCAT('%', #{search}, '%') 
+                OR u.nike_name LIKE CONCAT('%', #{search}, '%'))
+            </if>
+            <if test="phone != null and phone != ''">
+                AND u.phone LIKE CONCAT('%', #{phone}, '%')
+            </if>
+            <if test="nickName != null and nickName != ''">
+                AND u.nike_name LIKE CONCAT('%', #{nickName}, '%')
+            </if>
+            <if test="breedingType != null">
+                AND u.breeding_type = #{breedingType}
+            </if>
+            <if test="platform != null and platform != ''">
+                AND ur.platform = #{platform}
             </if>
         </where>
-        ORDER BY created_at DESC
+        ORDER BY u.created_at DESC
         <if test="offset != null and pageSize != null">
             LIMIT #{offset}, #{pageSize}
         </if>
     </select>
 
-    <!-- 统计用户总数 -->
+    <!-- 删除用户 -->
+    <delete id="deleteById">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
     <select id="countUser" resultType="long">
-        SELECT COUNT(*) FROM users
+        SELECT COUNT(*) FROM users u
+        LEFT JOIN user_role ur ON u.role = ur.role_id
         <where>
             <if test="search != null and search != ''">
-                AND (phone LIKE CONCAT('%', #{search}, '%') 
-                OR nike_name LIKE CONCAT('%', #{search}, '%'))
+                AND (u.phone LIKE CONCAT('%', #{search}, '%') 
+                OR u.nike_name LIKE CONCAT('%', #{search}, '%'))
+            </if>
+            <if test="phone != null and phone != ''">
+                AND u.phone LIKE CONCAT('%', #{phone}, '%')
+            </if>
+            <if test="nickName != null and nickName != ''">
+                AND u.nike_name LIKE CONCAT('%', #{nickName}, '%')
+            </if>
+            <if test="breedingType != null">
+                AND u.breeding_type = #{breedingType}
+            </if>
+            <if test="platform != null and platform != ''">
+                AND ur.platform = #{platform}
             </if>
         </where>
     </select>
