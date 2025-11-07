@@ -1,9 +1,11 @@
 package com.example.demo.mapper;
 
+import com.example.demo.dto.MotorFanListDTO;
 import com.example.demo.entity.MotorFan;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MotorFanMapper {
@@ -17,6 +19,11 @@ public interface MotorFanMapper {
      * 根据设备编号查询所有风扇
      */
     List<MotorFan> findByDeviceNum(String deviceNum);
+
+    /**
+     * 查询所有风扇（关联设备和用户信息）
+     */
+    List<MotorFanListDTO> findAll(Map<String, Object> params);
 
     /**
      * 根据ID查询风扇
@@ -48,4 +55,3 @@ public interface MotorFanMapper {
      */
     int deleteByDeviceId(Long deviceId);
 }
-

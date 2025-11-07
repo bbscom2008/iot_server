@@ -4,6 +4,7 @@ import com.example.demo.entity.FrequencyMotor;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface FrequencyMotorMapper {
@@ -17,6 +18,11 @@ public interface FrequencyMotorMapper {
      * 根据设备编号查询所有变频电机
      */
     List<FrequencyMotor> findByDeviceNum(String deviceNum);
+
+    /**
+     * 查询所有变频电机（关联设备和用户信息）
+     */
+    List<FrequencyMotor> findAll(Map<String, Object> params);
 
     /**
      * 根据ID查询变频电机
@@ -43,4 +49,3 @@ public interface FrequencyMotorMapper {
      */
     int deleteByDeviceId(Long deviceId);
 }
-

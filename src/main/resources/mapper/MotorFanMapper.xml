@@ -50,6 +50,86 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="MotorFanListResultMap" type="com.example.demo.dto.MotorFanListDTO">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="fan_name" property="fanName" jdbcType="VARCHAR"/>
+        <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
+        <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
+        <result column="is_running" property="isRunning" jdbcType="INTEGER"/>
+        <result column="control_mode" property="controlMode" jdbcType="INTEGER"/>
+        <result column="auto_mode" property="autoMode" jdbcType="INTEGER"/>
+        <result column="probe_sensor_id" property="probeSensorId" jdbcType="BIGINT"/>
+        
+        <result column="temp_upper" property="tempUpper" jdbcType="DECIMAL"/>
+        <result column="temp_lower" property="tempLower" jdbcType="DECIMAL"/>
+        <result column="run_time" property="runTime" jdbcType="INTEGER"/>
+        <result column="pause_time" property="pauseTime" jdbcType="INTEGER"/>
+        
+        <result column="humidity_upper" property="humidityUpper" jdbcType="DECIMAL"/>
+        <result column="humidity_lower" property="humidityLower" jdbcType="DECIMAL"/>
+        
+        <result column="gas_upper" property="gasUpper" jdbcType="INTEGER"/>
+        <result column="gas_lower" property="gasLower" jdbcType="INTEGER"/>
+        
+        <result column="timer1_enabled" property="timer1Enabled" jdbcType="INTEGER"/>
+        <result column="timer1_start_time" property="timer1StartTime" jdbcType="VARCHAR"/>
+        <result column="timer1_end_time" property="timer1EndTime" jdbcType="VARCHAR"/>
+        <result column="timer1_probe_sensor_id" property="timer1ProbeSensorId" jdbcType="BIGINT"/>
+        <result column="timer1_start_temp" property="timer1StartTemp" jdbcType="DECIMAL"/>
+        <result column="timer1_stop_temp" property="timer1StopTemp" jdbcType="DECIMAL"/>
+        
+        <result column="timer2_enabled" property="timer2Enabled" jdbcType="INTEGER"/>
+        <result column="timer2_start_time" property="timer2StartTime" jdbcType="VARCHAR"/>
+        <result column="timer2_end_time" property="timer2EndTime" jdbcType="VARCHAR"/>
+        <result column="timer2_probe_sensor_id" property="timer2ProbeSensorId" jdbcType="BIGINT"/>
+        <result column="timer2_start_temp" property="timer2StartTemp" jdbcType="DECIMAL"/>
+        <result column="timer2_stop_temp" property="timer2StopTemp" jdbcType="DECIMAL"/>
+        
+        <result column="timer3_enabled" property="timer3Enabled" jdbcType="INTEGER"/>
+        <result column="timer3_start_time" property="timer3StartTime" jdbcType="VARCHAR"/>
+        <result column="timer3_end_time" property="timer3EndTime" jdbcType="VARCHAR"/>
+        <result column="timer3_probe_sensor_id" property="timer3ProbeSensorId" jdbcType="BIGINT"/>
+        <result column="timer3_start_temp" property="timer3StartTemp" jdbcType="DECIMAL"/>
+        <result column="timer3_stop_temp" property="timer3StopTemp" jdbcType="DECIMAL"/>
+        
+        <!-- 设备信息 -->
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        
+        <!-- 用户信息 -->
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 查询所有风扇（关联设备和用户信息） -->
+    <select id="findAll" resultMap="MotorFanListResultMap">
+        SELECT 
+            mf.*,
+            d.device_name as device_name,
+            u.nike_name as user_name,
+            u.phone as user_phone
+        FROM motor_fan mf
+        LEFT JOIN devices d ON mf.device_id = d.id
+        LEFT JOIN users u ON d.user_id = u.id
+        <where>
+            <if test="userName != null and userName != ''">
+                AND u.nike_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                AND u.phone LIKE CONCAT('%', #{userPhone}, '%')
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                AND d.device_name LIKE CONCAT('%', #{deviceName}, '%')
+            </if>
+            <if test="deviceNum != null and deviceNum != ''">
+                AND d.device_num LIKE CONCAT('%', #{deviceNum}, '%')
+            </if>
+            <if test="fanName != null and fanName != ''">
+                AND mf.fan_name LIKE CONCAT('%', #{fanName}, '%')
+            </if>
+        </where>
+        ORDER BY mf.created_time DESC
+    </select>
+
     <!-- 根据设备ID查询所有风扇 -->
     <select id="findByDeviceId" resultMap="BaseResultMap">
         SELECT * FROM motor_fan
@@ -133,4 +213,3 @@
     </delete>
 
 </mapper>
-

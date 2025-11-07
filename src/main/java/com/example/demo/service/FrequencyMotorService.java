@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,20 @@ public class FrequencyMotorService {
      */
     public List<FrequencyMotor> findByDeviceNum(String deviceNum) {
         return frequencyMotorMapper.findByDeviceNum(deviceNum);
+    }
+
+    /**
+     * 查询所有变频电机（关联设备和用户信息）
+     */
+    public List<FrequencyMotor> findAll(Map<String, Object> params) {
+        return frequencyMotorMapper.findAll(params);
+    }
+
+    /**
+     * 查询所有变频电机
+     */
+    public List<FrequencyMotor> findAll() {
+        return frequencyMotorMapper.findAll(null);
     }
 
     /**
@@ -62,4 +77,3 @@ public class FrequencyMotorService {
         frequencyMotorMapper.deleteByDeviceId(deviceId);
     }
 }
-

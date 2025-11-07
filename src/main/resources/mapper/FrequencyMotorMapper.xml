@@ -25,7 +25,33 @@
         <result column="gas_lower" property="gasLower" jdbcType="DOUBLE"/>
         <result column="created_time" property="createdTime" jdbcType="TIMESTAMP"/>
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
+        
+        <!-- 设备和用户信息 -->
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
     </resultMap>
+
+    <!-- 查询所有变频电机（关联设备和用户信息） -->
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT 
+            fm.*,
+            d.device_name as device_name,
+            d.device_num as device_num,
+            u.nike_name as user_name,
+            u.phone as user_phone
+        FROM frequency_motor fm
+        LEFT JOIN devices d ON fm.device_id = d.id
+        LEFT JOIN users u ON d.user_id = u.id
+        <where>
+            <if test="deviceName != null and deviceName != ''">
+                AND d.device_name LIKE CONCAT('%', #{deviceName}, '%')
+            </if>
+            <if test="deviceNum != null and deviceNum != ''">
+                AND d.device_num LIKE CONCAT('%', #{deviceNum}, '%')
+            </if>
+        </where>
+        ORDER BY fm.created_time DESC
+    </select>
 
     <!-- 根据设备ID查询所有变频电机 -->
     <select id="findByDeviceId" resultMap="BaseResultMap">
@@ -91,4 +117,3 @@
     </delete>
 
 </mapper>
-
