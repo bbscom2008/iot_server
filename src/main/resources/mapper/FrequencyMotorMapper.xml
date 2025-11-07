@@ -43,6 +43,12 @@
         LEFT JOIN devices d ON fm.device_id = d.id
         LEFT JOIN users u ON d.user_id = u.id
         <where>
+            <if test="userName != null and userName != ''">
+                AND u.nike_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                AND u.phone LIKE CONCAT('%', #{userPhone}, '%')
+            </if>
             <if test="deviceName != null and deviceName != ''">
                 AND d.device_name LIKE CONCAT('%', #{deviceName}, '%')
             </if>

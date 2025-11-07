@@ -6,11 +6,12 @@ import com.example.demo.service.FrequencyMotorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/frequencyMotor")
+@RequestMapping("/frequency-motor")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class FrequencyMotorController {
@@ -19,18 +20,21 @@ public class FrequencyMotorController {
 
     /**
      * 获取所有变频电机列表（关联设备和用户信息）
-     * GET /frequencyMotor/list
+     * GET /frequency-motor/list
      */
     @GetMapping("/list")
     public ApiResponse<List<FrequencyMotor>> getAllFrequencyMotors(
+            @RequestParam(required = false) String userName,
+            @RequestParam(required = false) String userPhone,
             @RequestParam(required = false) String deviceName,
             @RequestParam(required = false) String deviceNum) {
         
         // 构造查询参数
-        Map<String, Object> params = Map.of(
-            "deviceName", deviceName,
-            "deviceNum", deviceNum
-        );
+        Map<String, Object> params = new HashMap<>();
+        params.put("userName", userName);
+        params.put("userPhone", userPhone);
+        params.put("deviceName", deviceName);
+        params.put("deviceNum", deviceNum);
         
         List<FrequencyMotor> frequencyMotors = frequencyMotorService.findAll(params);
         return ApiResponse.success(frequencyMotors);
@@ -38,7 +42,7 @@ public class FrequencyMotorController {
 
     /**
      * 获取设备下的所有变频电机
-     * GET /frequencyMotor/list/{deviceId}
+     * GET /frequency-motor/list/{deviceId}
      */
     @GetMapping("/list/{deviceId}")
     public ApiResponse<List<FrequencyMotor>> getFrequencyMotorList(@PathVariable Long deviceId) {
@@ -48,7 +52,7 @@ public class FrequencyMotorController {
 
     /**
      * 根据ID获取变频电机详情
-     * GET /frequencyMotor/{id}
+     * GET /frequency-motor/{id}
      */
     @GetMapping("/{id}")
     public ApiResponse<FrequencyMotor> getFrequencyMotorById(@PathVariable Long id) {
@@ -58,7 +62,7 @@ public class FrequencyMotorController {
 
     /**
      * 更新变频电机配置
-     * PUT /frequencyMotor/update
+     * PUT /frequency-motor/update
      */
     @PutMapping("/update")
     public ApiResponse<String> updateFrequencyMotor(@RequestBody FrequencyMotor frequencyMotor) {

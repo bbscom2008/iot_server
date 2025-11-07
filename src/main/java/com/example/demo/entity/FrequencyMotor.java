@@ -29,7 +29,11 @@ public class FrequencyMotor {
     private Double humidityLower;   // 湿度下限（Double类型）
     private Double gasUpper;        // 气体上限（Double类型）
     private Double gasLower;        // 气体下限（Double类型）
+    
+    // 关联的设备和用户信息
+    private String userName;        // 用户名称
+    private String userPhone;       // 用户手机号
+
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
 }
-
