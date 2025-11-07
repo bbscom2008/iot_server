@@ -34,6 +34,68 @@
         <result column="user_phone" property="userPhone" />
     </resultMap>
 
+    <!-- 根据设备ID查询所有传感器 -->
+    <select id="findByDeviceId" resultMap="BaseResultMap">
+        SELECT * FROM sensors WHERE parent_id = #{deviceId}
+    </select>
+
+    <!-- 根据设备编号查询所有传感器 -->
+    <select id="findByDeviceNum" resultMap="BaseResultMap">
+        SELECT * FROM sensors WHERE parent_id = (SELECT id FROM devices WHERE device_num = #{deviceNum})
+    </select>
+
+    <!-- 根据ID查询传感器 -->
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT * FROM sensors WHERE id = #{id}
+    </select>
+
+    <!-- 新增传感器 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sensors (parent_id, sensor_code, sensor_type_id, sensor_name, sensor_value, adjust_value, unit, created_at, updated_at)
+        VALUES (#{parentId}, #{sensorCode}, #{sensorTypeId}, #{sensorName}, #{sensorValue}, #{adjustValue}, #{unit}, NOW(), NOW())
+    </insert>
+
+    <!-- 更新传感器值 -->
+    <update id="updateValue">
+        UPDATE sensors SET sensor_value = #{sensorValue}, updated_at = NOW() WHERE id = #{id}
+    </update>
+
+    <!-- 更新传感器信息 -->
+    <update id="update">
+        UPDATE sensors
+        <set>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="sensorCode != null">sensor_code = #{sensorCode},</if>
+            <if test="sensorTypeId != null">sensor_type_id = #{sensorTypeId},</if>
+            <if test="sensorName != null">sensor_name = #{sensorName},</if>
+            <if test="sensorValue != null">sensor_value = #{sensorValue},</if>
+            <if test="adjustValue != null">adjust_value = #{adjustValue},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            updated_at = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除传感器 -->
+    <delete id="deleteById">
+        DELETE FROM sensors WHERE id = #{id}
+    </delete>
+
+    <!-- 删除设备的所有传感器 -->
+    <delete id="deleteByDeviceId">
+        DELETE FROM sensors WHERE parent_id = #{deviceId}
+    </delete>
+
+    <!-- 根据传感器类型查询最大设备编号 -->
+    <select id="findMaxDeviceNumByType" resultType="string">
+        SELECT sensor_code FROM sensors WHERE sensor_type_id = #{sensorTypeId} ORDER BY sensor_code DESC LIMIT 1
+    </select>
+
+    <!-- 查询所有传感器（用于定时任务批量记录数据） -->
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM sensors
+    </select>
+
     <!-- 根据传感器编号查询传感器 -->
     <select id="findBySensorCode" resultMap="BaseResultMap">
         SELECT * FROM sensors
