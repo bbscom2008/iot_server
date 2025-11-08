@@ -27,6 +27,8 @@
         <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP"/>
         
         <!-- 设备和用户信息 -->
+        <result column="parent_device_name" property="parentDeviceName" jdbcType="VARCHAR"/>
+        <result column="parent_device_num" property="parentDeviceNum" jdbcType="VARCHAR"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
     </resultMap>
@@ -34,9 +36,28 @@
     <!-- 查询所有变频电机（关联设备和用户信息） -->
     <select id="findAll" resultMap="BaseResultMap">
         SELECT 
-            fm.*,
-            d.device_name as device_name,
-            d.device_num as device_num,
+            fm.id,
+            fm.parent_id,
+            fm.device_num,
+            fm.device_name,
+            fm.protect_speed,
+            fm.is_auto,
+            fm.manual_speed,
+            fm.value,
+            fm.run_time,
+            fm.pause_time,
+            fm.control_type,
+            fm.temp_sensor_id,
+            fm.temp_upper,
+            fm.temp_lower,
+            fm.humidity_upper,
+            fm.humidity_lower,
+            fm.gas_upper,
+            fm.gas_lower,
+            fm.created_time,
+            fm.updated_time,
+            d.device_name as parent_device_name,
+            d.device_num as parent_device_num,
             u.nike_name as user_name,
             u.phone as user_phone
         FROM frequency_motor fm
@@ -54,6 +75,12 @@
             </if>
             <if test="deviceNum != null and deviceNum != ''">
                 AND d.device_num LIKE CONCAT('%', #{deviceNum}, '%')
+            </if>
+            <if test="motorName != null and motorName != ''">
+                AND fm.device_name LIKE CONCAT('%', #{motorName}, '%')
+            </if>
+            <if test="motorCode != null and motorCode != ''">
+                AND fm.device_num LIKE CONCAT('%', #{motorCode}, '%')
             </if>
         </where>
         ORDER BY fm.created_time DESC

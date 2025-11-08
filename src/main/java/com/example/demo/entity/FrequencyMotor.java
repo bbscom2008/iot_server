@@ -31,8 +31,10 @@ public class FrequencyMotor {
     private Double gasLower;        // 气体下限（Double类型）
     
     // 关联的设备和用户信息
-    private String userName;        // 用户名称
-    private String userPhone;       // 用户手机号
+    private String parentDeviceName; // 父设备名称
+    private String parentDeviceNum;  // 父设备编号
+    private String userName;         // 用户名称
+    private String userPhone;        // 用户手机号
 
     private LocalDateTime createdTime;
     private LocalDateTime updatedTime;
