@@ -38,14 +38,16 @@ public class SensorService {
 
     /**
      * 新增传感器
-     * 自动生成 sensor_code 格式：sen-{sensor_type_id}-{从1001开始递增}
+     * 如果传入了 sensor_code，则使用传入的编码；否则自动生成 sensor_code 格式：sen-{sensor_type_id}-{从1001开始递增}
      */
     public void addSensor(Sensor sensor) {
-        // 如果 sensor_code 为空或不符合格式，自动生成
-        if (sensor.getSensorCode() == null || sensor.getSensorCode().isEmpty() || 
-            !sensor.getSensorCode().matches("^sen-\\d+-\\d+$")) {
+        // 如果 sensor_code 为空或null，才自动生成
+        if (sensor.getSensorCode() == null || sensor.getSensorCode().trim().isEmpty()) {
             String sensorCode = generateSensorCode(sensor.getSensorTypeId());
             sensor.setSensorCode(sensorCode);
+        } else {
+            // 如果用户提供了编码，去除首尾空格
+            sensor.setSensorCode(sensor.getSensorCode().trim());
         }
         
         // 检查 sensor_code 是否已存在

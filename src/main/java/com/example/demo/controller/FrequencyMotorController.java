@@ -41,12 +41,12 @@ public class FrequencyMotorController {
     }
 
     /**
-     * 获取设备下的所有变频电机
-     * GET /frequency-motor/list/{deviceId}
+     * 获取父设备下的所有变频电机
+     * GET /frequency-motor/list/{parentId}
      */
-    @GetMapping("/list/{deviceId}")
-    public ApiResponse<List<FrequencyMotor>> getFrequencyMotorList(@PathVariable Long deviceId) {
-        List<FrequencyMotor> frequencyMotors = frequencyMotorService.findByDeviceId(deviceId);
+    @GetMapping("/list/{parentId}")
+    public ApiResponse<List<FrequencyMotor>> getFrequencyMotorList(@PathVariable Long parentId) {
+        List<FrequencyMotor> frequencyMotors = frequencyMotorService.findByParentId(parentId);
         return ApiResponse.success(frequencyMotors);
     }
 

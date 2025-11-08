@@ -11,14 +11,14 @@ import java.util.Map;
 public interface MotorFanMapper {
 
     /**
-     * 根据设备ID查询所有风扇
+     * 根据父设备ID查询所有风扇
      */
-    List<MotorFan> findByDeviceId(Long deviceId);
+    List<MotorFan> findByParentId(Long parentId);
 
     /**
-     * 根据设备编号查询所有风扇
+     * 根据风机编码查询所有风扇
      */
-    List<MotorFan> findByDeviceNum(String deviceNum);
+    List<MotorFan> findByFanCode(String fanCode);
 
     /**
      * 查询所有风扇（关联设备和用户信息）
@@ -51,7 +51,7 @@ public interface MotorFanMapper {
     int deleteById(Long id);
 
     /**
-     * 删除设备的所有风扇
+     * 删除父设备的所有风扇
      */
-    int deleteByDeviceId(Long deviceId);
+    int deleteByParentId(Long parentId);
 }

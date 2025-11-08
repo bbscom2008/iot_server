@@ -108,8 +108,8 @@ public class DeviceService {
     public DeviceDetailDTO getDeviceDetailDTO(Long deviceId) {
         Device device = getDeviceDetail(deviceId);
         List<Sensor> sensors = sensorMapper.findByDeviceId(deviceId);
-        List<MotorFan> motorFans = motorFanMapper.findByDeviceId(deviceId);
-        List<FrequencyMotor> frequencyMotors = frequencyMotorMapper.findByDeviceId(deviceId);
+        List<MotorFan> motorFans = motorFanMapper.findByParentId(deviceId);
+        List<FrequencyMotor> frequencyMotors = frequencyMotorMapper.findByParentId(deviceId);
         
         return dtoConverter.toDeviceDetailDTO(device, sensors, motorFans, frequencyMotors);
     }
@@ -241,10 +241,10 @@ public class DeviceService {
         sensorMapper.deleteByDeviceId(deviceId);
 
         // 3. 删除风机
-        motorFanMapper.deleteByDeviceId(deviceId);
+        motorFanMapper.deleteByParentId(deviceId);
 
         // 4. 删除变频电机
-        frequencyMotorMapper.deleteByDeviceId(deviceId);
+        frequencyMotorMapper.deleteByParentId(deviceId);
 
         // 5. 删除设备本身
         deviceMapper.deleteById(deviceId);

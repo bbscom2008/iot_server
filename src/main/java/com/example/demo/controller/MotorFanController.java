@@ -44,12 +44,12 @@ public class MotorFanController {
     }
 
     /**
-     * 获取设备下的所有风机
-     * GET /motor-fan/list/{deviceId}
+     * 获取父设备下的所有风机
+     * GET /motor-fan/list/{parentId}
      */
-    @GetMapping("/list/{deviceId}")
-    public ApiResponse<List<MotorFan>> getMotorFanList(@PathVariable Long deviceId) {
-        List<MotorFan> motorFans = motorFanService.findByDeviceId(deviceId);
+    @GetMapping("/list/{parentId}")
+    public ApiResponse<List<MotorFan>> getMotorFanList(@PathVariable Long parentId) {
+        List<MotorFan> motorFans = motorFanService.findByParentId(parentId);
         return ApiResponse.success(motorFans);
     }
 
@@ -61,6 +61,38 @@ public class MotorFanController {
     public ApiResponse<MotorFan> getMotorFanById(@PathVariable Long id) {
         MotorFan motorFan = motorFanService.findById(id);
         return ApiResponse.success(motorFan);
+    }
+
+    /**
+     * 新增风机
+     * POST /motor-fan
+     */
+    @PostMapping
+    public ApiResponse<String> addMotorFan(@RequestBody MotorFan motorFan) {
+        // 验证必填字段
+        if (motorFan.getFanName() == null || motorFan.getFanName().trim().isEmpty()) {
+            throw new RuntimeException("风机名称不能为空");
+        }
+        if (motorFan.getParentId() == null) {
+            throw new RuntimeException("父设备ID不能为空");
+        }
+        if (motorFan.getFanCode() == null || motorFan.getFanCode().trim().isEmpty()) {
+            throw new RuntimeException("风机编码不能为空");
+        }
+        
+        // 设置默认值
+        if (motorFan.getIsRunning() == null) {
+            motorFan.setIsRunning(0); // 默认停止
+        }
+        if (motorFan.getControlMode() == null) {
+            motorFan.setControlMode(1); // 默认温控
+        }
+        if (motorFan.getAutoMode() == null) {
+            motorFan.setAutoMode(1); // 默认自动
+        }
+        
+        motorFanService.insert(motorFan);
+        return ApiResponse.success("风机添加成功");
     }
 
     /**
@@ -81,5 +113,20 @@ public class MotorFanController {
         
         motorFanService.update(motorFan);
         return ApiResponse.success("更新成功");
+    }
+
+    /**
+     * 删除风机
+     * DELETE /motor-fan/{id}
+     */
+    @DeleteMapping("/{id}")
+    public ApiResponse<String> deleteMotorFan(@PathVariable Long id) {
+        MotorFan existFan = motorFanService.findById(id);
+        if (existFan == null) {
+            throw new RuntimeException("风机不存在");
+        }
+        
+        motorFanService.deleteById(id);
+        return ApiResponse.success("风机删除成功");
     }
 }

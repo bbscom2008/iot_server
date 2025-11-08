@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 public class FrequencyMotor {
 
     private Long id;
-    private Long deviceId;          // 设备ID
-    private String deviceNum;       // 设备编号
+    private Long parentId;          // 父设备的ID
+    private String deviceNum;       // 变频器设备编码
     private String deviceName;      // 变频电机名称：变频1、变频2
     private Double protectSpeed;    // 保护转速（Double类型）
     private Integer isAuto;         // 运行模式：0-手动 1-自动

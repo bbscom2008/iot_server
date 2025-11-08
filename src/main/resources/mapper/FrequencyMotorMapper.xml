@@ -6,7 +6,7 @@
 
     <resultMap id="BaseResultMap" type="com.example.demo.entity.FrequencyMotor">
         <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
+        <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
         <result column="device_num" property="deviceNum" jdbcType="VARCHAR"/>
         <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
         <result column="protect_speed" property="protectSpeed" jdbcType="DOUBLE"/>
@@ -40,7 +40,7 @@
             u.nike_name as user_name,
             u.phone as user_phone
         FROM frequency_motor fm
-        LEFT JOIN devices d ON fm.device_id = d.id
+        LEFT JOIN devices d ON fm.parent_id = d.id
         LEFT JOIN users u ON d.user_id = u.id
         <where>
             <if test="userName != null and userName != ''">
@@ -59,10 +59,10 @@
         ORDER BY fm.created_time DESC
     </select>
 
-    <!-- 根据设备ID查询所有变频电机 -->
-    <select id="findByDeviceId" resultMap="BaseResultMap">
+    <!-- 根据父设备ID查询所有变频电机 -->
+    <select id="findByParentId" resultMap="BaseResultMap">
         SELECT * FROM frequency_motor
-        WHERE device_id = #{deviceId}
+        WHERE parent_id = #{parentId}
         ORDER BY id ASC
     </select>
 
@@ -81,11 +81,11 @@
     <!-- 新增变频电机 -->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO frequency_motor 
-        (device_id, device_num, device_name, protect_speed, is_auto, manual_speed, value, run_time, pause_time, 
+        (parent_id, device_num, device_name, protect_speed, is_auto, manual_speed, value, run_time, pause_time, 
          control_type, temp_sensor_id, temp_upper, temp_lower, humidity_upper, humidity_lower, gas_upper, gas_lower, 
          created_time, updated_time)
         VALUES 
-        (#{deviceId}, #{deviceNum}, #{deviceName}, #{protectSpeed}, #{isAuto}, #{manualSpeed}, #{value}, #{runTime}, #{pauseTime},
+        (#{parentId}, #{deviceNum}, #{deviceName}, #{protectSpeed}, #{isAuto}, #{manualSpeed}, #{value}, #{runTime}, #{pauseTime},
          #{controlType}, #{tempSensorId}, #{tempUpper}, #{tempLower}, #{humidityUpper}, #{humidityLower}, #{gasUpper}, #{gasLower},
          NOW(), NOW())
     </insert>
@@ -117,9 +117,9 @@
         DELETE FROM frequency_motor WHERE id = #{id}
     </delete>
 
-    <!-- 删除设备的所有变频电机 -->
-    <delete id="deleteByDeviceId">
-        DELETE FROM frequency_motor WHERE device_id = #{deviceId}
+    <!-- 删除父设备的所有变频电机 -->
+    <delete id="deleteByParentId">
+        DELETE FROM frequency_motor WHERE parent_id = #{parentId}
     </delete>
 
 </mapper>

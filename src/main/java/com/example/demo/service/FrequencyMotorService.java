@@ -15,10 +15,10 @@ public class FrequencyMotorService {
     private final FrequencyMotorMapper frequencyMotorMapper;
 
     /**
-     * 根据设备ID查询所有变频电机
+     * 根据父设备ID查询所有变频电机
      */
-    public List<FrequencyMotor> findByDeviceId(Long deviceId) {
-        return frequencyMotorMapper.findByDeviceId(deviceId);
+    public List<FrequencyMotor> findByParentId(Long parentId) {
+        return frequencyMotorMapper.findByParentId(parentId);
     }
 
     /**
@@ -71,9 +71,9 @@ public class FrequencyMotorService {
     }
 
     /**
-     * 删除设备的所有变频电机
+     * 删除父设备的所有变频电机
      */
-    public void deleteByDeviceId(Long deviceId) {
-        frequencyMotorMapper.deleteByDeviceId(deviceId);
+    public void deleteByParentId(Long parentId) {
+        frequencyMotorMapper.deleteByParentId(parentId);
     }
 }

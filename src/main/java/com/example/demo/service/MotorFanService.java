@@ -16,17 +16,17 @@ public class MotorFanService {
     private final MotorFanMapper motorFanMapper;
 
     /**
-     * 根据设备ID查询所有风扇
+     * 根据父设备ID查询所有风扇
      */
-    public List<MotorFan> findByDeviceId(Long deviceId) {
-        return motorFanMapper.findByDeviceId(deviceId);
+    public List<MotorFan> findByParentId(Long parentId) {
+        return motorFanMapper.findByParentId(parentId);
     }
 
     /**
-     * 根据设备编号查询所有风扇
+     * 根据风机编码查询所有风扇
      */
-    public List<MotorFan> findByDeviceNum(String deviceNum) {
-        return motorFanMapper.findByDeviceNum(deviceNum);
+    public List<MotorFan> findByFanCode(String fanCode) {
+        return motorFanMapper.findByFanCode(fanCode);
     }
 
     /**
@@ -80,9 +80,9 @@ public class MotorFanService {
     }
 
     /**
-     * 删除设备的所有风扇
+     * 删除父设备的所有风扇
      */
-    public void deleteByDeviceId(Long deviceId) {
-        motorFanMapper.deleteByDeviceId(deviceId);
+    public void deleteByParentId(Long parentId) {
+        motorFanMapper.deleteByParentId(parentId);
     }
 }

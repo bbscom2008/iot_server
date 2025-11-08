@@ -10,9 +10,9 @@ import java.util.Map;
 public interface FrequencyMotorMapper {
 
     /**
-     * 根据设备ID查询所有变频电机
+     * 根据父设备ID查询所有变频电机
      */
-    List<FrequencyMotor> findByDeviceId(Long deviceId);
+    List<FrequencyMotor> findByParentId(Long parentId);
 
     /**
      * 根据设备编号查询所有变频电机
@@ -45,7 +45,7 @@ public interface FrequencyMotorMapper {
     int deleteById(Long id);
 
     /**
-     * 删除设备的所有变频电机
+     * 删除父设备的所有变频电机
      */
-    int deleteByDeviceId(Long deviceId);
+    int deleteByParentId(Long parentId);
 }
