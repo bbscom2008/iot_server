@@ -1,0 +1,345 @@
+//----- 白天模式下的颜色
+
+$dark_bg: #23293e;
+$dark_bg1: #181e31;
+
+$color_border: #6f788d26;
+$dark_color_border: #6f788d80;
+
+$color_font_1: #2b3674; // 1 级文字颜色
+$dark_color_font1: #b3c0e7;
+
+$dark_color_font3: #a3aed080;
+$primary_blue: #5258f4; // 主题蓝色
+$primary_blue2: #5258f4; // 主题蓝色2
+// $primary_blue2: #4d6eff; // 主题蓝色2
+
+// 样式统一修改
+.showui {
+  #app {
+    .navbar {
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+      .right-menu {
+        color: $color_font_1;
+        strong {
+          color: $primary_blue;
+        }
+
+        .right-menu-item {
+          color: $color_font_1;
+          &.hover-effect {
+            &:hover {
+              background: rgba(0, 0, 0, 0.025);
+            }
+          }
+        }
+      }
+    }
+
+    // 左侧菜单的样式
+    .el-scrollbar__view {
+      & > ul.el-menu > div {
+        padding: 0 15px;
+        box-sizing: border-box;
+        margin: 5px 0;
+        & > a {
+          li {
+            border-radius: 10px;
+            height: 45px;
+            line-height: 45px;
+            &>span{
+              // color: $primary_blue;
+              font-weight: 700;
+            }
+            // &>span:hover{
+            //   color: #ffffffe5 !important;
+            //   font-weight: 700;
+            // }
+          }
+          li:hover {
+            background-color: $primary_blue2 !important;
+            color: #ffffffe5 !important;
+          }
+        }
+
+        & > a.router-link-active li {
+          background-color: $primary_blue2 !important;
+          color: #ffffffe5 !important;
+        }
+
+        & > li {
+          // background-color: red;
+          // 二级菜单的标题
+          & > .el-submenu__title:hover {
+            // color: #ffffffe5 !important;
+            background-color: transparent !important;
+            // i {
+              // color: #ffffffe5 !important;
+            // }
+          }
+         
+          & > .el-submenu__title {
+            border-radius: 10px;
+            height: 45px;
+            line-height: 45px;
+            &>span{
+              // color: $primary_blue;
+              font-weight: 700;
+            }
+          }
+          ul.el-menu .nest-menu {
+            li {
+              margin: 5px 0;
+              border-radius: 10px;
+              height: 40px;
+              line-height: 40px;
+              min-width: 100% !important;
+            }
+            li:hover {
+              background-color: $primary_blue2 !important;
+              color: #ffffffe5 !important;
+            }
+            a.router-link-active li {
+              background-color: $primary_blue2 !important;
+              color: #ffffffe5 !important;
+            }
+          }
+        }
+      }
+    }
+
+    .tags-view-container {
+      background: #fff;
+      border-bottom: 1px solid #d8dce5;
+
+      .tags-view-wrapper {
+        .tags-view-item {
+          border: 1px solid #d8dce5;
+          color: #495060;
+          border-radius: 6px;
+        }
+
+        .tags-view-item.active {
+          background-image: linear-gradient(to top right, #4b5eff, #4f8aff);
+          color: #fffcf5;
+          border-color: #4b5eff;
+        }
+      }
+    }
+
+    // 主容器
+    .container {
+      padding-bottom: 100px;
+    }
+    .el-card {
+      border-radius: 20px;
+      overflow: visible;
+    }
+
+    .el-table tr {
+      // 默认颜色
+      background-color: #fff;
+      color: $color_font_1;
+    }
+
+    // 表格颜色
+    .el-table tr th {
+      // 默认颜色
+      background-color: #f1f2fe;
+      color: $color_font_1;
+    }
+
+    .el-table--striped .el-table__body tr.el-table__row--striped td {
+      // 斑马纹颜色
+      background-color: #ddebf7;
+    }
+
+    .el-pagination.is-background .btn-prev,
+    .el-pagination.is-background .btn-next,
+    .el-pagination.is-background .el-pager li {
+      background-color: transparent;
+      border: 1px solid $color_border;
+    }
+    .el-pagination.is-background .el-pager li:not(.disabled).active {
+      background-color: $primary_blue2;
+      color: #ffffff;
+    }
+    .el-pagination__editor.el-input .el-input__inner,
+    .el-pagination .el-select .el-input .el-input__inner {
+      background-color: transparent;
+    }
+
+    .main-container {
+      background-color: #f2f6ff;
+    }
+  }
+}
+// --- 夜间模式下的颜色
+
+.showui.dark {
+  background-color: $dark_bg;
+  color: $dark_color_font1;
+
+  #app {
+    .hamburger-container {
+      fill: $dark_color_font1;
+    }
+
+    .navbar {
+      background: $dark_bg;
+      box-shadow: 0 1px 1px $dark_color_border;
+
+      .right-menu {
+        color: $dark_color_font1;
+        strong {
+          color: $primary_blue;
+          // color: var(--p_blue);
+        }
+
+        .right-menu-item {
+          color: $dark_color_font1;
+          &.hover-effect {
+            &:hover {
+              background: rgba(0, 0, 0, 0.025);
+            }
+          }
+        }
+      }
+    }
+    // .el-scrollbar__wrap {
+    //   overflow: hidden;
+    // }
+
+    // 左侧菜单的样式
+    .scrollbar-wrapper {
+      background-color: $dark_bg;
+      width: 100%;
+      // width: 210px;
+    }
+    .el-scrollbar__view {
+      & > ul.el-menu {
+        background-color: $dark_bg !important;
+      }
+      & > ul.el-menu > div {
+        & > a {
+          li {
+            background-color: transparent !important;
+            color: $dark_color_font1 !important;
+          }
+          li:hover {
+            background-color: $primary_blue2 !important;
+            color: $dark_color_font1 !important;
+          }
+        }
+
+        & > a.router-link-active li {
+          background-color: $primary_blue2 !important;
+          color: $dark_color_font1 !important;
+        }
+
+        & > li {
+          // background-color: red !important;
+          // 二级菜单的标题
+          & > .el-submenu__title:hover {
+            color: $dark_color_font1 !important;
+            i {
+              color: $dark_color_font1 !important;
+            }
+          }
+          & > .el-submenu__title {
+            background-color: transparent !important;
+            color: $dark_color_font1 !important;
+          }
+          ul.el-menu {
+            background-color: transparent !important;
+          }
+          ul.el-menu .nest-menu {
+            li {
+              color: $dark_color_font3 !important;
+              background-color: transparent !important;
+            }
+            li:hover {
+              background-color: $primary_blue2 !important;
+              color: $dark_color_font3 !important;
+            }
+            a.router-link-active li {
+              background-color: $primary_blue2 !important;
+              color: $dark_color_font1 !important;
+            }
+          }
+        }
+      }
+    }
+
+    .tags-view-container {
+      background-color: $dark_bg;
+    }
+
+    .tags-view-container {
+      border-bottom: 1px solid $dark_color_border;
+
+      .tags-view-wrapper {
+        .tags-view-item {
+          color: $dark_color_font1;
+          border-color: $dark_color_border;
+        }
+
+        .tags-view-item.active {
+          background-image: linear-gradient(to top right, #4b5eff, #4f8aff);
+          color: #ffffffcc;
+          border-color: #4b5eff;
+        }
+      }
+    }
+
+    .main-container {
+      background-color: $dark_bg1;
+    }
+
+    .el-card {
+      background-color: $dark_bg;
+      box-shadow: none;
+      // border: none;
+    }
+
+    .el-table tr {
+      // 默认颜色
+      background-color: transparent;
+      border-color: #363637;
+      color: $dark_color_font1;
+      td {
+        border-color: #363637;
+      }
+    }
+
+    .el-table tr th {
+      // 默认颜色
+      background-color: #29304b;
+      border-color: #363637;
+      color: $dark_color_font1;
+    }
+    .el-table__body tr.hover-row > td{
+      background-color: #29304b;
+    }
+    .el-table__body tr.current-row > td{
+      background-color: #29304b;
+    }
+
+    .el-table--striped .el-table__body tr.el-table__row--striped td {
+      // 斑马纹颜色
+      background-color: transparent;
+      border-color: #363637;
+    }
+
+    .el-table--enable-row-hover .el-table__body tr:hover > td {
+      background-color: #32404e;
+    }
+
+    .tips {
+      background-color: #363637;
+      border-color: #363637;
+    }
+  }
+}

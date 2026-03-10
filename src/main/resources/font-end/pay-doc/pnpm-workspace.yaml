@@ -1,0 +1,7 @@
+onlyBuiltDependencies:
+  - core-js
+  - deasync
+  - ejs
+  - highlight.js
+  - swiper
+  - yorkie

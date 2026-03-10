@@ -1,0 +1,59 @@
+// 全局图标样式，替代 element-ui 的图标字体
+// 使用简单的 Unicode 字符或 CSS 来显示图标
+
+.el-icon-document-copy::before {
+  content: '📋';
+  font-style: normal;
+}
+
+.el-icon-plus::before {
+  content: '+';
+  font-style: normal;
+  font-weight: bold;
+}
+
+.el-icon-loading::before {
+  content: '⟳';
+  font-style: normal;
+  animation: rotating 2s linear infinite;
+}
+
+.el-icon-circle-plus-outline::before {
+  content: '+';
+  font-style: normal;
+  font-weight: bold;
+}
+
+.el-icon-success::before {
+  content: '✓';
+  font-style: normal;
+  color: #67c23a;
+}
+
+.el-icon-warning::before {
+  content: '⚠';
+  font-style: normal;
+  color: #e6a23c;
+}
+
+.el-icon-error::before {
+  content: '✗';
+  font-style: normal;
+  color: #f56c6c;
+}
+
+.el-icon-info::before {
+  content: 'ℹ';
+  font-style: normal;
+  color: #909399;
+}
+
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+

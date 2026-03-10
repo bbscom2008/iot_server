@@ -1,0 +1,530 @@
+.nui {
+  $bg: #283443;
+  $light_gray: #fff;
+  $cursor: #fff;
+  $cursor22: #ccc;
+  $bg: #2d3a4b;
+  $dark_gray: #889aa4;
+  $light_gray: #eee;
+  $light_gray22: #072c13;
+
+  .login-container-page {
+    min-height: 100%;
+    width: 100%;
+    background-color: $bg;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    .input-light {
+      display: inline-block;
+      height: 47px;
+      width: 100%;
+
+      input {
+        background: transparent;
+        border: 0px;
+        -webkit-appearance: none;
+        border-radius: 0px;
+        padding: 12px 5px 12px 15px;
+        color: $light_gray;
+        height: 47px;
+        caret-color: $cursor;
+
+        &:-webkit-autofill {
+          box-shadow: 0 0 0px 1000px $bg inset !important;
+          -webkit-text-fill-color: $cursor !important;
+        }
+      }
+    }
+
+    .el-form-item {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      color: #454545;
+    }
+
+    .btn-login {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .el-form-item__label {
+      line-height: 52px;
+      color: $dark_gray;
+    }
+
+    .save-username {
+      padding: 0 20px 0;
+      display: flex;
+      // justify-content: space-around;
+      align-items: center;
+    }
+
+    .login-form {
+      position: relative;
+      width: 520px;
+      max-width: 100%;
+      padding: 30px;
+      margin: 100px auto;
+      overflow: hidden;
+      background-color: #2d3a4b;
+    }
+
+    .tips {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 10px;
+
+      span {
+        &:first-of-type {
+          margin-right: 16px;
+        }
+      }
+    }
+
+    .svg-container {
+      padding: 6px 5px 6px 15px;
+      color: $dark_gray;
+      vertical-align: middle;
+      width: 30px;
+      display: inline-block;
+    }
+
+    .title-container {
+      position: relative;
+
+      .title {
+        font-size: 26px;
+        color: $light_gray;
+        margin: 0px auto 40px auto;
+        text-align: center;
+        font-weight: bold;
+      }
+    }
+
+    .show-pwd {
+      position: absolute;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: $dark_gray;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .thirdparty-button {
+      position: absolute;
+      right: 0;
+      bottom: 6px;
+    }
+  }
+
+  // 绑定谷歌验证码
+  .other_container {
+    min-height: 100%;
+    width: 100%;
+    overflow: hidden;
+
+    .font-bold {
+      font-weight: bold;
+    }
+    .margin2px-0 {
+      margin: 2px 0;
+    }
+    .dialog-textCon {
+      padding: 0 0 20px;
+      box-shadow: 0 1px #889aa4;
+    }
+    .font-red {
+      color: red;
+    }
+    .flex-center {
+      align-items: center;
+    }
+    .dialog-scanCode {
+      padding: 20px 0;
+      .dialog-line {
+        display: flex;
+        margin-top: 15px;
+        .line-right {
+          display: flex;
+          flex-direction: column;
+          margin-left: 10px;
+          font-size: 12px;
+          .dialog-img {
+            width: 200px;
+          }
+          .font28 {
+            font-size: 16px;
+            line-height: 0;
+          }
+          .copyCon {
+            display: flex;
+            align-items: center;
+          }
+          .rightBtn {
+            margin-left: 15px;
+          }
+        }
+      }
+    }
+  }
+
+  // 修改密码页面
+
+  $bg: #283443;
+  $light_gray: #fff;
+  $cursor: #fff;
+
+  @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+    .login-container .el-input input {
+      color: $cursor;
+    }
+  }
+
+  /* reset element-ui css */
+  .change-pwd-container {
+    min-height: 100%;
+    width: 100%;
+    background-color: $bg;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    .el-input {
+      display: inline-block;
+      height: 47px;
+      width: 85%;
+
+      input {
+        background: transparent;
+        border: 0px;
+        -webkit-appearance: none;
+        border-radius: 0px;
+        padding: 12px 5px 12px 15px;
+        color: $light_gray;
+        height: 47px;
+        caret-color: $cursor;
+
+        &:-webkit-autofill {
+          box-shadow: 0 0 0px 1000px $bg inset !important;
+          -webkit-text-fill-color: $cursor !important;
+        }
+      }
+    }
+
+    .el-form-item {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      color: #454545;
+    }
+
+    $bg: #2d3a4b;
+    $dark_gray: #889aa4;
+    $light_gray: #eee;
+
+    .el-form-item__label {
+      line-height: 47px;
+      color: $dark_gray;
+    }
+    .el-form-item__content {
+      display: flex;
+    }
+
+    min-height: 100%;
+    width: 100%;
+    background-color: $bg;
+    overflow: hidden;
+
+    .login-form {
+      position: relative;
+      width: 680px;
+      max-width: 100%;
+      padding: 160px 35px 0;
+      margin: 0 auto;
+      overflow: hidden;
+      background-color: #2d3a4b;
+    }
+
+    .tips {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 10px;
+
+      span {
+        &:first-of-type {
+          margin-right: 16px;
+        }
+      }
+    }
+
+    .svg-container {
+      padding: 6px 5px 6px 15px;
+      color: $dark_gray;
+      vertical-align: middle;
+      width: 30px;
+      display: inline-block;
+    }
+
+    .title-container {
+      position: relative;
+
+      .title {
+        font-size: 26px;
+        color: $light_gray;
+        margin: 0px auto 40px auto;
+        text-align: center;
+        font-weight: bold;
+      }
+    }
+
+    .show-pwd {
+      position: absolute;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: $dark_gray;
+      cursor: pointer;
+      user-select: none;
+    }
+    .btnCon {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 50px;
+    }
+
+    .thirdparty-button {
+      position: absolute;
+      right: 0;
+      bottom: 6px;
+    }
+
+    @media only screen and (max-width: 470px) {
+      .thirdparty-button {
+        display: none;
+      }
+    }
+  }
+
+  // 首页样式
+
+  .containerd {
+    padding: 10px;
+
+    .el-radio-button:first-child .el-radio-button__inner {
+      border-radius: 2px 0 0 2px;
+    }
+    .el-radio-button:last-child .el-radio-button__inner {
+      border-radius: 0 2px 2px 0;
+    }
+    .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+      background-color: #42b983;
+      border-color: #42b983;
+      box-shadow: -1px 0 0 0 #42b983;
+    }
+    .el-radio-button__inner:hover {
+      color: #42b983;
+    }
+    .btn-change {
+      padding: 0 10px;
+      margin-top: 20px;
+    }
+    .h3Color {
+      color: #333;
+    }
+
+    .huizong {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+
+      .card-panel-col {
+        width: 290px;
+      }
+
+      .card-panel {
+        height: 90px;
+        cursor: pointer;
+        font-size: 12px;
+        position: relative;
+        overflow: hidden;
+        color: #333;
+        background: #fff;
+        box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.1);
+        border-color: rgba(0, 0, 0, 0.05);
+        // padding: 0 40px 0 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-radius: 3px;
+
+        &:hover {
+          .card-panel-icon-wrapper {
+            color: #fff;
+          }
+
+          .icon-people {
+            background: #63b8ff;
+          }
+        }
+        .card-panel-icon {
+          width: 140px;
+          // color: #fff  !important;
+          background: #63b8ff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .icon-people {
+          color: #40c9c6;
+        }
+        .svg-icon {
+          font-size: 56px;
+          color: #fff !important;
+        }
+        .card-panel-icon-wrapper {
+          float: left;
+          //   margin: 14px 0 0 14px;
+          padding: 16px;
+          transition: all 0.38s ease-out;
+          border-radius: 6px;
+        }
+
+        // .card-panel-icon {
+        //   float: left;
+        //   font-size: 48px;
+        // }
+
+        .card-panel-description {
+          font-weight: bold;
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+          // margin: 0 30px;
+          .card-panel-text {
+            line-height: 22px;
+            color: #333;
+            font-size: 18px;
+          }
+
+          .card-panel-num {
+            text-align: center;
+            font-size: 20px;
+            display: flex;
+            // justify-content: right;
+            span {
+              color: rgb(1, 114, 1);
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+
+    .panel-group {
+      // display: flex;
+
+      .tongji-body {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+
+        .el-card__body {
+          padding: 0;
+        }
+      }
+
+      .card-panel-col {
+        margin-bottom: 20px;
+        width: 30%;
+      }
+
+      .card-panel {
+        height: 90px;
+        cursor: pointer;
+        font-size: 12px;
+        position: relative;
+        overflow: hidden;
+        color: #333;
+        background: #fff;
+        box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.1);
+        border-color: rgba(0, 0, 0, 0.05);
+        // padding: 0 40px 0 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-radius: 3px;
+
+        &:hover {
+          .card-panel-icon-wrapper {
+            color: #fff;
+          }
+
+          .icon-people {
+            background: #63b8ff;
+          }
+        }
+        .card-panel-icon {
+          width: 140px;
+          // color: #fff  !important;
+          background: #63b8ff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .icon-people {
+          color: #40c9c6;
+        }
+        .svg-icon {
+          font-size: 56px;
+          color: #fff !important;
+        }
+
+        .card-panel-icon-wrapper {
+          float: left;
+          //   margin: 14px 0 0 14px;
+          padding: 16px;
+          transition: all 0.38s ease-out;
+          border-radius: 6px;
+        }
+
+        // .card-panel-icon {
+        //   float: left;
+        //   font-size: 48px;
+        // }
+
+        .card-panel-description {
+          font-weight: bold;
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          justify-content: space-around;
+          align-items: center;
+          // margin: 0 30px;
+          .card-panel-text {
+            line-height: 22px;
+            color: #333;
+            font-size: 18px;
+          }
+
+          .card-panel-num {
+            text-align: center;
+            font-size: 20px;
+            display: flex;
+            // justify-content: right;
+            span {
+              color: rgb(1, 114, 1);
+              margin-right: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [{
+			"path": "pages/index/index",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/recordChange/recordChange",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/cashAudit/cashAudit",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/collectOrder/collectOrder",
+			"style": {
+			}
+		},
+		{
+			"path": "pages/order/acception-order/acception-order-ui",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/payeeCodeManage/payeeCodeManage",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/team-manager/team-manager",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/teamReport/teamReport",
+			"style": {
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path" : "pages/login/bindGoogleCode",
+			"style" : {}
+		},
+		{
+			"path" : "pages/login/changePassword",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/personal-info/personal-info",
+			"style" : {}
+		},
+		{
+			"path" : "pages/personal-info/payment-settings",
+			"style" : {}
+		},
+		{
+			"path" : "pages/personal-info/quick-message-setting",
+			"style" : {}
+		},
+		{
+			"path" : "pages/personal-info/quick-message-card-setting",
+			"style" : {}
+		},
+		{
+			"path" : "pages/report-center/income-info-daily/income-info-daily",
+			"style" : {}
+		},
+    {
+    	"path" : "pages/report-today/income-info-daily/income-info-daily",
+    	"style" : {}
+    },
+		{
+		  "path" : "pages/agentpay-order/agentpay-order",
+		  "style" : {}
+		},
+		{
+		  "path" : "pages/report-center/service-daily-report/service-daily-report",
+		  "style" : {}
+		},
+    {
+      "path" : "pages/report-today/service-daily-report/service-daily-report",
+      "style" : {}
+    },
+		{
+		  "path" : "pages/cash-manage/service-change-record/service-change-record",
+		  "style" : {}
+		},
+		{
+			"path" : "pages/cash-manage/sub-change-record/sub-change-record",
+			"style" : {}
+		},
+		{
+			"path" : "pages/report-center/service-team-report/service-team-report",
+			"style" : {}
+		},
+    {
+    	"path" : "pages/report-today/service-team-report/service-team-report",
+    	"style" : {}
+    },
+		{
+			"path" : "pages/report-center/product-daily-report/product-daily-report",
+			"style" : {}
+		},
+    {
+    	"path" : "pages/report-today/product-daily-report/product-daily-report",
+    	"style" : {}
+    },
+		{
+			"path" : "pages/team-manager/config-product/config-product",
+			"style" : {}
+		},
+		{
+			"path" : "pages/order/order",
+			"style" : {}
+		},
+		{
+			"path" : "pages/order/collect-order/collect-order",
+			"style" : {}
+		},
+		{
+			"path" : "pages/order/chat-room-order/chat-room-order",
+			"style" : {}
+		},
+		{
+			"path" : "pages/order/agent-pay/agent-pay",
+			"style" : {}
+		},
+		{
+			"path" : "pages/order/payment-accept-order/payment-accept-order",
+			"style" : {}
+		},
+		{
+			"path" : "pages/order/subordinate-collect-order/subordinate-collect-order",
+			"style" : {}
+		},
+		{
+			"path" : "pages/order/subordinate-agent-pay-order/subordinate-agent-pay-order",
+			"style" : {}
+		},
+		{
+			"path" : "pages/service-apply-for/service-apply-for",
+			"style" : {}
+		},
+		{
+			"path" : "pages/service-manager/service-product-mananger/service-product-mananger",
+			"style" : {}
+		},
+		{
+			"path" : "pages/chat-client/chat-client",
+			"style" : {}
+		},
+		{
+			"path" : "pages/chat-client/chat-list",
+			"style" : {}
+		},
+		{
+			"path" : "pages/service-manager/service-income-info/service-income-info",
+			"style" : {}
+		},
+		{
+		  "path" : "pages/login/changeTradePassword",
+		  "style" : 
+		  {
+		    "navigationBarTitleText" : ""
+		  }
+		}
+	],
+	
+	"globalStyle": {
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "码商端",
+		"navigationBarBackgroundColor": "#4792f3",
+		"backgroundColor": "#4792f3"
+	}
+	
+}

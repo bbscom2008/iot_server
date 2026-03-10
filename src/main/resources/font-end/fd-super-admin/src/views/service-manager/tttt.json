@@ -1,0 +1,55 @@
+{
+    "payeeAccountId": "174704309559095296",
+    "texts": [
+        {
+            "payeeAccountTextId": "174704309559095297",
+            "textValue": "1231231231323"
+        },
+        {
+            "payeeAccountTextId": "174704309559095298",
+            "textValue": "张三2"
+        },
+        {
+            "payeeAccountTextId": "174704309559095299",
+            "textValue": "中行2"
+        }
+    ],
+    "buttons": [
+        {
+            "payeeAccountButtonId": "174704309601038336",
+            "buttonUrl": "https://www.baidu.com/test001=#{abc}?test002=#{efg}",
+            "buttonParamList": [
+                {
+                    "payeeAccountButtonParamId": "174704309601038337",
+                    "paramCode": "efg",
+                    "buttonParamValue": "name2"
+                },
+                {
+                    "payeeAccountButtonParamId": "174704309601038338",
+                    "paramCode": "abc",
+                    "buttonParamValue": "age2"
+                }
+            ],
+            "resultButtonUrl": "https://www.baidu.com/test001=age2?test002=name2"
+        }
+    ],
+    "qrConfig": {
+        "payeeAccountQrId": "174704309630398464",
+        "isActive": 1,
+        "qrUrl": "http://192.168.12.125:8090/uploads/1745736169777-934772049-code.png"
+    },
+    "files": [
+        {
+            "payeeAccountFileId": "174704309634592768",
+            "fileUrl": "http://192.168.12.125:8090/uploads/1745736179729-606154098-ali-pay-key.txt"
+        },
+        {
+            "payeeAccountFileId": "174704309634592769",
+            "fileUrl": "http://192.168.12.125:8090/uploads/1745719945922-197063398-jingdong-pay-key.txt"
+        },
+        {
+            "payeeAccountFileId": "174704309634592770",
+            "fileUrl": "http://192.168.12.125:8090/uploads/1745719950608-597597450-weixin-pay-key.txt"
+        }
+    ]
+}

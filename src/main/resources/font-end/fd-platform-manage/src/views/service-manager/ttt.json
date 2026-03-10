@@ -1,0 +1,45 @@
+{
+  "payeeAccountId": "178088190177918976",
+  "texts": [
+    {
+      "payeeAccountTextId": "178088190177918977",
+      "textValue": "测试03"
+    },
+    {
+      "payeeAccountTextId": "178088190177918978",
+      "textValue": "23"
+    }
+  ],
+  "buttons": [
+    {
+      "payeeAccountButtonId": "178088190190501888",
+      "buttonUrl": "http://www.bbb.com",
+      "resultButtonUrl": "http://www.bbb.com",
+      "buttonParamList": [
+        {
+          "payeeAccountButtonParamId": "178088190190501889",
+          "paramCode": "arg1",
+          "buttonParamValue": "cc1"
+        },
+        {
+          "payeeAccountButtonParamId": "178088190190501890",
+          "paramCode": "arg2",
+          "buttonParamValue": "cc2"
+        }
+      ]
+    }
+  ],
+  "qrConfig": {
+    "payeeAccountQrId": "178088190207279104",
+    "isActive": 1,
+    "qrUrl": "178318517911646208",
+    "parseValue": "",
+    "parseType": 0
+  },
+  "files": [
+    {
+      "payeeAccountFileId": "178088190215667712",
+      "fileUrl": "178318377368907776"
+    }
+  ]
+}

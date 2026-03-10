@@ -1,0 +1,4 @@
+<resources>
+    <string name="wx_pay_name">WXPay</string>
+    <string name="cc_pay_name">CCPay</string>
+</resources>

@@ -1,0 +1,283 @@
+<template>
+  <div class="container">
+    <el-card>
+      <el-form :inline="true" :model="queryFormData" class="demo-form-inline">
+        <el-form-item label="码商用户名" prop="userNickName">
+          <el-input
+            v-model="queryFormData.userNickName"
+            placeholder="请输入码商用户名"
+            size="small"
+          />
+        </el-form-item>
+
+        <el-form-item label="收款码名称" prop="payeeAccountInfoName">
+          <el-input
+            v-model="queryFormData.payeeAccountInfoName"
+            placeholder="请输入收款码名称"
+            size="small"
+          />
+        </el-form-item>
+        <el-form-item label="统计日期" prop="datetimerange">
+          <el-date-picker
+            v-model="queryFormData.datetimerange"
+            type="daterange"
+            format="yyyy-MM-dd"
+            value-format="yyyy-MM-dd"
+            align="right"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"
+          >
+          </el-date-picker>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" size="small" icon="el-icon-search" @click="queryTableData"
+            >搜索</el-button
+          >
+          <el-button size="small" icon="el-icon-refresh" @click="resetQueryForm">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
+
+    <el-card class="mt-10">
+      <el-button type="warning" plain icon="el-icon-download">导出</el-button>
+      <el-button type="success" plain icon="el-icon-folder-add" @click="showCreateDialog()"
+        >生成</el-button
+      >
+
+      <div class="tips mt-10 "  >
+        汇总信息： 
+        <span class="mr-10" >订单数量: 100 </span>
+        <span class="mr-10" >订单金额: 100 </span>
+        <span class="mr-10">成功订单数: 100 </span>
+        <span class="mr-10">成功订金额: 100 </span>
+        <span class="mr-10">实付金额: 100 </span>
+        <span class="mr-10">成功率(%): 100% </span>
+        <!-- <span class="mr-10">系统费用: 1000 </span> -->
+        <!-- <span class="mr-10">商户费用: 100 </span> -->
+        <!-- <span class="mr-10">码商费用: 100 </span> -->
+        <!-- <span class="mr-10">平台利润: 100 </span> -->
+      </div>
+
+
+      <my-table class="mt-10" ref="my-table" :loadData="mockData" :tableData="tableData" style="width: 100%" border>
+        <el-table-column label="序号" align="center" type="index" width="60" />
+        <el-table-column label="统计日期" align="center" prop="statisticsDate" />
+        <el-table-column label="码商用户名" align="center" prop="userNickName"  />
+        <el-table-column label="收款码名称" align="center" prop="payeeAccountInfoName"  />
+        <el-table-column label="订单数量" align="center" prop="orderCount"  width="105" />
+        <el-table-column label="订单金额" align="center" prop="orderAmount"  />
+        <el-table-column label="成功订单数" align="center" prop="successfulOrderCount"  />
+        <el-table-column
+          label="成功订单金额"
+          align="center"
+          prop="successfulOrderAmount"
+          width="130"
+        />
+        <el-table-column label="实付金额" align="center" prop="actualPaymentAmount"  />
+        <el-table-column label="成功率" align="center" prop="successRate"  />
+        <!-- <el-table-column label="系统费用" align="center" prop="system_cost"  /> -->
+        <!-- <el-table-column label="商户费用" align="center" prop="merchant_cost"  /> -->
+        <!-- <el-table-column label="码商费用" align="center" prop="provider_cost"  /> -->
+        <!-- <el-table-column label="平台利润" align="center" prop="platform_lirun"  /> -->
+      </my-table>
+    </el-card>
+
+    <el-dialog :visible.sync="dialogVisible" title="生成报表" width="350px">
+      <el-form>
+        <el-form-item label="生成日期" prop="createdTime">
+          <el-date-picker
+            v-model="createdTime"
+            type="date"
+            placeholder="选择日期"
+            value-format="yyyy-MM-dd"
+            :picker-options="shengchengPickerOptions"
+          >
+          </el-date-picker>
+          <div class="help-tip  mt-10" >报表由系统自动生成，如有遗漏，可选择日期，手动生成报表!</div>
+        </el-form-item>
+      </el-form>
+      <div slot="footer">
+        <el-button @click="onDialogBtnCancel()" size="small"> 取消 </el-button>
+        <el-button type="primary" @click="onDialogBtnOk()" size="small"> 确定 </el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'IncomeInfoDaily',
+  data() {
+    return {
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: '最近一周',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近一个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+              picker.$emit('pick', [start, end])
+            }
+          },
+          {
+            text: '最近三个月',
+            onClick(picker) {
+              const end = new Date()
+              const start = new Date()
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+              picker.$emit('pick', [start, end])
+            }
+          }
+        ]
+      },
+      createdTime: '',
+      tableData: [],
+      dialogVisible: false,
+      queryFormData: {
+        userNickName: '',
+        datetimerange: '',
+        payeeAccountInfoName: ''
+      },
+      isEdit: false // 是否是编辑状态
+
+      // 添加扩展数据，如 options 所需要的数据
+    }
+  },
+  methods: {
+    showCreateDialog() {
+      this.dialogVisible = true
+    },
+    onDialogBtnOk() {
+      this.dialogVisible = false
+      console.log(this.createdTime, '生成！')
+    },
+    resetQueryForm() {
+      this.queryFormData = {
+        userNickName: '',
+        datetimerange: '',
+        payeeAccountInfoName: ''
+      }
+      this.mockData()
+    },
+
+    queryTableData() {
+      // todo 搜索
+       console.log(this.queryFormData,'this.queryFormData')
+      let startDate=this.queryFormData.datetimerange[0]
+      let endDate=this.queryFormData.datetimerange[1]
+      console.log(startDate,endDate,'endDateendDateendDateendDate')
+      //
+      console.log(this.queryFormData)
+      this.mockData()
+
+      if (this.queryFormData.name != '') {
+        this.tableData = this.tableData.filter((item) => {
+          return item.name == this.queryFormData.name
+        })
+      }
+      if (this.queryFormData.gender != '') {
+        this.tableData = this.tableData.filter((item) => {
+          return item.gender == this.queryFormData.gender
+        })
+      }
+      // 是否启用
+      this.tableData = this.tableData.filter((item) => {
+        return item.isEnable == this.queryFormData.isEnable
+      })
+    },
+    mockData() {
+      // 模拟数据
+      let columnList = [
+        { title: '序号', type: 'index', key: 'index', isSearch: false, id: 1000 },
+        {
+          title: '码商用户名',
+          type: 'string',
+          key: 'userNickName',
+          isSearch: true,
+          id: 1001
+        },
+        { title: '统计日期', type: 'date', key: 'statisticDate', isSearch: true, id: 1002 },
+        {
+          title: '收款码名称',
+          type: 'string',
+          key: 'payeeAccountInfoName',
+          isSearch: true,
+          id: 1003
+        },
+        { title: '订单数量', type: 'number', key: 'orderCount', isSearch: false, id: 1004 },
+        { title: '订单金额', type: 'number', key: 'orderAmount', isSearch: false, id: 1005 },
+        { title: '成功订单数', type: 'number', key: 'successfulOrderCount', isSearch: false, id: 1006 },
+        {
+          title: '成功订单金额',
+          type: 'number',
+          key: 'successfulOrderAmount',
+          isSearch: false,
+          id: 1007
+        },
+        { title: '实付金额', type: 'number', key: 'actualPaymentAmount', isSearch: false, id: 1008 },
+        { title: '成功率', type: 'number', key: 'successRate', isSearch: false, id: 1009 },
+        { title: '系统费用', type: 'number', key: 'system_cost', isSearch: false, id: 1010 },
+        { title: '商户费用', type: 'number', key: 'merchant_cost', isSearch: false, id: 1011 },
+        { title: '码商费用', type: 'number', key: 'provider_cost', isSearch: false, id: 1012 },
+        { title: '平台利润', type: 'number', key: 'platform_lirun', isSearch: false, id: 1013 }
+      ]
+      this.tableData = []
+      new Array(10).fill(0).forEach((_, index) => {
+        let ele = {}
+        ele.id = Date.now() + index
+        columnList.forEach((column) => {
+          if (column.type == 'select') {
+            ele[column.key] =
+              column.options[Math.floor(Math.random() * column.options.length)].value
+          } else if (column.type == 'number') {
+            ele[column.key] = Math.floor(Math.random() * 40) + 10
+          } else if (column.type == 'date') {
+            const date = new Date()
+            date.setTime(date.getTime() - Math.floor(Math.random() * 10000) * 3600 * 1000 * 24)
+            ele[column.key] =
+              date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+          } else if (column.type == 'boolean') {
+            ele[column.key] = Math.floor(Math.random() * 2) == 0 ? false : true
+          } else if (
+            column.type == 'index' ||
+            column.type == 'operate' ||
+            column.type == 'selection'
+          ) {
+            // 啥也不加
+          } else {
+            ele[column.key] = 'abc' + this.tableData.length
+          }
+
+          //
+          if (column.title == '码商用户名') {
+            ele[column.key] = '码商用户' + this.tableData.length
+          }
+          if (column.title == '收款码名称') {
+            ele[column.key] = '收款信息' + this.tableData.length
+          }
+        })
+        this.tableData.push(ele)
+      })
+    }
+  },
+  mounted() {
+    this.mockData()
+  }
+}
+</script>
+
+<style lang="scss" scoped></style>

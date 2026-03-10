@@ -1,0 +1,82 @@
+{
+    "code": "00000",
+    "message": "处理成功!",
+    "data": {
+        "orderId": "4504036450659299022",
+        "providerId": "206699430307614720",
+        "payCashPageConfigVO": {
+            "baseInfo": {
+                "cashTemplateId": "287393782154641408",
+                "tenantId": 1000,
+                "templateName": "Test-邮箱回执",
+                "templateTitleName": "支付宝",
+                "templateTitleLogoUrl": "1",
+                "isShowMerchantOrderNo": 1,
+                "themeColor": "6",
+                "isTutorialPopup": 0,
+                "tutorialButtonName": "关闭教程",
+                "tutorialFilesUrl": "287393318970368000",
+                "submitPopup": 0,
+                "submitTitle": "",
+                "submitCheckType": 0,
+                "isShowTransferRemark": 0,
+                "transferRemarkTitle": "",
+                "isOnlineService": 0,
+                "isPaymentTutorial": 1,
+                "paymentTutorialUrl": "<p><img src=\"https://wx-third-pay-hongkong.s3.ap-east-1.amazonaws.com/third-party/main/20260304/287450290675556352.png\" alt=\"img1.png\" data-href=\"\" style=\"width: 100%;\"/><strong>1、打开支付宝，点击\"我的\"，进入账单</strong></p><p><img src=\"https://wx-third-pay-hongkong.s3.ap-east-1.amazonaws.com/third-party/main/20260304/287450302020042752.png\" alt=\"img2.png\" data-href=\"\" style=\"width: 100%;\"/><strong>2、找到对应的转账信息，点击进入</strong></p><p><img src=\"https://wx-third-pay-hongkong.s3.ap-east-1.amazonaws.com/third-party/main/20260304/287450312871555072.png\" alt=\"img3.png\" data-href=\"\" style=\"width: 100%;\"/><strong>3、向上滑动，找到\"申请电子回单\"</strong></p><p><img src=\"https://wx-third-pay-hongkong.s3.ap-east-1.amazonaws.com/third-party/main/20260304/287450323109851136.png\" alt=\"img4.png\" data-href=\"\" style=\"width: 100%;\"/><strong>4、点击 \"申请\"</strong></p><p><img src=\"https://wx-third-pay-hongkong.s3.ap-east-1.amazonaws.com/third-party/main/20260304/287450331234217984.png\" alt=\"img5.png\" data-href=\"\" style=\"width: 100%;\"/><strong>5、填写您的充值订单中显示的邮箱，点击\"发送\"</strong></p><p><img src=\"https://wx-third-pay-hongkong.s3.ap-east-1.amazonaws.com/third-party/main/20260304/287450339584229376.png\" alt=\"img6.png\" data-href=\"\" style=\"width: 100%;\"/><strong>6、补全转账收款人姓名，确定发送</strong></p><p><img src=\"https://wx-third-pay-hongkong.s3.ap-east-1.amazonaws.com/third-party/main/20260304/287450347546124288.png\" alt=\"img7.png\" data-href=\"\" style=\"width: 100%;\"/><strong>7、发送成功，提交存款信息</strong></p>",
+                "isDefault": 0
+            },
+            "components": null,
+            "submitConfigs": null
+        },
+        "payCashOrderVO": {
+            "merchantOrder": null,
+            "orderAmount": 100,
+            "payAmount": 100,
+            "transferRemark": "068601",
+            "expiredTime": "2026-03-05T14:59:40",
+            "usdRate": 1
+        },
+        "payCashPayInfoVO": {
+            "texts": [
+                {
+                    "sort": 0,
+                    "textTitle": "收款姓名",
+                    "textValue": "亚瑟",
+                    "textCode": null,
+                    "isShow": 1
+                },
+                {
+                    "sort": 1,
+                    "textTitle": "收款银行",
+                    "textValue": "支付宝",
+                    "textCode": null,
+                    "isShow": 1
+                },
+                {
+                    "sort": 2,
+                    "textTitle": "回执邮箱",
+                    "textValue": "123123123@qq.com",
+                    "textCode": null,
+                    "isShow": 1
+                }
+            ],
+            "buttons": [
+                {
+                    "buttonTitle": "立即转账",
+                    "resultButtonUrl": "alipays://platformapi/startapp?appId=20000116&actionType=toAccount&sourceId=contactStage",
+                    "sort": 0,
+                    "showType": 0
+                }
+            ],
+            "qrConfig": {
+                "isActive": 1,
+                "qrUrl": "287399860758622208",
+                "parseValue": "https://qr.alipay.com/fkx14629qgqme6vwg98oaa4",
+                "isShow": 0
+            },
+            "filePayUrl": null
+        }
+    },
+    "traceId": "2026-03-05 14:01:29kyAivTEpROyxtonD server"
+}

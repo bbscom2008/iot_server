@@ -1,0 +1,115 @@
+.isShowUi {
+ 
+  .tab-bar {
+   position: fixed;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   height: 166rpx;
+    // background: #232738;
+    background-color: #efefef;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-image: url(/static/tab_icons/tab-bg.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 10;
+  }
+
+ .tab0{
+      background-size: 175%;
+      background-position-x: -36rpx;
+      background-position-y: -14rpx;
+    }
+    
+  .tab-bar-center{
+    position: absolute;
+    left: 50%;
+    top: -14rpx;
+    transform: translateX(-50%);
+    
+    .tab-bar-icon{
+      width: 100rpx;
+      height: 100rpx;
+      border-radius: 50%;
+      // border: 20rpx solid #efefef;
+    }
+   
+    
+    .txt{
+      line-height: 30rpx;
+      position: absolute;
+      top: 0%;
+      left: 0;
+      width: 60rpx;
+      height: 60rpx;
+      font-size: 24rpx;
+      margin-top: 20rpx;
+      margin-left: 25rpx;
+    }
+    .red{
+      font-weight: 600;
+      color: #EA443B;
+    }
+    
+  }
+  .tab-bar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .tab-bar-icon {
+      width: 48rpx;
+      height: 48rpx;
+    }
+
+    .tab-bar-text {
+      font-size: 24rpx;
+      margin-top: 8rpx;
+      color: #666;
+    }
+
+    .tab-bar-text.active {
+      color: #E0C4B2;
+    }
+  }
+  
+  .tips{
+    // display: flex;
+    position: absolute;
+    top: -130rpx;
+    left: 50%;
+    font-size: 20rpx;
+    background-color: rgba(0, 0, 0, .7);
+    width: calc(100vw - 40rpx);
+    box-sizing: border-box;
+    height: 100rpx;
+    transform: translate(-50%, 0);
+    color: #FFFFFF;
+    padding: 10rpx 14rpx 10rpx 6rpx;
+    border-radius: 20rpx;
+    .txt{
+      text-align: center;
+    }
+    .img{
+      position: absolute;
+      top: 15rpx;
+      right: 6rpx;
+    }
+    &::after{
+      content: '';
+      position: absolute;
+      width: 0px;
+      height: 0px;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, -1rpx);
+      border-top: 20rpx solid rgba(0, 0, 0, .7);
+      border-left: 20rpx solid transparent;
+      border-right: 20rpx solid transparent;
+    }
+  }
+  
+}

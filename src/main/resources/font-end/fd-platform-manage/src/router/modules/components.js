@@ -1,0 +1,54 @@
+/** When your routing table is too long, you can split it into small modules **/
+
+import Layout from '@/layout'
+
+const componentsRouter = {
+  path: '/components',
+  component: Layout,
+  redirect: 'noRedirect',
+  name: 'ComponentDemo',
+  meta: {
+    title: 'Components',
+    icon: 'component'
+  },
+  children: [
+    {
+      path: 'tinymce',
+      component: () => import('@/views/components-demo/tinymce'),
+      name: 'TinymceDemo',
+      meta: { title: 'Tinymce' }
+    },
+    {
+      path: 'split-pane',
+      component: () => import('@/views/components-demo/split-pane'),
+      name: 'SplitpaneDemo',
+      meta: { title: 'SplitPane' }
+    },
+    {
+      path: 'dropzone',
+      component: () => import('@/views/components-demo/dropzone'),
+      name: 'DropzoneDemo',
+      meta: { title: 'Dropzone' }
+    },
+    {
+      path: 'sticky',
+      component: () => import('@/views/components-demo/sticky'),
+      name: 'StickyDemo',
+      meta: { title: 'Sticky' }
+    },
+    {
+      path: 'count-to',
+      component: () => import('@/views/components-demo/count-to'),
+      name: 'CountToDemo',
+      meta: { title: 'Count To' }
+    },
+    {
+      path: 'drag-dialog',
+      component: () => import('@/views/components-demo/drag-dialog'),
+      name: 'DragDialogDemo',
+      meta: { title: 'Drag Dialog' }
+    },
+  ]
+}
+
+export default componentsRouter

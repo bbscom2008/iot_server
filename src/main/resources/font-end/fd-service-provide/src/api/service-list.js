@@ -1,0 +1,170 @@
+import request from '@/utils/request'
+import store from '@/store'
+// 
+// const tempBase = '/'
+// const tempBase = '/myserver'
+const tempBase = ''
+
+// 分页查询码商
+export function getServiceList({ pageNum, pageSize }, data) {
+  return request({
+    url: `${tempBase}/master/provider/getProviderPage?pageNum=${pageNum}&pageSize=${pageSize}`,
+    method: 'post',
+    data: data
+  })
+}
+
+// 新增码商
+export function addService(data) {
+  return request({
+    url: `${tempBase}/master/provider/add`,
+    method: 'post',
+    data: data
+  })
+}
+
+// 复制码商
+export function copyService(data) {
+  return request({
+    url: `${tempBase}/master/provider/copy`,
+    method: 'post',
+    data: data
+  })
+}
+
+// 是否启用码商
+export function isActiveService(providerId, isActive) {
+  return request({
+    url: `${tempBase}/master/provider/isActive/${providerId}?isActive=${isActive}`,
+    method: 'get'
+  })
+}
+
+// 通过租户ID获取码商信息（下拉框）
+export function getServiceListByTenantId() {
+  return request({
+    url: `${tempBase}/master/provider/getProviderOptionList/${tenantId}`,
+    method: 'get'
+  })
+}
+
+// 通过租户ID获取码商信息（下拉框）
+export function getProviderOptionList(tenantId) {
+  return request({
+    url: `${tempBase}/master/provider/getProviderOptionList/${tenantId}`,
+    method: 'get'
+  })
+}
+// 通过租户ID获取码商信息（下拉框）----下级代收订单
+export function getProviderListByPermission(userId) {
+  return request({
+    url: `${tempBase}/master/provider/getProviderListByPermission/${userId}`,
+    method: 'get'
+  })
+}
+
+
+// 全部修改码商
+export function updateAllService(data) {
+  return request({
+    url: `${tempBase}/master/provider/updateProvider`,
+    method: 'post',
+    data: data
+  })
+}
+
+// 批量修改码商
+export function updateBatchService(data) {
+  return request({
+    url: `${tempBase}/master/provider/batchUpdateProvider`,
+    method: 'post',
+    data: data
+  })
+}
+
+// ---------------下面三个接口，多个地方共用-----------------------------------------------
+
+//  用户账户余额变动
+export function adjustAvailableBalance(data) {
+  return request({
+    url: `${tempBase}/master/userAccount/availableBalance`,
+    method: 'post',
+    data: data
+  })
+}
+
+//   冻结金额变动
+export function adjustFreezeBalance(data) {
+  return request({
+    url: `${tempBase}/master/userAccount/freezeBalance`,
+    method: 'post',
+    data: data
+  })
+}
+
+//  最低接单金额变动
+export function adjustMinAllowableCollectAmount(data) {
+  return request({
+    url: `${tempBase}/master/userAccount/minAllowableCollectAmount`,
+    method: 'post',
+    data: data
+  })
+}
+
+// 判断码商名称是否存在
+export function isExistProviderName(providerName) {
+  store.commit('app/setLoadingEnable', false)
+  return request({
+    url: `${tempBase}/master/provider/isExistProviderName/${providerName}`,
+    method: 'get'
+  })
+}
+// 判断码商账号是否存在
+export function isExistProviderUserName(providerUserName) {
+  store.commit('app/setLoadingEnable', false)
+  return request({
+    url: `${tempBase}/master/provider/isExistProviderUserName/${providerUserName}`,
+    method: 'get'
+  })
+}
+// 查询码商祖级
+export function getProviderLevel(providerId) {
+  return request({
+    url: `${tempBase}/master/provider/getProviderLevel/${providerId}`,
+    method: 'get'
+  })
+}
+
+
+// 根据ID获取码商详情信息
+export function getProviderInfoDetailByProviderId(providerId) {
+  return request({
+    url: `${tempBase}/master/provider/${providerId}`,
+    method: 'get'
+  }) 
+}
+// 码商列表统计:(选择平台下汇总)码商总数、可用余额总和、冻结余额总和
+export function getProviderSum(data) {
+  return request({
+    url: `${tempBase}/master/provider/getProviderSumByProvider`,
+    method: 'post',
+    data
+  }) 
+}
+
+// 根据租户ID获取码商最小允许接单的代收金额
+export function getProviderMinAllowableCollectAmount(tenantId) {
+  return request({
+    url: `${tempBase}/master/provider/getProviderMinAllowableCollectAmount/${tenantId}  `,
+    method: 'get'
+  })
+}
+// 导出码商列表信息
+export function providerExport(data) {
+  return request({
+    url: `${tempBase}/master/provider/exportProviderListByProvider`,
+    method: 'post',
+    data,
+    responseType: 'blob'
+  })
+}

@@ -1,0 +1,362 @@
+
+
+// 弹框的样式
+uni-modal .uni-modal {
+  border-radius: 40rpx;
+  background-image: linear-gradient(
+    to bottom,
+    #faebdf 0%,
+    #ffffff 40%,
+    #ffffff 100%
+  );
+  padding: 20rpx;
+  box-sizing: border-box;
+
+  .uni-modal__bd {
+    color: #3d4047;
+  }
+  .uni-modal__btn_default {
+  }
+
+  .uni-modal__btn:after {
+    border: none;
+  }
+
+  .uni-modal__ft:after {
+    border: none;
+  }
+  .uni-modal__ft {
+    gap: 20rpx;
+  }
+  .uni-modal__btn {
+    width: 260rpx;
+    height: 76rpx;
+    line-height: 76rpx;
+    border-radius: 18rpx;
+    border: 2rpx solid #d4d5d6;
+    color: #686a70;
+    font-size: 28rpx;
+  }
+
+  .uni-modal__btn_primary {
+    color: #1d2129 !important;
+    background-image: linear-gradient(
+      to right,
+      #edd0be 0%,
+      #fff6ed 50%,
+      #ae9281 100%
+    );
+  }
+
+}
+  .is-disabled{
+    color: #666 !important;
+  }
+
+// 分页器的样式
+.pagination-container{
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  font-size: 24rpx !important;
+  .page-number{
+      margin: 0 !important;
+      color: #999999 !important;
+      background-color: transparent !important;
+  }
+  .page-arrow{
+      background-color: transparent !important;
+  }
+  .page-info{
+    text-align: center;
+  }
+  .page-number.active{
+      background-color: transparent !important;
+      border: 2rpx solid #333333;
+      color: #333333 !important;
+  }
+}
+
+// 弹窗
+.query-popup{
+  padding: 0;
+  background-color: transparent;
+  .popup-header{
+    padding: 20rpx 30rpx ;
+    border-radius: 30rpx 30rpx 0 0 ;
+    margin-bottom: 0;
+    background-image: linear-gradient(
+      to right,
+      #edd0be 0%,
+      #fff6ed 50%,
+      #ae9281 100%
+    );
+  }
+  .modal-content{
+    background-color: #fff;
+    box-sizing: border-box;
+  }
+  .modal-content{
+    padding: 0 40rpx;
+    margin-top: -2rpx;
+    margin-bottom: -2rpx;
+  }
+  .query-buttons{
+    margin-top: 0;
+    padding: 0 20rpx 20rpx;
+    background-color: #fff;
+    
+    .search-btn{
+      background-image: linear-gradient(
+        to right,
+        #edd0be 0%,
+        #fff6ed 50%,
+        #ae9281 100%
+      );
+      color: #1d2129;
+      border-radius: 24rpx;
+    }
+    .reset-btn{
+      background-color: transparent;
+      border-radius: 24rpx;
+      border-color: #D4D5D6;
+      color: #686A70;
+    }
+    
+  }
+  
+
+  
+}
+
+// select 选择框
+.uni-picker-container {
+  .uni-picker-custom{
+    background-color: transparent;
+  }
+  .uni-picker-header{
+    background-image: linear-gradient(
+      to right,
+      #edd0be 0%,
+      #fff6ed 50%,
+      #ae9281 100%
+    );
+    border-radius: 40rpx 40rpx 0 0;
+    padding: 0 40rpx;
+    .uni-picker-action-confirm{
+      color: #1d2129;
+    }
+  }
+}
+
+// toast 框的样式
+uni-toast .uni-toast{
+  background-image: linear-gradient(
+    to right,
+    rgba(174, 146, 129, 0.7) 0%,   /* #AE9281 带透明度 */
+    rgba(255, 246, 237, 0.7) 50%,  /* #FFF6ED 带透明度 */
+    rgba(237, 208, 190, 0.7) 100%  /* #EDD0BE 带透明度 */
+  );
+  
+  border-radius: 30rpx;
+  .uni-toast__content{
+    color: #3D4047;
+    font-size: 28rpx;
+  }
+}
+
+
+// 
+.u-tag{
+    border: none !important;
+}
+
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// u-button primary 样式
+.isShowUi {
+  
+  .main-content {
+    padding-bottom: 200rpx;
+  }
+  
+  .look-txt{
+    color: #1d99ff !important;
+    padding: 0 10rpx;
+    white-space: nowrap;
+  }
+  .u-button{
+    border-radius: 20rpx !important;
+  }
+  
+  .u-button.confirm-btn{
+    background-image: linear-gradient(to right, #AE9281 0%, #FFF6ED 50%, #EDD0BE 100%);
+    color: #1d2129;
+    border: none;
+  }
+  
+  
+  .u-button--primary{
+    background-image: linear-gradient(to right, #AE9281 0%, #FFF6ED 50%, #EDD0BE 100%);
+    border-color: transparent !important;
+    color: #1d2129 !important;
+  }
+  
+}
+
+
+.picker-label,
+.is-input-border{
+  border-radius: 12rpx !important;
+}
+
+
+
+.isShowUi {
+  .k-box {
+    background-image: linear-gradient(
+      to right,
+      #edd0be 0%,
+      #fff6ed 50%,
+      #ae9281 100%
+    );
+    border-radius: 32rpx;
+  }
+
+  .uni-checkbox-input-checked {
+    border: 1px solid #ae9281;
+    background-color: #766053;
+    color: #fff !important;
+  }
+
+  .order-list {
+    padding: 0;
+  }
+
+  .summary-card {
+    border-radius: 32rpx;
+    background-image: linear-gradient(
+      to right,
+      #ae9281 0%,
+      #fff6ed 50%,
+      #edd0be 100%
+    );
+    padding: 20rpx;
+    margin-bottom: 0;
+
+    .summary-title {
+      .info {
+        .value {
+          color: #52c41a;
+        }
+      }
+    }
+    .summary-grid {
+      display: flex;
+      flex-wrap: wrap;
+      position: relative;
+      justify-content: space-between;
+      &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        content: '';
+        width: 2rpx;
+        height: 100%;
+        background-color: #d4d5d6;
+      }
+      .sub-box{
+        width: 48%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      .summary-item {
+        display: flex;
+        width: 150rpx;
+        flex-direction: column;
+        align-items: center;
+        .label {
+          margin-bottom: 0;
+          width: auto;
+          font-size: 22rpx;
+          color: #686a70;
+        }
+        .value {
+          font-size: 32rpx;
+          font-weight: 700;
+          color: #3d4047;
+        }
+        .red-txt {
+          color: #ff4d4f;
+        }
+      }
+    }
+  }
+
+  .order-card {
+    .order-id {
+      font-size: 24rpx;
+      .txt {
+        font-weight: 600;
+      }
+    }
+    .info {
+      font-size: 24rpx;
+      display: flex;
+      align-items: center;
+    }
+
+    .card-body-2 {
+      justify-content: space-between;
+      position: relative;
+      &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        content: '';
+        width: 2rpx;
+        height: 100%;
+        background-color: #d4d5d6;
+      }
+      .sub-box {
+        width: 48%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+      }
+      .info-row {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: auto;
+        align-items: center;
+        width: 154rpx;
+
+        .info-label {
+          width: auto;
+          font-size: 20rpx;
+          margin-right: 0;
+        }
+        .info-value {
+          font-size: 32rpx;
+          font-weight: 600;
+          margin-right: 0;
+        }
+      }
+    }
+  }
+  .u-tag--success {
+    background: none !important;
+    border: none !important;
+
+    .u-tag__text--success {
+      color: #52c41a;
+    }
+  }
+}
